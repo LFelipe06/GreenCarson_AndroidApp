@@ -23,7 +23,7 @@
         android:id="@+id/textView"
         android:layout_width="300dp"
         android:layout_height="86dp"
-        android:text="FGC - Administrador de centros"
+        android:text="@string/fgc_administrador_de_centros"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
@@ -44,42 +44,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.093"
-        app:srcCompat="@drawable/img" />
+        app:srcCompat="@drawable/img"
+        android:contentDescription="@string/todo"
+        tools:ignore="ContentDescription" />
 
     <EditText
         android:id="@+id/editTextText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Correo"
+        android:hint="@string/correo"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="@+id/LoginContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/LoginContainer"
-        app:layout_constraintVertical_bias="0.181" />
+        app:layout_constraintVertical_bias="0.181"
+        android:autofillHints="emailAddress" />
 
     <EditText
         android:id="@+id/editTextTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Contrasena"
+        android:hint="@string/contrasena"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="@+id/LoginContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/LoginContainer" />
+        app:layout_constraintTop_toTopOf="@+id/LoginContainer"
+        android:autofillHints="password" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="139dp"
         android:layout_height="45dp"
-        android:text="Ingresar"
+        android:text="@string/ingresar"
+        android:theme="@style/Button.green"
         app:layout_constraintBottom_toBottomOf="@+id/LoginContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/LoginContainer"
         app:layout_constraintVertical_bias="0.846" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
