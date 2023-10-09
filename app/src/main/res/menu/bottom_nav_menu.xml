@@ -5,18 +5,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/navigate"
-        android:icon="@drawable/baseline_navigation_24"
+        android:icon="@drawable/compass_button_unselected"
         android:id="@+id/navigation"/>
     <item
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/add"
-        android:icon="@drawable/baseline_add_circle_outline_24"
+        android:icon="@drawable/new_button_unselected"
         android:id="@+id/addCenter"/>
     <item
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/profile"
-        android:icon="@drawable/baseline_person_outline_24"
+        android:icon="@drawable/user_button_unselected"
         android:id="@+id/profile"/>
 </menu>
