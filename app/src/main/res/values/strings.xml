@@ -11,4 +11,10 @@
     <string name="add">Add</string>
     <string name="navigate">Navigate</string>
     <string name="profile">Profile</string>
+    <string name="nombre">Nombre</string>
+    <string name="ubicaci_n">Ubicación</string>
+    <string name="tel_fono">Teléfono</string>
+    <string name="se_aceptan">Se aceptan:</string>
+    <string name="categor_as">Categorías:</string>
+    <string name="nuevo_centro">Nuevo centro</string>
 </resources>
