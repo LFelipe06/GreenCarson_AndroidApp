@@ -23,7 +23,7 @@
         android:id="@+id/textView"
         android:layout_width="300dp"
         android:layout_height="86dp"
-        android:text="@string/fgc_administrador_de_centros"
+        android:text="FCG - Administrador de centros"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
@@ -44,19 +44,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.093"
-        app:srcCompat="@drawable/img"
-        android:contentDescription="@string/todo"
-        tools:ignore="ContentDescription" />
+        app:srcCompat="@drawable/img" />
 
     <EditText
         android:id="@+id/editTextText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autofillHints="emailAddress"
         android:ems="10"
-        android:hint="@string/correo"
         android:inputType="text"
-        android:minHeight="48dp"
+        android:text="Usuario"
         app:layout_constraintBottom_toBottomOf="@+id/LoginContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -68,11 +64,9 @@
         android:id="@+id/editTextTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autofillHints="password"
         android:ems="10"
-        android:hint="@string/contrasena"
+        android:hint="Contrasena"
         android:inputType="textPassword"
-        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/LoginContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,14 +74,12 @@
 
     <Button
         android:id="@+id/button"
-        style="@style/Button.green"
         android:layout_width="139dp"
-        android:layout_height="48dp"
-        android:text="@string/ingresar"
+        android:layout_height="45dp"
+        android:text="Ingresar"
         app:layout_constraintBottom_toBottomOf="@+id/LoginContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/LoginContainer"
         app:layout_constraintVertical_bias="0.846" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
