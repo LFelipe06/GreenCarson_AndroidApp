@@ -4,4 +4,9 @@
         <item name="colorAccent">@color/mainGreen</item>
         <item name="backgroundTint">@color/mainGreen</item>
     </style>
+    <style name="Button.white" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">@color/white</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/lightGreen</item>
+    </style>
 </resources>
