@@ -93,7 +93,7 @@
         android:background="@drawable/text_field_container"
         android:drawableStart="@drawable/baseline_lock_24"
         android:paddingLeft="10dp"
-
+        android:inputType="textPassword"
         android:hint="Contraseña"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -128,7 +128,7 @@
         android:background="@drawable/text_field_container"
         android:drawableStart="@drawable/baseline_lock_24"
         android:paddingLeft="10dp"
-
+        android:inputType="textPassword"
         android:hint="Nueva contraseña"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -162,6 +162,7 @@
         android:layout_centerInParent="true"
         android:background="@drawable/text_field_container"
         android:drawableStart="@drawable/baseline_lock_24"
+        android:inputType="textPassword"
         android:paddingLeft="10dp"
 
         android:hint="Nueva contraseña"
@@ -203,5 +204,6 @@
         app:layout_constraintStart_toStartOf="@+id/BodyContainer"
         app:layout_constraintTop_toBottomOf="@+id/button3"
         app:layout_constraintVertical_bias="0.083" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
