@@ -83,6 +83,7 @@
         style="@style/Button.green"
         android:layout_width="139dp"
         android:layout_height="48dp"
+        android:onClick="ingresar"
         android:text="@string/ingresar"
         app:layout_constraintBottom_toBottomOf="@+id/LoginContainer"
         app:layout_constraintEnd_toEndOf="parent"
