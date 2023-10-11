@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/text_field_container">
+
+    <TextView
+        android:id="@+id/editCorreo"
+        android:layout_width="268dp"
+        android:layout_height="49dp"
+
+        android:gravity="center_vertical"
+        android:paddingStart="10dp"
+        android:text="@string/correo_dominio_com" />
+
+    <Button
+        android:id="@+id/button5"
+        style="@style/Button.green"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:background="@drawable/baseline_delete_24" />
+
+
+</LinearLayout>

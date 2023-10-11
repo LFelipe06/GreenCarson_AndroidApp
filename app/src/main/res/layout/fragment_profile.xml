@@ -182,7 +182,7 @@
         android:layout_marginStart="107dp"
         android:layout_marginEnd="107dp"
         style="@style/Button.green"
-        android:text="Guardar cambios"
+        android:text="@string/guardar_cambios"
         app:layout_constraintBottom_toBottomOf="@+id/BodyContainer"
         app:layout_constraintEnd_toEndOf="@+id/BodyContainer"
         app:layout_constraintHorizontal_bias="0.491"
@@ -191,13 +191,28 @@
         app:layout_constraintVertical_bias="0.218" />
 
     <Button
+        android:id="@+id/button2"
+        style="@style/Button.green"
+        android:layout_width="189dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="107dp"
+        android:layout_marginEnd="107dp"
+        android:text="@string/administrar_cuentas"
+        app:layout_constraintBottom_toBottomOf="@+id/BodyContainer"
+        app:layout_constraintEnd_toEndOf="@+id/BodyContainer"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="@+id/BodyContainer"
+        app:layout_constraintTop_toBottomOf="@+id/editConfirmaContrasena"
+        app:layout_constraintVertical_bias="0.747" />
+
+    <Button
         android:id="@+id/button4"
         android:layout_width="189dp"
         android:layout_height="40dp"
         android:layout_marginStart="80dp"
         android:layout_marginEnd="77dp"
         style="@style/Button.white"
-        android:text="Cerrar Sesión"
+        android:text="@string/cerrar_sesi_n"
         app:layout_constraintBottom_toBottomOf="@+id/BodyContainer"
         app:layout_constraintEnd_toEndOf="@+id/BodyContainer"
         app:layout_constraintHorizontal_bias="0.0"
