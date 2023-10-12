@@ -17,4 +17,9 @@
     <string name="se_aceptan">Se aceptan:</string>
     <string name="categor_as">Categorías:</string>
     <string name="nuevo_centro">Nuevo centro</string>
+    <string name="correo_dominio_com">correo@dominio.com</string>
+    <string name="nuevo_administrador">Nuevo administrador</string>
+    <string name="administrar_cuentas">Administrar cuentas</string>
+    <string name="guardar_cambios">Guardar cambios</string>
+    <string name="cerrar_sesi_n">Cerrar Sesión</string>
 </resources>

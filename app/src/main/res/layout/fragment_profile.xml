@@ -93,7 +93,7 @@
         android:background="@drawable/text_field_container"
         android:drawableStart="@drawable/baseline_lock_24"
         android:paddingLeft="10dp"
-
+        android:inputType="textPassword"
         android:hint="Contraseña"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -128,7 +128,7 @@
         android:background="@drawable/text_field_container"
         android:drawableStart="@drawable/baseline_lock_24"
         android:paddingLeft="10dp"
-
+        android:inputType="textPassword"
         android:hint="Nueva contraseña"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -162,6 +162,7 @@
         android:layout_centerInParent="true"
         android:background="@drawable/text_field_container"
         android:drawableStart="@drawable/baseline_lock_24"
+        android:inputType="textPassword"
         android:paddingLeft="10dp"
 
         android:hint="Nueva contraseña"
@@ -181,7 +182,7 @@
         android:layout_marginStart="107dp"
         android:layout_marginEnd="107dp"
         style="@style/Button.green"
-        android:text="Guardar cambios"
+        android:text="@string/guardar_cambios"
         app:layout_constraintBottom_toBottomOf="@+id/BodyContainer"
         app:layout_constraintEnd_toEndOf="@+id/BodyContainer"
         app:layout_constraintHorizontal_bias="0.491"
@@ -190,18 +191,34 @@
         app:layout_constraintVertical_bias="0.218" />
 
     <Button
+        android:id="@+id/button2"
+        style="@style/Button.green"
+        android:layout_width="189dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="107dp"
+        android:layout_marginEnd="107dp"
+        android:text="@string/administrar_cuentas"
+        app:layout_constraintBottom_toBottomOf="@+id/BodyContainer"
+        app:layout_constraintEnd_toEndOf="@+id/BodyContainer"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="@+id/BodyContainer"
+        app:layout_constraintTop_toBottomOf="@+id/editConfirmaContrasena"
+        app:layout_constraintVertical_bias="0.747" />
+
+    <Button
         android:id="@+id/button4"
         android:layout_width="189dp"
         android:layout_height="40dp"
         android:layout_marginStart="80dp"
         android:layout_marginEnd="77dp"
         style="@style/Button.white"
-        android:text="Cerrar Sesión"
+        android:text="@string/cerrar_sesi_n"
         app:layout_constraintBottom_toBottomOf="@+id/BodyContainer"
         app:layout_constraintEnd_toEndOf="@+id/BodyContainer"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/BodyContainer"
         app:layout_constraintTop_toBottomOf="@+id/button3"
         app:layout_constraintVertical_bias="0.083" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
