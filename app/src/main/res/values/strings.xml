@@ -22,4 +22,5 @@
     <string name="administrar_cuentas">Administrar cuentas</string>
     <string name="guardar_cambios">Guardar cambios</string>
     <string name="cerrar_sesi_n">Cerrar Sesión</string>
+    <string name="filtrar_por_categor_a">Filtrar por categoría</string>
 </resources>
