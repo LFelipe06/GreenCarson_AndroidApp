@@ -16,8 +16,8 @@
     <Button
         android:id="@+id/button5"
         style="@style/Button.green"
-        android:layout_width="63dp"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/baseline_delete_24" />
 
