@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/editCorreo"
-        android:layout_width="268dp"
+        android:layout_width="330dp"
         android:layout_height="49dp"
 
         android:gravity="center_vertical"
@@ -16,8 +16,8 @@
     <Button
         android:id="@+id/button5"
         style="@style/Button.green"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_width="63dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/baseline_delete_24" />
 
