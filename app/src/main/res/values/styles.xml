@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Button.green" parent="ThemeOverlay.AppCompat">
-        <item name="colorAccent">@color/mainGreen</item>
-        <item name="backgroundTint">@color/mainGreen</item>
+        <item name="colorAccent">@color/lightGreen</item>
+        <item name="backgroundTint">@color/lightGreen</item>
     </style>
     <style name="Button.white" parent="ThemeOverlay.AppCompat">
         <item name="colorAccent">@color/white</item>
