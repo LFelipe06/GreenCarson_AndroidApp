@@ -23,4 +23,11 @@
     <string name="guardar_cambios">Guardar cambios</string>
     <string name="cerrar_sesi_n">Cerrar Sesión</string>
     <string name="filtrar_por_categor_a">Filtrar por categoría</string>
+    <string name="nueva_contrase_a">Nueva contraseña</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="mi_cuenta">Mi cuenta</string>
+    <string name="confirma_nueva_contrase_a">Confirma nueva contraseña</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="est_s_seguro_esta_acci_n_no_se_puede_deshacer">¿Estás seguro? Esta acción no se puede deshacer</string>
 </resources>
