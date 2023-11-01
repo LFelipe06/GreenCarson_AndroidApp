@@ -38,6 +38,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
+    implementation("org.osmdroid:osmdroid-android:6.1.11")
+
     implementation("com.google.android.gms:play-services-maps:18.1.0")
 
     testImplementation("junit:junit:4.+")

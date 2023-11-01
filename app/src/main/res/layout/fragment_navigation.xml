@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".NavigationFragment">
 
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
     <SearchView
         android:id="@+id/search_bar"
         android:layout_width="363dp"
@@ -17,6 +23,5 @@
         android:background="@drawable/map_searchbar_background"
         android:iconifiedByDefault="false"
         android:queryHint="Centros" />
-
 
 </RelativeLayout>
