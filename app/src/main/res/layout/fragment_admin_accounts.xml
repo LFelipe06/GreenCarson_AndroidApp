@@ -7,24 +7,25 @@
     android:background="@color/white"
     tools:context=".admin_accounts">
 
+
     <View
         android:id="@+id/BodyContainer"
         android:layout_width="346dp"
         android:layout_height="708dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/generalcontainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cuentas de administradores"
+        android:text="@string/cuentas_de_administradores"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
