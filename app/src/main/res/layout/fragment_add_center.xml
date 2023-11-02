@@ -16,7 +16,7 @@
         android:id="@+id/BodyContainer"
         app:shapeAppearanceOverlay="@style/MyCardView"
         app:cardPreventCornerOverlap="false"
-        android:layout_width="325dp"
+        android:layout_width="350dp"
         android:layout_height="1473dp"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
