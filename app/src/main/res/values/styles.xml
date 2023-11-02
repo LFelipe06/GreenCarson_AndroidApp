@@ -4,6 +4,10 @@
         <item name="colorAccent">@color/lightGreen</item>
         <item name="backgroundTint">@color/lightGreen</item>
     </style>
+    <style name="Button.blue" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">@color/lightBlue</item>
+        <item name="backgroundTint">@color/lightBlue</item>
+    </style>
     <style name="Button.white" parent="ThemeOverlay.AppCompat">
         <item name="colorAccent">@color/white</item>
         <item name="backgroundTint">@color/white</item>

@@ -30,4 +30,23 @@
     <string name="confirmar">Confirmar</string>
     <string name="cancelar">Cancelar</string>
     <string name="est_s_seguro_esta_acci_n_no_se_puede_deshacer">¿Estás seguro? Esta acción no se puede deshacer</string>
+    <string name="seleccione_un_archivo">Seleccione un archivo</string>
+    <string name="ingresa_un_nombre">Ingresa un nombre</string>
+    <string name="ingresa_el_n_mero_de_tel">Ingresa el número de tel.</string>
+    <string name="imagen">Imagen</string>
+    <string name="ingresa_la_direcci_n">Ingresa la dirección</string>
+    <string name="materiales_aceptados">Materiales aceptados:</string>
+    <string name="seleccionar_ubicaci_n">Seleccionar ubicación</string>
+    <string name="direcci_n">Dirección</string>
+    <string name="latitud">Latitud</string>
+    <string name="ingresa_la_latitud">Ingresa la latitud</string>
+    <string name="longitud">Longitud</string>
+    <string name="d_as_abierto">Días abierto</string>
+    <string name="hora_apertura">Hora apertura</string>
+    <string name="hora_cierre">Hora cierre</string>
+    <string name="ingresa_la_longitud">Ingresa la longitud</string>
+    <string name="selecciona_los_dias">Selecciona los dias</string>
+    <string name="selecciona_la_hora">Selecciona la hora</string>
+    <string name="guardar">Guardar</string>
+    <string name="seleccionar_imagen">Seleccionar imagen</string>
 </resources>
