@@ -12,432 +12,435 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     tools:context=".AddCenterFragment">
-
-    <View
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/BodyContainer"
-        android:layout_width="342dp"
-        android:layout_height="1433dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/generalcontainer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/textViewImagen7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/materiales_aceptados"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/BodyContainer"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView3" />
-
-    <TextView
-        android:id="@+id/textViewImagen6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/materiales_aceptados"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/BodyContainer"
-        app:layout_constraintTop_toBottomOf="@+id/imagen_centro6"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:text="@string/nuevo_centro"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.276"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/BodyContainer"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <!--' hola aquí acaba la otra onda '-->
-
-    <TextView
-        android:id="@+id/textViewNombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="22dp"
-        android:text="@string/nombre"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/BodyContainer"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/nombre_centro"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/text_field_container"
-        android:gravity="center"
-
-        android:hint="@string/ingresa_un_nombre"
-        android:inputType="text"
-        android:paddingStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNombre"
-        app:layout_constraintVertical_bias="0.0"
-        android:importantForAutofill="no"
-        tools:ignore="RtlSymmetry" />
-
-    <!--' hola aquí acaba la otra onda '-->
-
-    <Button
-        android:id="@+id/button2"
-        style="@style/Button.blue"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/seleccionar_ubicaci_n"
+        app:shapeAppearanceOverlay="@style/MyCardView"
+        app:cardPreventCornerOverlap="false"
+        android:layout_width="325dp"
+        android:layout_height="1473dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nombre_centro"
-        tools:ignore="TextContrastCheck" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/button6"
-        style="@style/Button.blue"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/seleccionar_imagen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewImagen2"
-        tools:ignore="TextContrastCheck" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/fondo">
 
-    <TextView
-        android:id="@+id/textViewUbicacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/direcci_n"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/BodyContainer"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
-        app:layout_constraintVertical_bias="0.0" />
+            <TextView
+                android:id="@+id/textViewImagen7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/categor_as"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerView3" />
 
-    <EditText
-        android:id="@+id/ubicacion_centro"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/text_field_container"
-        android:gravity="center"
+            <TextView
+                android:id="@+id/textViewImagen6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/materiales_aceptados"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imagen_centro6"
+                app:layout_constraintVertical_bias="0.0" />
 
-        android:hint="@string/ingresa_la_direcci_n"
-        android:inputType="text"
-        android:paddingStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+            <!--' hola aquí acaba la otra onda '-->
 
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="30dp"
+                android:text="@string/nuevo_centro"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewUbicacion"
-        app:layout_constraintVertical_bias="0.0"
-        android:autofillHints=""
-        tools:ignore="RtlSymmetry" />
-
-    <!--' hola aquí acaba la otra onda '-->
-
-    <TextView
-        android:id="@+id/textViewTelefono"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/latitud"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/BodyContainer"
-        app:layout_constraintTop_toBottomOf="@+id/ubicacion_centro"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/nombre_centro2"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/text_field_container"
-        android:gravity="center"
-
-        android:hint="@string/ingresa_la_latitud"
-        android:inputType="number"
-        android:paddingStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+            <TextView
+                android:id="@+id/textViewNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/nombre"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                app:layout_constraintVertical_bias="0.0" />
 
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTelefono"
-        app:layout_constraintVertical_bias="0.0"
-        android:autofillHints=""
-        tools:ignore="RtlSymmetry" />
+            <EditText
+                android:id="@+id/nombre_centro"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/text_field_container"
+                android:gravity="center"
 
-    <TextView
-        android:id="@+id/textViewImagen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/longitud"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/BodyContainer"
-        app:layout_constraintTop_toBottomOf="@+id/nombre_centro2"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textViewImagen2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/imagen"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/BodyContainer"
-        app:layout_constraintTop_toBottomOf="@+id/imagen_centro"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textViewImagen3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/d_as_abierto"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/BodyContainer"
-        app:layout_constraintTop_toBottomOf="@+id/button6"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textViewImagen5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/hora_apertura"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/BodyContainer"
-        app:layout_constraintTop_toBottomOf="@+id/imagen_centro4"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textViewImagen4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/hora_cierre"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/BodyContainer"
-        app:layout_constraintTop_toBottomOf="@+id/imagen_centro5"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/imagen_centro"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/text_field_container"
-        android:gravity="center"
-
-        android:hint="@string/ingresa_la_longitud"
-        android:inputType="number"
-        android:paddingStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+                android:hint="@string/ingresa_un_nombre"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:paddingStart="10dp"
 
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewImagen"
-        app:layout_constraintVertical_bias="0.0"
-        android:autofillHints="
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewNombre"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="RtlSymmetry" />
+
+            <Button
+                android:id="@+id/button2"
+                style="@style/Button.blue"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/seleccionar_ubicaci_n"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nombre_centro"
+                tools:ignore="TextContrastCheck" />
+
+            <Button
+                android:id="@+id/button6"
+                style="@style/Button.blue"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/seleccionar_imagen"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.503"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewImagen2"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/textViewUbicacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/direcci_n"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button2"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <EditText
+                android:id="@+id/ubicacion_centro"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:autofillHints=""
+                android:background="@drawable/text_field_container"
+
+                android:gravity="center"
+                android:hint="@string/ingresa_la_direcci_n"
+                android:inputType="text"
+                android:paddingStart="10dp"
+
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUbicacion"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="RtlSymmetry" />
+
+            <!--' hola aquí acaba la otra onda '-->
+
+            <TextView
+                android:id="@+id/textViewTelefono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/latitud"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ubicacion_centro"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <EditText
+                android:id="@+id/nombre_centro2"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:autofillHints=""
+                android:background="@drawable/text_field_container"
+
+                android:gravity="center"
+                android:hint="@string/ingresa_la_latitud"
+                android:inputType="number"
+                android:paddingStart="10dp"
+
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTelefono"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/textViewImagen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/longitud"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nombre_centro2"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textViewImagen2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/imagen"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imagen_centro"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textViewImagen3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/d_as_abierto"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button6"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textViewImagen5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/hora_apertura"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imagen_centro4"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textViewImagen4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/hora_cierre"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imagen_centro5"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <EditText
+                android:id="@+id/imagen_centro"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:autofillHints="
 "
-        tools:ignore="RtlSymmetry" />
+                android:background="@drawable/text_field_container"
 
-    <EditText
-        android:id="@+id/imagen_centro4"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/text_field_container"
-        android:gravity="center"
-
-        android:hint="@string/selecciona_los_dias"
-        android:inputType="text"
-        android:paddingStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center"
+                android:hint="@string/ingresa_la_longitud"
+                android:inputType="number"
+                android:paddingStart="10dp"
 
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewImagen3"
-        app:layout_constraintVertical_bias="0.0"
-        android:autofillHints="
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewImagen"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="RtlSymmetry" />
+
+            <EditText
+                android:id="@+id/imagen_centro4"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:autofillHints="
 "
-        tools:ignore="RtlSymmetry" />
+                android:background="@drawable/text_field_container"
 
-    <EditText
-        android:id="@+id/imagen_centro5"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/text_field_container"
-        android:gravity="center"
+                android:gravity="center"
+                android:hint="@string/selecciona_los_dias"
+                android:inputType="text"
+                android:paddingStart="10dp"
 
 
-        android:hint="@string/selecciona_la_hora"
-        android:inputType="datetime|time"
-        android:paddingStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewImagen3"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="RtlSymmetry" />
+
+            <EditText
+                android:id="@+id/imagen_centro5"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:autofillHints=""
+                android:background="@drawable/text_field_container"
 
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewImagen5"
-        app:layout_constraintVertical_bias="0.0"
-        android:autofillHints=""
-        tools:ignore="RtlSymmetry" />
-
-    <EditText
-        android:id="@+id/imagen_centro6"
-        android:layout_width="250dp"
-        android:layout_height="48dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
-        android:autofillHints=""
-
-        android:background="@drawable/text_field_container"
-        android:gravity="center"
-        android:hint="@string/selecciona_la_hora"
-
-        android:inputType="datetime|time"
+                android:gravity="center"
+                android:hint="@string/selecciona_la_hora"
+                android:inputType="datetime|time"
+                android:paddingStart="10dp"
 
 
-        android:paddingStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewImagen4"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="RtlSymmetry" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewImagen5"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="RtlSymmetry" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView3"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewImagen6">
+            <EditText
+                android:id="@+id/imagen_centro6"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:autofillHints=""
 
-    </androidx.recyclerview.widget.RecyclerView>
+                android:background="@drawable/text_field_container"
+                android:gravity="center"
+                android:hint="@string/selecciona_la_hora"
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView4"
-        android:layout_width="250dp"
-        android:layout_height="174dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewImagen7" />
+                android:inputType="datetime|time"
 
-    <Button
-        android:id="@+id/button3"
-        style="@style/Button.green"
-        android:layout_width="190dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/guardar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView4" />
 
-    <Button
-        android:id="@+id/button4"
-        style="@style/Button.white"
-        android:layout_width="190dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/cancelar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+                android:paddingStart="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewImagen4"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="RtlSymmetry" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView3"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewImagen6">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView4"
+                android:layout_width="250dp"
+                android:layout_height="174dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewImagen7" />
+
+            <Button
+                android:id="@+id/button3"
+                style="@style/Button.green"
+                android:layout_width="190dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/guardar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerView4" />
+
+            <Button
+                android:id="@+id/button4"
+                style="@style/Button.white"
+                android:layout_width="190dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cancelar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

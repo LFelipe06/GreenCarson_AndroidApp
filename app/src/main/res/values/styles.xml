@@ -13,4 +13,12 @@
         <item name="backgroundTint">@color/white</item>
         <item name="android:textColor">@color/lightGreen</item>
     </style>
+    <style name="MyCardView" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
 </resources>
