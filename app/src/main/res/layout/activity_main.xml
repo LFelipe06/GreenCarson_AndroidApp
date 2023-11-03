@@ -23,39 +23,27 @@
         android:id="@+id/textView"
         android:layout_width="300dp"
         android:layout_height="86dp"
-        android:text="@string/fgc_administrador_de_centros"
+        android:text="@string/administador_de_centros_green_carson"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.069" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="99dp"
-        android:layout_height="78dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.093"
-        app:srcCompat="@drawable/img"
-        android:contentDescription="@string/todo"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintVertical_bias="0.144"
+        tools:ignore="TextSizeCheck" />
 
     <EditText
-        android:id="@+id/editTextText"
+        android:id="@+id/editTextEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autofillHints="emailAddress"
         android:ems="10"
         android:hint="@string/correo"
-        android:inputType="text"
+        android:inputType="text|textEmailAddress"
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/LoginContainer"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +53,7 @@
         app:layout_constraintVertical_bias="0.181" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/editTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autofillHints="password"
@@ -79,12 +67,13 @@
         app:layout_constraintTop_toTopOf="@+id/LoginContainer" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/login"
         style="@style/Button.green"
         android:layout_width="139dp"
         android:layout_height="48dp"
-        android:onClick="ingresar"
+        android:onClick="login"
         android:text="@string/ingresar"
+        android:textColor="#37474F"
         app:layout_constraintBottom_toBottomOf="@+id/LoginContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
