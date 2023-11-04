@@ -54,4 +54,9 @@
     <string name="a_adir_centro">Añadir centro</string>
     <string name="navegaci_n">Navegación</string>
     <string name="cuenta">Cuenta</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="ingresa_el_nombre">Ingresa el nombre</string>
+    <string name="ingresa_los_apellidos">Ingresa los apellidos</string>
+    <string name="ingresa_el_correo">Ingresa el correo</string>
+    <string name="confirma_contrase_a">Confirma contraseña</string>
 </resources>

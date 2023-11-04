@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -15,17 +13,18 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         tools:context=".AddCenterFragment">
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/BodyContainer"
-            app:shapeAppearanceOverlay="@style/MyCardView"
-            app:cardPreventCornerOverlap="false"
             android:layout_width="350dp"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
-            app:strokeWidth="0dp"
+            app:cardPreventCornerOverlap="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/MyCardView"
+            app:strokeWidth="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -128,8 +127,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/textViewUbicacion"
                     app:layout_constraintVertical_bias="0.0"
                     tools:ignore="RtlSymmetry" />
-
-                <!--' hola aquí acaba la otra onda '-->
 
                 <TextView
                     android:id="@+id/textViewTelefono"
@@ -282,7 +279,8 @@
                     android:background="@drawable/baseline_arrow_back_ios_24"
                     app:layout_constraintBottom_toBottomOf="@+id/textView2"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView2" />
+                    app:layout_constraintTop_toTopOf="@+id/textView2"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
