@@ -46,17 +46,18 @@ public class MainActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            updateUI(currentUser);
+            checkPermission(currentUser);
         }
     }
     private void signIn(View view, String email, String password) {
-        // [START sign_in_with_email]
+        //Handle empty strings
         if (Objects.equals(email, "") || Objects.equals(password, "")){
             Log.w(TAG, "signInWithEmail:failure");
             Snackbar.make(view, "Correo o contraseña incorrectos", Snackbar.LENGTH_SHORT)
                     .show();
             return;
         }
+        //Authenticate
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "signInWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
                         assert user != null;
-                        updateUI(user);
+                        checkPermission(user);
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -72,27 +73,35 @@ public class MainActivity extends AppCompatActivity {
                                 .show();
                     }
                 });
-        // [END sign_in_with_email]
     }
-    private void updateUI(FirebaseUser user) {
+    private void checkPermission(FirebaseUser user) {
+        //Check if user is admin
         String uid = user.getUid();
+        //[START OF QUERY]
         DocumentReference docRef = db.collection("administradores").document(uid);
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    Log.d(TAG, "Inicio de sesión exitoso");
-                    Intent home = new Intent(MainActivity.this, content.class);
-                    startActivity(home);
-                } else {
-                    Log.d(TAG, "El usuario no tiene permisos de administrador");
-                }
+                this.grantAccess(document);
             } else {
                 Log.d(TAG, "get failed with ", task.getException());
             }
         });
+        //[END OF QUERY]
+    }
+
+    private void grantAccess(DocumentSnapshot document){
+        //Give access to the user
+        if (document.exists()) {
+            Log.d(TAG, "Inicio de sesión exitoso");
+            Intent home = new Intent(MainActivity.this, content.class);
+            startActivity(home);
+        } else {
+            Log.d(TAG, "El usuario no tiene permisos de administrador");
+        }
     }
     public void login(View v){
+        //Button on click
         String emailText = email.getText().toString();
         String passwordText = password.getText().toString();
         this.signIn(v, emailText, passwordText);
