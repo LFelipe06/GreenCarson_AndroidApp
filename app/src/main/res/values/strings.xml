@@ -51,4 +51,7 @@
     <string name="seleccionar_imagen">Seleccionar imagen</string>
     <string name="cuentas_de_administradores">Cuentas de administradores</string>
     <string name="administador_de_centros_green_carson">Administador de centros Green Carson</string>
+    <string name="a_adir_centro">Añadir centro</string>
+    <string name="navegaci_n">Navegación</string>
+    <string name="cuenta">Cuenta</string>
 </resources>

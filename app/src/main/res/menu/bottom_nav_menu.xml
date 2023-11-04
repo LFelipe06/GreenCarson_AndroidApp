@@ -2,21 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/navigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/navigate"
         android:icon="@drawable/compass_button_unselected"
-        android:id="@+id/navigation"/>
+        android:title="@string/navegaci_n" />
     <item
+        android:id="@+id/addCenter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/add"
         android:icon="@drawable/new_button_unselected"
-        android:id="@+id/addCenter"/>
+        android:title="@string/a_adir_centro" />
     <item
+        android:id="@+id/profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/profile"
         android:icon="@drawable/user_button_unselected"
-        android:id="@+id/profile"/>
+        android:title="@string/cuenta" />
 </menu>
