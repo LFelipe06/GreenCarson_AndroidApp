@@ -89,7 +89,7 @@
                     tools:ignore="RtlSymmetry" />
 
                 <TextView
-                    android:id="@+id/textViewUbicacion"
+                    android:id="@+id/textViewDireccion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="50dp"
@@ -124,7 +124,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.496"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewUbicacion"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewDireccion"
                     app:layout_constraintVertical_bias="0.0"
                     tools:ignore="RtlSymmetry" />
 
@@ -196,11 +196,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imagen_centro"
+                    app:layout_constraintTop_toBottomOf="@+id/editTextLongitudCentro"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <EditText
-                    android:id="@+id/imagen_centro"
+                    android:id="@+id/editTextLongitudCentro"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_centerInParent="true"

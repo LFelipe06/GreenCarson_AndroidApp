@@ -56,7 +56,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imagen_centro6"
+                app:layout_constraintTop_toBottomOf="@+id/btnTiempoCierre"
                 app:layout_constraintVertical_bias="0.0" />
 
             <!--' hola aquí acaba la otra onda '-->
@@ -144,7 +144,7 @@
                 tools:ignore="TextContrastCheck" />
 
             <TextView
-                android:id="@+id/textViewUbicacion"
+                android:id="@+id/textViewDireccion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
@@ -160,7 +160,7 @@
                 app:layout_constraintVertical_bias="0.0" />
 
             <EditText
-                android:id="@+id/ubicacion_centro"
+                android:id="@+id/editTextDireccionCentro"
                 android:layout_width="250dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
@@ -178,7 +178,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUbicacion"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDireccion"
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="RtlSymmetry" />
 
@@ -197,11 +197,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ubicacion_centro"
+                app:layout_constraintTop_toBottomOf="@+id/editTextDireccionCentro"
                 app:layout_constraintVertical_bias="0.0" />
 
             <EditText
-                android:id="@+id/nombre_centro2"
+                android:id="@+id/editTextLatitudCentro"
                 android:layout_width="250dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
@@ -236,7 +236,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nombre_centro2"
+                app:layout_constraintTop_toBottomOf="@+id/editTextLatitudCentro"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
@@ -252,7 +252,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imagen_centro"
+                app:layout_constraintTop_toBottomOf="@+id/editTextLongitudCentro"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
@@ -300,11 +300,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imagen_centro5"
+                app:layout_constraintTop_toBottomOf="@+id/btnTiempoApertura"
                 app:layout_constraintVertical_bias="0.0" />
 
             <EditText
-                android:id="@+id/imagen_centro"
+                android:id="@+id/editTextLongitudCentro"
                 android:layout_width="250dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
@@ -351,14 +351,14 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="RtlSymmetry" />
 
-            <EditText
-                android:id="@+id/imagen_centro5"
+            <Button
+                android:id="@+id/btnTiempoApertura"
                 android:layout_width="250dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="10dp"
                 android:autofillHints=""
-                android:background="@drawable/text_field_container"
+                android:background="@color/white"
 
 
                 android:gravity="center"
@@ -375,8 +375,8 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="RtlSymmetry" />
 
-            <EditText
-                android:id="@+id/imagen_centro6"
+            <Button
+                android:id="@+id/btnTiempoCierre"
                 android:layout_width="250dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
@@ -421,7 +421,7 @@
             </androidx.recyclerview.widget.RecyclerView>
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/btn_guardar"
                 style="@style/Button.green"
                 android:layout_width="190dp"
                 android:layout_height="48dp"
@@ -432,7 +432,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/recyclerView4" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btn_cancelar"
                 style="@style/Button.white"
                 android:layout_width="190dp"
                 android:layout_height="48dp"
@@ -440,7 +440,7 @@
                 android:text="@string/cancelar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button3" />
+                app:layout_constraintTop_toBottomOf="@+id/btn_guardar" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
