@@ -25,6 +25,8 @@ import java.util.Objects;
 public class AddAdminFragment extends Fragment implements View.OnClickListener{
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     View view;
+    FirebaseApp thisApp;
+    FirebaseApp newApp;
     private FirebaseAuth newAuth;
     Button guardarAddAdminBtn;
     EditText editNombre;
@@ -67,8 +69,8 @@ public class AddAdminFragment extends Fragment implements View.OnClickListener{
     }
 
     private void register(String nombre, String apellidos, String email, String password){
-        FirebaseApp thisApp = FirebaseApp.getInstance();
-        FirebaseApp newApp = FirebaseApp.initializeApp(this.requireContext(), thisApp.getOptions(), thisApp.getName()+"_newUser");
+        thisApp = FirebaseApp.getInstance();
+        newApp = FirebaseApp.initializeApp(this.requireContext(), thisApp.getOptions(), thisApp.getName()+"_newUser");
         newAuth = FirebaseAuth.getInstance(newApp);
         newAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener( task -> {
@@ -138,5 +140,6 @@ public class AddAdminFragment extends Fragment implements View.OnClickListener{
         Snackbar.make(view, "Usuario registrado con éxito", Snackbar.LENGTH_SHORT)
                 .show();
         newAuth.signOut();
+        newApp.delete();
     }
 }
