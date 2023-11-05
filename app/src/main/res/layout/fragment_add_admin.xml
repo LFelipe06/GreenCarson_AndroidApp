@@ -66,7 +66,7 @@
 
 
                 <EditText
-                    android:id="@+id/nombre_centro"
+                    android:id="@+id/editNombre"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_centerInParent="true"
@@ -102,11 +102,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/nombre_centro"
+                    app:layout_constraintTop_toBottomOf="@+id/editNombre"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <EditText
-                    android:id="@+id/ubicacion_centro"
+                    android:id="@+id/editApellidos"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_centerInParent="true"
@@ -141,11 +141,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ubicacion_centro"
+                    app:layout_constraintTop_toBottomOf="@+id/editApellidos"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <EditText
-                    android:id="@+id/nombre_centro2"
+                    android:id="@+id/editEmail"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_centerInParent="true"
@@ -155,7 +155,7 @@
 
                     android:gravity="center"
                     android:hint="@string/ingresa_el_correo"
-                    android:inputType="number"
+                    android:inputType="text|textEmailAddress"
                     android:paddingStart="10dp"
 
 
@@ -180,7 +180,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/nombre_centro2"
+                    app:layout_constraintTop_toBottomOf="@+id/editEmail"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
@@ -196,11 +196,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imagen_centro"
+                    app:layout_constraintTop_toBottomOf="@+id/editPassword"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <EditText
-                    android:id="@+id/imagen_centro"
+                    android:id="@+id/editPassword"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_centerInParent="true"
@@ -211,7 +211,7 @@
 
                     android:gravity="center"
                     android:hint="@string/contrase_a"
-                    android:inputType="number"
+                    android:inputType="text|textPassword"
                     android:paddingStart="10dp"
 
 
@@ -224,7 +224,7 @@
                     tools:ignore="RtlSymmetry" />
 
                 <EditText
-                    android:id="@+id/imagen_centro4"
+                    android:id="@+id/editPasswordConfirmation"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
                     android:layout_centerInParent="true"
@@ -236,7 +236,7 @@
                     android:background="@drawable/text_field_container"
                     android:gravity="center"
                     android:hint="@string/contrase_a"
-                    android:inputType="text"
+                    android:inputType="text|textPassword"
 
 
                     android:paddingStart="10dp"
@@ -248,7 +248,7 @@
                     tools:ignore="RtlSymmetry" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/guardarAddAdmin"
                     style="@style/Button.green"
                     android:layout_width="190dp"
                     android:layout_height="48dp"
@@ -256,10 +256,10 @@
                     android:text="@string/guardar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imagen_centro4" />
+                    app:layout_constraintTop_toBottomOf="@+id/editPasswordConfirmation" />
 
                 <Button
-                    android:id="@+id/button4"
+                    android:id="@+id/cancelarAddAdmin"
                     style="@style/Button.white"
                     android:layout_width="190dp"
                     android:layout_height="48dp"
@@ -267,7 +267,7 @@
                     android:text="@string/cancelar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button3" />
+                    app:layout_constraintTop_toBottomOf="@+id/guardarAddAdmin" />
 
                 <Button
                     android:id="@+id/button"
