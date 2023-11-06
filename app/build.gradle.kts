@@ -50,12 +50,13 @@ dependencies {
     // See https://firebase.google.com/docs/android/setup#available-libraries
     // For example, add the dependencies for Firebase Authentication and Cloud Firestore
     implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx")
+    //implementation("com.google.firebase:firebase-firestore-ktx")
 
 
     implementation("org.osmdroid:osmdroid-android:6.1.11")
 
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.firebase:firebase-firestore:24.9.1")
 
     testImplementation("junit:junit:")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
