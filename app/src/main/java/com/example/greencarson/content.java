@@ -36,9 +36,7 @@ public class content extends AppCompatActivity{
             } else if (itemId == R.id.profile){
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
             }
-
             return true;
         });
-
     }
 }
