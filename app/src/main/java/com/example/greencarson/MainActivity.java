@@ -82,7 +82,13 @@ public class MainActivity extends AppCompatActivity {
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
-                this.grantAccess(document);
+                if (document.exists()) {
+                    Log.d(TAG, "Inicio de sesión exitoso");
+                    Intent home = new Intent(MainActivity.this, content.class);
+                    startActivity(home);
+                } else {
+                    Log.d(TAG, "El usuario no tiene permisos de administrador");
+                }
             } else {
                 Log.d(TAG, "get failed with ", task.getException());
             }
@@ -90,16 +96,6 @@ public class MainActivity extends AppCompatActivity {
         //[END OF QUERY]
     }
 
-    private void grantAccess(DocumentSnapshot document){
-        //Give access to the user
-        if (document.exists()) {
-            Log.d(TAG, "Inicio de sesión exitoso");
-            Intent home = new Intent(MainActivity.this, content.class);
-            startActivity(home);
-        } else {
-            Log.d(TAG, "El usuario no tiene permisos de administrador");
-        }
-    }
     public void login(View v){
         //Button on click
         String emailText = email.getText().toString();
