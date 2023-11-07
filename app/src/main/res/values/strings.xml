@@ -46,7 +46,7 @@
     <string name="hora_cierre">Hora cierre</string>
     <string name="ingresa_la_longitud">Ingresa la longitud</string>
     <string name="selecciona_los_dias">Selecciona los dias</string>
-    <string name="selecciona_la_hora">Selecciona la hora</string>
+    <string name="seleccione_un_horario">Seleccione un horario</string>
     <string name="guardar">Guardar</string>
     <string name="seleccionar_imagen">Seleccionar imagen</string>
     <string name="cuentas_de_administradores">Cuentas de administradores</string>
@@ -59,4 +59,21 @@
     <string name="ingresa_los_apellidos">Ingresa los apellidos</string>
     <string name="ingresa_el_correo">Ingresa el correo</string>
     <string name="confirma_contrase_a">Confirma contraseña</string>
+    <string-array name="dias">
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miércoles</item>
+        <item>Jueves</item>
+        <item>Viernes</item>
+        <item>Sábado</item>
+        <item>Domingo</item>
+    </string-array>
+    <string-array name="materials">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
 </resources>

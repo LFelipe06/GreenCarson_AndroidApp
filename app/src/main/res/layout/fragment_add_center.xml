@@ -56,7 +56,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnTiempoCierre"
+                app:layout_constraintTop_toBottomOf="@+id/btnHoraCierre"
                 app:layout_constraintVertical_bias="0.0" />
 
             <!--' hola aquí acaba la otra onda '-->
@@ -96,7 +96,7 @@
 
 
             <EditText
-                android:id="@+id/nombre_centro"
+                android:id="@+id/editTextNombreCentro"
                 android:layout_width="250dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
@@ -127,7 +127,7 @@
                 android:text="@string/seleccionar_ubicaci_n"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nombre_centro"
+                app:layout_constraintTop_toBottomOf="@+id/editTextNombreCentro"
                 tools:ignore="TextContrastCheck" />
 
             <Button
@@ -284,7 +284,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imagen_centro4"
+                app:layout_constraintTop_toBottomOf="@+id/btnDiasCentro"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
@@ -300,7 +300,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnTiempoApertura"
+                app:layout_constraintTop_toBottomOf="@+id/btnHoraApertura"
                 app:layout_constraintVertical_bias="0.0" />
 
             <EditText
@@ -327,8 +327,8 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="RtlSymmetry" />
 
-            <EditText
-                android:id="@+id/imagen_centro4"
+            <Button
+                android:id="@+id/btnDiasCentro"
                 android:layout_width="250dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
@@ -340,6 +340,7 @@
                 android:gravity="center"
                 android:hint="@string/selecciona_los_dias"
                 android:inputType="text"
+                android:textColorHint="@color/white"
                 android:paddingStart="10dp"
 
 
@@ -352,17 +353,17 @@
                 tools:ignore="RtlSymmetry" />
 
             <Button
-                android:id="@+id/btnTiempoApertura"
+                android:id="@+id/btnHoraApertura"
                 android:layout_width="250dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="10dp"
                 android:autofillHints=""
-                android:background="@color/white"
+                android:textColorHint="@color/white"
 
-
+                android:background="@drawable/text_field_container"
                 android:gravity="center"
-                android:hint="@string/selecciona_la_hora"
+                android:hint="@string/seleccione_un_horario"
                 android:inputType="datetime|time"
                 android:paddingStart="10dp"
 
@@ -376,19 +377,18 @@
                 tools:ignore="RtlSymmetry" />
 
             <Button
-                android:id="@+id/btnTiempoCierre"
+                android:id="@+id/btnHoraCierre"
                 android:layout_width="250dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="10dp"
                 android:autofillHints=""
+                android:textColorHint="@color/white"
 
                 android:background="@drawable/text_field_container"
                 android:gravity="center"
-                android:hint="@string/selecciona_la_hora"
-
+                android:hint="@string/seleccione_un_horario"
                 android:inputType="datetime|time"
-
 
                 android:paddingStart="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
