@@ -1,18 +1,13 @@
 package com.example.greencarson;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -21,13 +16,16 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class NavigationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
         // Inicializa la configuración de osmdroid
         Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
         // Infla el diseño del fragmento
@@ -52,7 +50,7 @@ public class NavigationFragment extends Fragment {
 
         // Habilita la capa de ubicación
         mapView.getOverlayManager().getTilesOverlay().setEnabled(true);
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        requireActivity().getSystemService(Context.LOCATION_SERVICE);
 
         /*if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -71,13 +69,21 @@ public class NavigationFragment extends Fragment {
         items.add(overlayItem1);
 
         // Crear una capa de superposición de marcadores
-        ItemizedIconOverlay<OverlayItem> mOverlay = new ItemizedIconOverlay<>(items, null, getContext());
+        ItemizedIconOverlay<OverlayItem> mOverlay = new ItemizedIconOverlay<>(items, null, requireContext());
         // Agregar la capa de superposición al mapa
         mapView.getOverlays().add(mOverlay);
         // Actualizar el mapa
         mapView.invalidate();
 
+        ImageView searchIcon=
+                view.findViewById(androidx.appcompat.R.id.search_button);
 
+        // To change color of close button, use:
+        // ImageView searchCloseIcon = (ImageView)searchView
+        //        .findViewById(androidx.appcompat.R.id.search_close_btn);
+
+        searchIcon.setColorFilter(ContextCompat.getColor(getContext(), R.color.lightGreen),
+                android.graphics.PorterDuff.Mode.SRC_IN);
 
         return view;
     }
