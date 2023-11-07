@@ -154,7 +154,7 @@
                     android:autofillHints=""
                     android:background="@drawable/text_field_container"
 
-                    android:gravity="center|center_vertical"
+                    android:gravity="center_vertical"
                     android:hint="@string/ingresa_el_correo"
                     android:inputType="text|textEmailAddress"
                     android:paddingStart="10dp"
