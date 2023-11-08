@@ -24,4 +24,14 @@
         android:iconifiedByDefault="false"
         android:queryHint="Centros" />
 
+    <ImageButton
+        android:id="@+id/btnCenterMap"
+        android:layout_width="67dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginTop="600dp"
+        android:backgroundTintMode="src_in"
+        android:contentDescription="@string/centrar_en_mi_ubicaci_n"
+        android:src="@drawable/user_location" />
+
 </RelativeLayout>

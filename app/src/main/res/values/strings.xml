@@ -59,6 +59,7 @@
     <string name="ingresa_los_apellidos">Ingresa los apellidos</string>
     <string name="ingresa_el_correo">Ingresa el correo</string>
     <string name="confirma_contrase_a">Confirma contraseña</string>
+    <string name="centrar_en_mi_ubicaci_n">Centrar en mi ubicación</string>
     <string-array name="dias">
         <item>Lunes</item>
         <item>Martes</item>

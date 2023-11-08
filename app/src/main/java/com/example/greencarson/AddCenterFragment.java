@@ -14,16 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +39,7 @@ public class AddCenterFragment extends Fragment {
     private static final String KEY_NOMBRE = "nombre";
     private static final String KEY_DIRECCION = "direccion";
     private static final String KEY_LATITUD = "latitud";
-    private static final String KEY_LONGITUG = "longitug";
+    private static final String KEY_LONGITUD = "longitug";
     private static final String KEY_ESTADO = "estado";
     private static final String KEY_DIAS = "dias";
     private static final String KEY_HORA_APERTURA = "hora_apertura";
@@ -53,9 +53,11 @@ public class AddCenterFragment extends Fragment {
     private Button btnDiasCentro;
     private Button btnHoraApertura;
     private Button btnHoraCierre;
-    private Button btnRegistrarCentro;
+    private GridView gridView;
+    private CustomGridAdapter adapter;
+    private String[] localImageFiles;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +67,8 @@ public class AddCenterFragment extends Fragment {
         btnHoraApertura = view.findViewById(R.id.btnHoraApertura);
         btnHoraCierre = view.findViewById(R.id.btnHoraCierre);
         btnDiasCentro = view.findViewById(R.id.btnDiasCentro);
-        btnRegistrarCentro = view.findViewById(R.id.btn_guardar);
+        Button btnRegistrarCentro = view.findViewById(R.id.btn_guardar);
+        Button btnCancelarRegistro = view.findViewById(R.id.btn_cancelar);
 
         editTextNombre = view.findViewById(R.id.editTextNombreCentro);
         editTextDireccion = view.findViewById(R.id.editTextDireccionCentro);
@@ -103,6 +106,14 @@ public class AddCenterFragment extends Fragment {
                 registrarCentro();
             }
         });
+
+        btnCancelarRegistro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearFields();
+            }
+        });
+
         return view;
     }
 
@@ -168,7 +179,7 @@ public class AddCenterFragment extends Fragment {
 
     }
 
-    public void registrarCentro(){
+    public void registrarCentro() {
         String nombre = editTextNombre.getText().toString();
         String direccion = editTextDireccion.getText().toString();
         String horaAperturaCentro = Integer.toString(horaApertura) + ":" + Integer.toString(minutoApertura);
@@ -180,25 +191,36 @@ public class AddCenterFragment extends Fragment {
         centro.put(KEY_NOMBRE, nombre);
         centro.put(KEY_DIRECCION, direccion);
         centro.put(KEY_LATITUD, latitud);
-        centro.put(KEY_LONGITUG, longitud);
-        centro.put(KEY_DIAS, diasSelecionados);
+        centro.put(KEY_LONGITUD, longitud); // Corregido el nombre de la clave
+        centro.put(KEY_DIAS, diasSelecionados); // Asumiendo que 'diasSeleccionados' está definido y contiene los días seleccionados
         centro.put(KEY_HORA_APERTURA, horaAperturaCentro);
         centro.put(KEY_HORA_CIERRE, horaCierreCentro);
-        centro.put(KEY_ESTADO,true);
+        centro.put(KEY_ESTADO, true);
 
-        db.collection("centros").document("Otro centro").set(centro)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("centros").add(centro) // Utiliza 'add()' en lugar de 'document("Otro centro").set()'
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getActivity(), "Registro de centro exitoso", Toast.LENGTH_SHORT).show();
+                    public void onSuccess(DocumentReference documentReference) {
+                        String centroId = documentReference.getId(); // Obtiene el ID del nuevo documento
+                        Toast.makeText(getActivity(), "Registro de centro exitoso, ID: " + centroId, Toast.LENGTH_SHORT).show();
                     }
                 })
-                .addOnFailureListener(new OnFailureListener(){
+                .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(getActivity(), "Error al registrar centro", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, e.toString());
                     }
                 });
+    }
+
+    private void clearFields(){
+        editTextNombre.setText("");
+        editTextDireccion.setText("");
+        editTextLatitud.setText("");
+        editTextLongitud.setText("");
+        btnDiasCentro.setText("");
+        btnHoraApertura.setText("");
+        btnHoraCierre.setText("");
     }
 }
