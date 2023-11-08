@@ -62,6 +62,7 @@
     <string name="centrar_en_mi_ubicaci_n">Centrar en mi ubicación</string>
     <string name="crear_nuevo_administrador">Crear nuevo administrador</string>
     <string name="ingresa_tus_apellidos">Ingresa tus apellidos</string>
+    <string name="cambiar_vista">Cambiar vista</string>
     <string-array name="dias">
         <item>Lunes</item>
         <item>Martes</item>

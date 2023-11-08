@@ -11,9 +11,7 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -29,8 +27,8 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
+
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class NavigationFragment extends Fragment {
 
@@ -96,13 +94,13 @@ public class NavigationFragment extends Fragment {
         mapView.invalidate();
 
         // Comprueba si tienes permiso de ubicación, Si no tienes permiso, solicítalo
+        ImageView searchIcon = null;
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
             // Si ya tienes permiso, obtén y muestra la ubicación actual
             mostrarUbicacionActual();
-        ImageView searchIcon=
-                view.findViewById(androidx.appcompat.R.id.search_button);
+            searchIcon = view.findViewById(androidx.appcompat.R.id.search_button);
 
             mapView.getController().setCenter(poi1);
             mapView.getController().setZoom(13.5);
@@ -119,7 +117,7 @@ public class NavigationFragment extends Fragment {
         // ImageView searchCloseIcon = (ImageView)searchView
         //        .findViewById(androidx.appcompat.R.id.search_close_btn);
 
-        searchIcon.setColorFilter(ContextCompat.getColor(getContext(), R.color.lightGreen),
+        searchIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.lightGreen),
                 android.graphics.PorterDuff.Mode.SRC_IN);
 
         return view;
