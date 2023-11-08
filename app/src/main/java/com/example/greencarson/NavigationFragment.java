@@ -32,6 +32,8 @@ import org.osmdroid.views.overlay.OverlayItem;
 import java.util.ArrayList;
 
 public class NavigationFragment extends Fragment implements View.OnClickListener {
+    LocationManager locationManager;
+    @SuppressLint("UseCompatLoadingForDrawables") LocationListener locationListener;
     View view;
     Boolean mapSelected = true; // true: mapa, false: lista
     MapView mapView;
@@ -123,6 +125,12 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
+    public void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(locationListener);
+
+    }
+
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnCenterMap) {
@@ -160,12 +168,12 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     }
 
     private void mostrarUbicacionActual() {
-        LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
 
         // Verifica si tienes permiso de ubicación antes de registrar el LocationListener
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // Tienes permiso, configura un LocationListener para recibir actualizaciones de ubicación
-            @SuppressLint("UseCompatLoadingForDrawables") LocationListener locationListener = location -> {
+                locationListener = location -> {
                 // Se llama cuando se obtiene una nueva ubicación
                 double latitud = location.getLatitude();
                 double longitud = location.getLongitude();
@@ -202,4 +210,5 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
+
 }
