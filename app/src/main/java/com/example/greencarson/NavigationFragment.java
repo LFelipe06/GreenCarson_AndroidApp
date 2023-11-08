@@ -33,11 +33,9 @@ import java.util.ArrayList;
 public class NavigationFragment extends Fragment {
 
     MapView mapView;
-    private ImageButton btnCenterMap;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 8;
     private Marker currentLocationMarker;
     ArrayList<OverlayItem> items;
-    OverlayItem overlayItem1;
     OverlayItem overlayItem2;
     GeoPoint user;
 
@@ -49,9 +47,9 @@ public class NavigationFragment extends Fragment {
         // Infla el diseño del fragmento
         View view = inflater.inflate(R.layout.fragment_navigation, container, false);
 
-        btnCenterMap = view.findViewById(R.id.btnCenterMap);
+        ImageButton btnCenterMap = view.findViewById(R.id.btnCenterMap);
         // Obtiene una referencia al MapView
-        MapView mapView = view.findViewById(R.id.mapView);
+        mapView = view.findViewById(R.id.mapView);
         // Configura la vista del mapa
         mapView.setBuiltInZoomControls(true);
         mapView.setMultiTouchControls(true);
@@ -66,7 +64,7 @@ public class NavigationFragment extends Fragment {
         mapView.setMultiTouchControls(true);
 
         // Crear un ArrayList "items" para almacenar los marcadores
-        ArrayList<OverlayItem> items = new ArrayList<>();
+        items = new ArrayList<>();
 
         // Habilita la capa de ubicación
         mapView.getOverlayManager().getTilesOverlay().setEnabled(true);
