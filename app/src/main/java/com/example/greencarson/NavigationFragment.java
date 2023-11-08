@@ -1,5 +1,8 @@
 package com.example.greencarson;
 
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,11 +17,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.card.MaterialCardView;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -32,6 +40,8 @@ import org.osmdroid.views.overlay.OverlayItem;
 import java.util.ArrayList;
 
 public class NavigationFragment extends Fragment implements View.OnClickListener {
+
+    BottomSheetBehavior bottomSheetBehavior;
     LocationManager locationManager;
     @SuppressLint("UseCompatLoadingForDrawables") LocationListener locationListener;
     View view;
@@ -122,6 +132,11 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         seleccionarVista.setOnClickListener(this);
         view.findViewById(R.id.includeLista).setVisibility(View.GONE);
         seleccionarVista.setImageResource(R.drawable.baseline_view_list_24);
+
+        // Bottom sheet
+        LinearLayout filterContainer = view.findViewById(R.id.filterContainer);
+        bottomSheetBehavior = BottomSheetBehavior.from(filterContainer);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         return view;
     }
 
