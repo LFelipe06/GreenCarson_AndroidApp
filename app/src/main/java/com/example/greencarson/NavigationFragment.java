@@ -8,6 +8,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,14 +31,17 @@ import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
 
-public class NavigationFragment extends Fragment {
-
+public class NavigationFragment extends Fragment implements View.OnClickListener {
+    View view;
+    Boolean mapSelected = true; // true: mapa, false: lista
     MapView mapView;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 8;
     private Marker currentLocationMarker;
     ArrayList<OverlayItem> items;
     OverlayItem overlayItem2;
     GeoPoint user;
+    ImageButton btnCenterMap;
+    ImageButton seleccionarVista;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -45,11 +49,10 @@ public class NavigationFragment extends Fragment {
         // Inicializa la configuración de osmdroid
         Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
         // Infla el diseño del fragmento
-        View view = inflater.inflate(R.layout.fragment_navigation, container, false);
-
-        ImageButton btnCenterMap = view.findViewById(R.id.btnCenterMap);
-        // Obtiene una referencia al MapView
+        view = inflater.inflate(R.layout.fragment_navigation, container, false);
+        // Obtiene una referencia al MapView y el boton
         mapView = view.findViewById(R.id.mapView);
+        btnCenterMap = view.findViewById(R.id.btnCenterMap);
         // Configura la vista del mapa
         mapView.setBuiltInZoomControls(true);
         mapView.setMultiTouchControls(true);
@@ -104,21 +107,45 @@ public class NavigationFragment extends Fragment {
             mapView.getController().setZoom(13.5);
         }
 
-        btnCenterMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mapView.getController().setCenter(user);
-                mapView.getController().setZoom(13.5);
-            }
-        });
+        btnCenterMap.setOnClickListener(this);
+
         // To change color of close button, use:
         // ImageView searchCloseIcon = (ImageView)searchView
         //        .findViewById(androidx.appcompat.R.id.search_close_btn);
-
         searchIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.lightGreen),
                 android.graphics.PorterDuff.Mode.SRC_IN);
 
+        // Referencia al boton para cambiar vista
+        seleccionarVista = view.findViewById(R.id.seleccionarVista);
+        seleccionarVista.setOnClickListener(this);
+        view.findViewById(R.id.includeLista).setVisibility(View.GONE);
+        seleccionarVista.setImageResource(R.drawable.baseline_view_list_24);
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btnCenterMap) {
+            mapView.getController().setCenter(user);
+            mapView.getController().setZoom(13.5);
+        } else if (v.getId() == R.id.seleccionarVista) {
+            mapSelected = !mapSelected;
+            changeView();
+        }
+    }
+
+    private void changeView() {
+        if (mapSelected) {
+            seleccionarVista.setImageResource(R.drawable.baseline_view_list_24);
+            view.findViewById(R.id.includeMapa).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.includeLista).setVisibility(View.GONE);
+
+        } else {
+            seleccionarVista.setImageResource(R.drawable.baseline_map_24);
+            view.findViewById(R.id.includeMapa).setVisibility(View.GONE);
+            view.findViewById(R.id.includeLista).setVisibility(View.VISIBLE);
+
+        }
     }
 
     @Override

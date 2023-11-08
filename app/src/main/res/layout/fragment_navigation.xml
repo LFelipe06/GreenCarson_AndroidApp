@@ -7,16 +7,20 @@
     tools:context=".NavigationFragment">
 
     <FrameLayout
-        android:id="@+id/mapLayout"
+        android:id="@+id/navigationContentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <org.osmdroid.views.MapView
-            android:id="@+id/mapView"
+        <include
+            android:id="@+id/includeMapa"
+            layout="@layout/map_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </org.osmdroid.views.MapView>
+            android:layout_height="match_parent" />
+        <include
+            android:id="@+id/includeLista"
+            layout="@layout/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
 
     <include
@@ -32,17 +36,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <ImageButton
-        android:id="@+id/btnCenterMap"
-        android:layout_width="67dp"
-        android:layout_height="71dp"
-        android:backgroundTintMode="src_in"
-        android:contentDescription="@string/centrar_en_mi_ubicaci_n"
-        android:src="@drawable/user_location"
-        app:layout_constraintBottom_toBottomOf="@+id/mapLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/mapLayout" />
     <include
         android:id="@+id/filterList"
         layout="@layout/filter_layout"
