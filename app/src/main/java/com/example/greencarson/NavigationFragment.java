@@ -134,7 +134,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         seleccionarVista.setImageResource(R.drawable.baseline_view_list_24);
 
         // Bottom sheet
-        LinearLayout filterContainer = view.findViewById(R.id.filterContainer);
+        MaterialCardView filterContainer = view.findViewById(R.id.filterContainer);
         bottomSheetBehavior = BottomSheetBehavior.from(filterContainer);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         return view;
