@@ -16,6 +16,9 @@ public class content extends AppCompatActivity{
     AddCenterFragment addCenterFragment = new AddCenterFragment();
     ProfileFragment profileFragment = new ProfileFragment();
 
+    public float lat_user;
+    public float long_user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

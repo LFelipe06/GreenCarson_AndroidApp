@@ -93,17 +93,14 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         mapView = view.findViewById(R.id.mapView);
         btnCenterMap = view.findViewById(R.id.btnCenterMap);
         // Configura la vista del mapa
-        mapView.setBuiltInZoomControls(true);
+        mapView.setTileSource(TileSourceFactory.MAPNIK);
+        mapView.setBuiltInZoomControls(false);
         mapView.setMultiTouchControls(true);
 
         // Configura la ubicación inicial y el nivel de zoom
         GeoPoint startPoint = new GeoPoint(19.0414, -98.2063); // Coordenadas de Ciudad de Puebla
         mapView.getController().setCenter(startPoint);
         mapView.getController().setZoom(13.5);
-
-        mapView.setTileSource(TileSourceFactory.MAPNIK);
-        mapView.setBuiltInZoomControls(true);
-        mapView.setMultiTouchControls(true);
 
         // Crear un ArrayList "items" para almacenar los marcadores
         items = new ArrayList<>();
