@@ -78,9 +78,8 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
 
     private void configureList(View view){
         RecyclerView recyclerView = view.findViewById(R.id.centrosLista);
-        CustomAdapter adapter = new CustomAdapter();
         List<String> data = Arrays.asList("Centro de acopio del Tec de Monterrey", "text2", "text3");
-        adapter.setData(data);
+        CenterListAdapter adapter = new CenterListAdapter(data);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
