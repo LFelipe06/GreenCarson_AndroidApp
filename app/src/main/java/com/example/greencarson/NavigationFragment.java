@@ -1,8 +1,5 @@
 package com.example.greencarson;
 
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,19 +8,18 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.card.MaterialCardView;
@@ -38,6 +34,8 @@ import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class NavigationFragment extends Fragment implements View.OnClickListener {
 
@@ -58,10 +56,39 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inicializa la configuración de osmdroid
-        Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
         // Infla el diseño del fragmento
         view = inflater.inflate(R.layout.fragment_navigation, container, false);
+
+        // Configuración del mapa
+        configureMap(view);
+        // Configuración de la lista
+        configureList(view);
+        // Referencia al boton para cambiar vista
+        seleccionarVista = view.findViewById(R.id.seleccionarVista);
+        seleccionarVista.setOnClickListener(this);
+        view.findViewById(R.id.includeLista).setVisibility(View.GONE);
+        seleccionarVista.setImageResource(R.drawable.baseline_view_list_24);
+
+        // Bottom sheet
+        MaterialCardView filterContainer = view.findViewById(R.id.filterContainer);
+        bottomSheetBehavior = BottomSheetBehavior.from(filterContainer);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        return view;
+    }
+
+    private void configureList(View view){
+        RecyclerView recyclerView = view.findViewById(R.id.centrosLista);
+        CustomAdapter adapter = new CustomAdapter();
+        List<String> data = Arrays.asList("Centro de acopio del Tec de Monterrey", "text2", "text3");
+        adapter.setData(data);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void configureMap(View view){
+        // Inicializa la configuración de osmdroid
+        Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
         // Obtiene una referencia al MapView y el boton
         mapView = view.findViewById(R.id.mapView);
         btnCenterMap = view.findViewById(R.id.btnCenterMap);
@@ -126,18 +153,6 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         //        .findViewById(androidx.appcompat.R.id.search_close_btn);
         searchIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.lightGreen),
                 android.graphics.PorterDuff.Mode.SRC_IN);
-
-        // Referencia al boton para cambiar vista
-        seleccionarVista = view.findViewById(R.id.seleccionarVista);
-        seleccionarVista.setOnClickListener(this);
-        view.findViewById(R.id.includeLista).setVisibility(View.GONE);
-        seleccionarVista.setImageResource(R.drawable.baseline_view_list_24);
-
-        // Bottom sheet
-        MaterialCardView filterContainer = view.findViewById(R.id.filterContainer);
-        bottomSheetBehavior = BottomSheetBehavior.from(filterContainer);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        return view;
     }
 
     public void onPause() {
