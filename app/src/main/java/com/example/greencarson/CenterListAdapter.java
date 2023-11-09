@@ -9,11 +9,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class CenterListAdapter extends RecyclerView.Adapter<CenterListAdapter.ViewHolder> {
-    private final List<String> data;
-    public CenterListAdapter (List<String> data){
+    private final ArrayList<CenterItem> data;
+    public CenterListAdapter (ArrayList<CenterItem> data){
         this.data = data;
     }
 
@@ -26,7 +26,7 @@ public class CenterListAdapter extends RecyclerView.Adapter<CenterListAdapter.Vi
 
     @Override
     public void onBindViewHolder(CenterListAdapter.ViewHolder holder, int position) {
-        holder.textView.setText(this.data.get(position));
+        holder.textView.setText(this.data.get(position).getNombre());
     }
 
     @Override

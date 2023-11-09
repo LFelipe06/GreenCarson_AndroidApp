@@ -1,5 +1,7 @@
 package com.example.greencarson;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +24,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Filter;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -33,6 +44,7 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,13 +64,20 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     GeoPoint user;
     ImageButton btnCenterMap;
     ImageButton seleccionarVista;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    ArrayList<CenterItem> centers;
+    ArrayList<String> filters;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Infla el diseño del fragmento
         view = inflater.inflate(R.layout.fragment_navigation, container, false);
-
+        // Variable para guardar los centros
+        centers = new ArrayList<>();
+        // Fetch
+        filters = new ArrayList<String>();
+        fetch(filters);
         // Configuración del mapa
         configureMap(view);
         // Configuración de la lista
@@ -73,13 +92,39 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         MaterialCardView filterContainer = view.findViewById(R.id.filterContainer);
         bottomSheetBehavior = BottomSheetBehavior.from(filterContainer);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
         return view;
+    }
+
+    private void fetch(ArrayList<String> filters){
+        DocumentSnapshot document;
+        //[START OF QUERY]
+        Query query = db.collection("centros").where(Filter.or(
+                Filter.equalTo("capital", true),
+                Filter.greaterThanOrEqualTo("population", 1000000)
+        ));
+        db.collection("centros")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                CenterItem center = document.toObject(CenterItem.class);
+                                centers.add(center);
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        //[END OF QUERY]
     }
 
     private void configureList(View view){
         RecyclerView recyclerView = view.findViewById(R.id.centrosLista);
         List<String> data = Arrays.asList("Centro de acopio del Tec de Monterrey", "text2", "text3");
-        CenterListAdapter adapter = new CenterListAdapter(data);
+        CenterListAdapter adapter = new CenterListAdapter(centers);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
