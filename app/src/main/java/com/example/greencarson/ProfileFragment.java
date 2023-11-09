@@ -63,10 +63,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         crearNuevoAdmin.setOnClickListener(this);
         // Check if session expired
         user = FirebaseAuth.getInstance().getCurrentUser();
+        checkSession();
+        setData(user);
+        return view;
+    }
+
+    private void checkSession() {
         if (user == null) {
             Intent home = new Intent(getContext(), MainActivity.class);
             startActivity(home);
-        } else{
+        } else {
             String uid = user.getUid();
             //[START OF QUERY]
             DocumentReference docRef = db.collection("administradores").document(uid);
@@ -80,10 +86,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     }
                     boolean isSuperAdmin = Boolean.parseBoolean(Objects.requireNonNull(Objects.requireNonNull(document.getData()).get("superAdmin")).toString());
                     // Hide button if not superAdmin
-                    if (isSuperAdmin){
+                    if (isSuperAdmin) {
                         crearNuevoAdmin.setVisibility(View.VISIBLE);
-                    }
-                    else{
+                    } else {
                         crearNuevoAdmin.setVisibility(View.GONE);
                     }
                 } else {
@@ -92,8 +97,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             });
             //[END OF QUERY]
         }
-        setData(user);
-        return view;
     }
 
     private void setData(FirebaseUser user) {
