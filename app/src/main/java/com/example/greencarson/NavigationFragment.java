@@ -48,6 +48,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NavigationFragment extends Fragment implements View.OnClickListener {
 
@@ -66,7 +67,8 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     ImageButton seleccionarVista;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<CenterItem> centers;
-    ArrayList<String> filters;
+    ArrayList<String> filters = new ArrayList<String>(Arrays.asList("Acopio"));
+
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -77,7 +79,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         centers = new ArrayList<>();
         // Fetch
         filters = new ArrayList<String>();
-        fetch(filters);
+        fetch();
         // Configuración del mapa
         configureMap(view);
         // Configuración de la lista
@@ -96,13 +98,8 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
-    private void fetch(ArrayList<String> filters){
-        DocumentSnapshot document;
+    private void fetch(){
         //[START OF QUERY]
-        Query query = db.collection("centros").where(Filter.or(
-                Filter.equalTo("capital", true),
-                Filter.greaterThanOrEqualTo("population", 1000000)
-        ));
         db.collection("centros")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -112,6 +109,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 CenterItem center = document.toObject(CenterItem.class);
                                 centers.add(center);
+                                Log.d(TAG, "Center " + document.getData().toString());
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -156,6 +154,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         GeoPoint poi1 = new GeoPoint(19.0414, -98.2064); // Coordenadas de un establecimiento
         OverlayItem overlayItem1 = new OverlayItem("Nombre del establecimiento", "Descripción", poi1);
         overlayItem1.setMarker(getResources().getDrawable(R.drawable.marker_icon)); // Personaliza el icono del marcador
+
         items.add(overlayItem1);
 
         // Define las coordenadas geográficas de los límites máximos y mínimos (latitud y longitud)
