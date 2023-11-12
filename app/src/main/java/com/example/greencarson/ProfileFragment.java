@@ -128,7 +128,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.crearNuevoAdmin) {
-            getParentFragmentManager().beginTransaction().replace(R.id.container, addAdminFragment).commit();
+            getParentFragmentManager().beginTransaction().replace(R.id.container, addAdminFragment).addToBackStack(null).commit();
         } else if (v.getId() == R.id.cerrarSesion) {
             signOut();
         } else if (v.getId() == R.id.guardarProfile) {

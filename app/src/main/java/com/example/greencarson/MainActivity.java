@@ -85,7 +85,9 @@ public class MainActivity extends AppCompatActivity {
                 if (document.exists()) {
                     Log.d(TAG, "Inicio de sesión exitoso");
                     Intent home = new Intent(MainActivity.this, content.class);
+                    home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(home);
+                    MainActivity.this.finish();
                 } else {
                     Log.d(TAG, "El usuario no tiene permisos de administrador");
                 }
