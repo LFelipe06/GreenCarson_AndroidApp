@@ -29,6 +29,8 @@ public class AddAdminFragment extends Fragment implements View.OnClickListener{
     FirebaseApp newApp;
     private FirebaseAuth newAuth;
     Button guardarAddAdminBtn;
+    Button backButton;
+    Button cancelar;
     EditText editNombre;
     EditText editApellidos;
     EditText editEmail;
@@ -46,6 +48,10 @@ public class AddAdminFragment extends Fragment implements View.OnClickListener{
         view = inflater.inflate(R.layout.fragment_add_admin, container, false);
         guardarAddAdminBtn = view.findViewById(R.id.guardarAddAdmin);
         guardarAddAdminBtn.setOnClickListener(this);
+        cancelar = view.findViewById(R.id.cancelarAddAdmin);
+        cancelar.setOnClickListener(this);
+        backButton = view.findViewById(R.id.backButtonAddAdmin);
+        backButton.setOnClickListener(this);
         editNombre = view.findViewById(R.id.editNombre);
         editApellidos = view.findViewById(R.id.editApellidos);
         editEmail = view.findViewById(R.id.editEmail);
@@ -65,6 +71,10 @@ public class AddAdminFragment extends Fragment implements View.OnClickListener{
             if (validateData(nombre, apellidos, email, password, passwordConfirmation)){
                 register(nombre, apellidos, email,  password);
             }
+        } else if (v.getId() == R.id.backButtonAddAdmin || v.getId() == R.id.cancelarAddAdmin) {
+            Log.d(TAG, "back");
+            assert getFragmentManager() != null;
+            getFragmentManager().popBackStack();
         }
     }
 
