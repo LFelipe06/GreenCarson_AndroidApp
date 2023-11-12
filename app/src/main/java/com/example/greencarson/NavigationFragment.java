@@ -24,16 +24,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -44,14 +38,15 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.Objects;
 
 public class NavigationFragment extends Fragment implements View.OnClickListener {
-
+    Map<String, ArrayList<CenterItem>> categorizedCenters;
     BottomSheetBehavior bottomSheetBehavior;
     LocationManager locationManager;
     @SuppressLint("UseCompatLoadingForDrawables") LocationListener locationListener;
@@ -67,7 +62,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     ImageButton seleccionarVista;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<CenterItem> centers;
-    ArrayList<String> filters = new ArrayList<String>(Arrays.asList("Acopio"));
+    List<String> filters;
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -77,13 +72,13 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         view = inflater.inflate(R.layout.fragment_navigation, container, false);
         // Variable para guardar los centros
         centers = new ArrayList<>();
-        // Fetch
-        filters = new ArrayList<String>();
+        //filters = Arrays.asList("Compra-venta", "Acopio");
+        filters = Collections.emptyList();
+        categorizedCenters = new HashMap<String, ArrayList<CenterItem>>();
+
         fetch();
         // Configuración del mapa
-        configureMap(view);
-        // Configuración de la lista
-        configureList(view);
+        configureMap();
         // Referencia al boton para cambiar vista
         seleccionarVista = view.findViewById(R.id.seleccionarVista);
         seleccionarVista.setOnClickListener(this);
@@ -98,37 +93,48 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
+    private void filterCenters(){
+        if (filters.size() == 0){
+            configureList(centers);
+        }
+        else{
+            ArrayList<CenterItem> filteredCenters = new ArrayList<>();
+            for(int i = 0; i < filters.size(); i++){
+                filteredCenters.addAll(Objects.requireNonNull(categorizedCenters.get(filters.get(i))));
+            }
+            configureList(filteredCenters);
+        }
+    }
+
     private void fetch(){
         //[START OF QUERY]
         db.collection("centros")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                CenterItem center = document.toObject(CenterItem.class);
-                                centers.add(center);
-                                Log.d(TAG, "Center " + document.getData().toString());
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            CenterItem center = document.toObject(CenterItem.class);
+                            centers.add(center);
+                            ArrayList<CenterItem> itemList = categorizedCenters.computeIfAbsent(center.getCategoria(), k -> new ArrayList<>());
+                            itemList.add(center);
                         }
+                        filterCenters();
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
                     }
                 });
         //[END OF QUERY]
     }
 
-    private void configureList(View view){
+    private void configureList(ArrayList<CenterItem> centers){
         RecyclerView recyclerView = view.findViewById(R.id.centrosLista);
-        List<String> data = Arrays.asList("Centro de acopio del Tec de Monterrey", "text2", "text3");
         CenterListAdapter adapter = new CenterListAdapter(centers);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
 
-    private void configureMap(View view){
+    private void configureMap(){
         // Inicializa la configuración de osmdroid
         Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
         // Obtiene una referencia al MapView y el boton

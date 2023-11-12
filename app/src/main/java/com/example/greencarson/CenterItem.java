@@ -7,7 +7,7 @@ public class CenterItem {
     private int latitud;
     private int longitud;
     private ArrayList<String> dias;
-    private ArrayList<String> categorias;
+    private String categoria;
     private ArrayList<String> materiales;
     private String direccion;
     private String hora_cierre;
@@ -18,7 +18,7 @@ public class CenterItem {
 
     }
 
-    public CenterItem(String nombre, int latitud, int longitud, ArrayList<String> dias, String direccion, String hora_cierre, String hora_apertura, String num_telefonico, ArrayList<String> categorias, ArrayList<String> materiales) {
+    public CenterItem(String nombre, int latitud, int longitud, ArrayList<String> dias, String direccion, String hora_cierre, String hora_apertura, String num_telefonico, String categoria, ArrayList<String> materiales) {
         this.nombre = nombre;
         this.latitud = latitud;
         this.longitud = longitud;
@@ -28,7 +28,7 @@ public class CenterItem {
         this.hora_apertura = hora_apertura;
         this.num_telefonico = num_telefonico;
         this.materiales = materiales;
-        this.categorias = categorias;
+        this.categoria = categoria;
     }
 
     public String getNombre() {
@@ -47,8 +47,8 @@ public class CenterItem {
         return dias;
     }
 
-    public ArrayList<String> getCategorias() {
-        return categorias;
+    public String getCategoria() {
+        return categoria;
     }
 
     public ArrayList<String> getMateriales() {
