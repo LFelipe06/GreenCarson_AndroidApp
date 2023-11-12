@@ -4,6 +4,8 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -130,7 +132,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (v.getId() == R.id.crearNuevoAdmin) {
             getParentFragmentManager().beginTransaction().replace(R.id.container, addAdminFragment).addToBackStack(null).commit();
         } else if (v.getId() == R.id.cerrarSesion) {
-            signOut();
+            ConfirmationPopUp confirmationDialog = new ConfirmationPopUp(
+                    requireActivity(),
+                    "¿Estás seguro de que deseas cerrar sesión?", () -> {
+                mAuth.signOut();
+                Intent home = new Intent(getActivity(), MainActivity.class);
+                startActivity(home);
+
+            });
+            confirmationDialog.show();
+            Objects.requireNonNull(confirmationDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         } else if (v.getId() == R.id.guardarProfile) {
             String nombre = editNombre.getText().toString();
             String apellidos = editApellidos.getText().toString();
@@ -213,10 +224,4 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void signOut() {
-        // TODO : add pop up for confirmation
-        mAuth.signOut();
-        Intent home = new Intent(getActivity(), MainActivity.class);
-        startActivity(home);
-    }
 }

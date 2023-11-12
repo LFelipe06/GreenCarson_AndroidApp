@@ -16,10 +16,12 @@
 
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/confirmationText"
         android:layout_width="306dp"
         android:layout_height="60dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
         android:text="@string/est_s_seguro_esta_acci_n_no_se_puede_deshacer"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -32,31 +34,31 @@
         tools:ignore="TextSizeCheck" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnYes"
         style="@style/Button.green"
-        android:layout_width="124dp"
+        android:layout_width="120dp"
         android:layout_height="48dp"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="52dp"
+        android:layout_marginEnd="20dp"
         android:text="@string/confirmar"
-        app:layout_constraintBottom_toBottomOf="@+id/button4"
+        app:layout_constraintBottom_toBottomOf="@+id/btnNo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button4"
-        app:layout_constraintTop_toTopOf="@+id/button4"
+        app:layout_constraintStart_toEndOf="@+id/btnNo"
+        app:layout_constraintTop_toTopOf="@+id/btnNo"
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btnNo"
         style="@style/Button.white"
-        android:layout_width="124dp"
+        android:layout_width="120dp"
         android:layout_height="48dp"
-        android:layout_marginStart="52dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="36dp"
         android:layout_marginBottom="40dp"
         android:text="@string/cancelar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/confirmationText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
