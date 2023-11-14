@@ -9,8 +9,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 
 public class AddCenterFragment extends Fragment {
@@ -91,57 +88,33 @@ public class AddCenterFragment extends Fragment {
             editTextLongitud.setText(longi);
         }
 
-        btnSeleccionarUbicacion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Crear e iniciar la transacción del fragmento del mapa
-                PickLocationFragment pickLocationFragment= new PickLocationFragment();
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, pickLocationFragment)
-                        .addToBackStack(null)
-                        .commit();
+        btnSeleccionarUbicacion.setOnClickListener(v -> {
+            // Crear e iniciar la transacción del fragmento del mapa
+            PickLocationFragment pickLocationFragment= new PickLocationFragment();
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, pickLocationFragment)
+                    .addToBackStack(null)
+                    .commit();
 
-            }
         });
 
         // Guarda la hora y minuto de apertura desde un dialogo/pop-up de tipo hora
-        btnHoraApertura.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hourChecker = false;
-                popTimePicker(v);
-            }
+        btnHoraApertura.setOnClickListener(v -> {
+            hourChecker = false;
+            popTimePicker();
         });
 
         // Guarda la hora y minuto de cierre desde un dialogo/pop-up de tipo hora
-        btnHoraCierre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hourChecker = true;
-                popTimePicker(v);
-            }
+        btnHoraCierre.setOnClickListener(v -> {
+            hourChecker = true;
+            popTimePicker();
         });
 
-        btnDiasCentro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CreateAlertDialog();
-            }
-        });
+        btnDiasCentro.setOnClickListener(v -> CreateAlertDialog());
 
-        btnRegistrarCentro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registrarCentro();
-            }
-        });
+        btnRegistrarCentro.setOnClickListener(v -> registrarCentro());
 
-        btnCancelarRegistro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearFields();
-            }
-        });
+        btnCancelarRegistro.setOnClickListener(v -> clearFields());
 
         return view;
     }
@@ -179,7 +152,7 @@ public class AddCenterFragment extends Fragment {
         builder.show();
     }
 
-    public void popTimePicker(View view) {
+    public void popTimePicker() {
         TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
@@ -212,8 +185,8 @@ public class AddCenterFragment extends Fragment {
         String nombre = editTextNombre.getText().toString();
         String telefono = editTextTelefono.getText().toString();
         String direccion = editTextDireccion.getText().toString();
-        String horaAperturaCentro = Integer.toString(horaApertura) + ":" + Integer.toString(minutoApertura);
-        String horaCierreCentro = Integer.toString(horaCierre) + ":" + Integer.toString(minutoCierre);
+        String horaAperturaCentro = horaApertura + ":" + minutoApertura;
+        String horaCierreCentro = horaCierre + ":" + minutoCierre;
         float latitud = Float.parseFloat(editTextLatitud.getText().toString());
         float longitud = Float.parseFloat(editTextLongitud.getText().toString());
 

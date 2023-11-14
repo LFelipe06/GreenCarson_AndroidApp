@@ -211,7 +211,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         if (v.getId() == R.id.btnCenterMap) {
             mapView.getController().setCenter(user);
-            mapView.getController().setZoom(13.5);
+            mapView.getController().setZoom(18);
         } else if (v.getId() == R.id.seleccionarVista) {
             mapSelected = !mapSelected;
             changeView();
