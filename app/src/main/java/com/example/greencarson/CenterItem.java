@@ -1,5 +1,7 @@
 package com.example.greencarson;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
 public class CenterItem {
@@ -75,5 +77,12 @@ public class CenterItem {
     }
 
     public String getImagen() { return imagen;}
+
+    @NonNull
+    @Override
+    public String toString() {
+        return getNombre();
+    }
+
 
 }

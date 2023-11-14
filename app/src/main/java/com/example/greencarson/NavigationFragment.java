@@ -62,7 +62,13 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     ImageButton seleccionarVista;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<CenterItem> centers;
+    ArrayList<CenterItem> filteredCenters;
+    ArrayList<CenterItem> finalCenters;
+
     List<String> filters;
+    androidx.appcompat.widget.SearchView searchView;
+
+    CenterListAdapter adapter;
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -74,11 +80,12 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         centers = new ArrayList<>();
         //filters = Arrays.asList("Compra-venta", "Acopio");
         filters = Collections.emptyList();
-        categorizedCenters = new HashMap<String, ArrayList<CenterItem>>();
+        categorizedCenters = new HashMap<>();
 
         fetch();
         // Configuración del mapa
         configureMap();
+
         // Referencia al boton para cambiar vista
         seleccionarVista = view.findViewById(R.id.seleccionarVista);
         seleccionarVista.setOnClickListener(this);
@@ -90,20 +97,58 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         bottomSheetBehavior = BottomSheetBehavior.from(filterContainer);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
+        // Search bar
+
+        searchView = view.findViewById(R.id.search_bar);
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchByWord(newText);
+                return true;
+            }
+        });
+
         return view;
     }
 
     private void filterCenters(){
-        if (filters.size() == 0){
-            configureList(centers);
+        if (filters.size() == 0) {
+            finalCenters = new ArrayList<>(centers);
         }
         else{
-            ArrayList<CenterItem> filteredCenters = new ArrayList<>();
+            filteredCenters = new ArrayList<>();
             for(int i = 0; i < filters.size(); i++){
                 filteredCenters.addAll(Objects.requireNonNull(categorizedCenters.get(filters.get(i))));
             }
-            configureList(filteredCenters);
+            finalCenters = new ArrayList<>(filteredCenters);
         }
+        configureList(finalCenters);
+    }
+
+    private void searchByWord(String text){
+        ArrayList<CenterItem> original;
+        finalCenters.clear();
+        if (filters.size() == 0) {
+             original = centers;
+        }
+        else {
+            original = filteredCenters;
+        }
+        if(text.isEmpty()){
+            finalCenters.addAll(original);
+        } else{
+            text = text.toLowerCase();
+            for(CenterItem item: original){
+                if(item.getNombre().toLowerCase().contains(text)){
+                    finalCenters.add(item);
+                }
+            }
+        }
+        configureList(finalCenters);
     }
 
     private void fetch(){
@@ -127,8 +172,8 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     }
 
     private void configureList(ArrayList<CenterItem> centers){
+        adapter = new CenterListAdapter(centers);
         RecyclerView recyclerView = view.findViewById(R.id.centrosLista);
-        CenterListAdapter adapter = new CenterListAdapter(centers);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
