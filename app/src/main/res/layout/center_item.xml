@@ -14,7 +14,7 @@
         android:background="@drawable/fondo">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/centerImage"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginStart="20dp"
@@ -38,7 +38,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintStart_toEndOf="@+id/centerImage"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -51,7 +51,7 @@
             android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintStart_toEndOf="@+id/centerImage"
             app:layout_constraintTop_toBottomOf="@+id/nombteCentroItem" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

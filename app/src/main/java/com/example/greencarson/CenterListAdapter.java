@@ -3,11 +3,14 @@ package com.example.greencarson;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -25,7 +28,9 @@ public class CenterListAdapter extends RecyclerView.Adapter<CenterListAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(CenterListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Picasso.get().setLoggingEnabled(true);
+        Picasso.get().load(this.data.get(position).getImagen()).into(holder.imageView);
         holder.textView.setText(this.data.get(position).getNombre());
     }
 
@@ -36,10 +41,12 @@ public class CenterListAdapter extends RecyclerView.Adapter<CenterListAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textView;
+        private final ImageView imageView;
 
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
+            this.imageView = view.findViewById(R.id.centerImage);
             this.textView = view.findViewById(R.id.nombteCentroItem);
         }
 

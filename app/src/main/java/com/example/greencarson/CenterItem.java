@@ -14,11 +14,13 @@ public class CenterItem {
     private String hora_apertura;
     private String num_telefonico;
 
+    private String imagen = "path/image";
+
     public CenterItem() {
 
     }
 
-    public CenterItem(String nombre, int latitud, int longitud, ArrayList<String> dias, String direccion, String hora_cierre, String hora_apertura, String num_telefonico, String categoria, ArrayList<String> materiales) {
+    public CenterItem(String nombre, int latitud, int longitud, ArrayList<String> dias, String direccion, String hora_cierre, String hora_apertura, String num_telefonico, String categoria, ArrayList<String> materiales, String imagen) {
         this.nombre = nombre;
         this.latitud = latitud;
         this.longitud = longitud;
@@ -29,6 +31,7 @@ public class CenterItem {
         this.num_telefonico = num_telefonico;
         this.materiales = materiales;
         this.categoria = categoria;
+        this.imagen = imagen;
     }
 
     public String getNombre() {
@@ -70,5 +73,7 @@ public class CenterItem {
     public String getNum_telefonico() {
         return num_telefonico;
     }
+
+    public String getImagen() { return imagen;}
 
 }
