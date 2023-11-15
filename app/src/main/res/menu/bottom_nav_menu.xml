@@ -5,18 +5,18 @@
         android:id="@+id/navigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:icon="@drawable/compass_button_unselected"
+        android:icon="@drawable/bottom_nav_navigation"
         android:title="@string/navegaci_n" />
     <item
         android:id="@+id/addCenter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:icon="@drawable/new_button_unselected"
+        android:icon="@drawable/bottom_nav_add_center"
         android:title="@string/a_adir_centro" />
     <item
         android:id="@+id/profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:icon="@drawable/user_button_unselected"
+        android:icon="@drawable/bottom_nav_profile"
         android:title="@string/cuenta" />
 </menu>

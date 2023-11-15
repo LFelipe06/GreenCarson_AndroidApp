@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
+        <item name="colorPrimary">@color/lightGreen</item>
+        <item name="colorPrimaryDark">@color/lightGreen</item>
+        <item name="colorAccent">@color/lightGreen</item>
     </style>
     <style name="Button.green" parent="ThemeOverlay.AppCompat">
         <item name="colorAccent">@color/lightGreen</item>
@@ -34,4 +36,12 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+    <style name="BottomNavigation">
+        <item name="android:background">@color/white</item>
+        <item name="itemBackground">@color/white</item>
+
+        <item name="itemIconTint">@color/lightGreen</item>
+        <item name="itemTextColor">@color/lightGreen</item>
+    </style>
+
 </resources>
