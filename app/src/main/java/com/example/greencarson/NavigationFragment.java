@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,13 +40,13 @@ import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
-public class NavigationFragment extends Fragment implements View.OnClickListener {
+public class NavigationFragment extends Fragment implements View.OnClickListener, FilterChangeInterface {
     Map<String, ArrayList<CenterItem>> categorizedCenters;
     BottomSheetBehavior bottomSheetBehavior;
     LocationManager locationManager;
@@ -65,10 +66,11 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     ArrayList<CenterItem> filteredCenters;
     ArrayList<CenterItem> finalCenters;
 
-    List<String> filters;
+    Set<String> filters;
     androidx.appcompat.widget.SearchView searchView;
 
-    CenterListAdapter adapter;
+    CenterListAdapter centerListAdapter;
+    FilterSelectionAdapter filterSelectionAdapter;
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -78,9 +80,11 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         view = inflater.inflate(R.layout.fragment_navigation, container, false);
         // Variable para guardar los centros
         centers = new ArrayList<>();
+        finalCenters = new ArrayList<>(centers);
         //filters = Arrays.asList("Compra-venta", "Acopio");
-        filters = Collections.emptyList();
+        filters = new HashSet<String>();
         categorizedCenters = new HashMap<>();
+        configureFilterList();
 
         fetch();
         // Configuración del mapa
@@ -115,16 +119,19 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
-    private void filterCenters(){
+    public void filterCenters(){
         if (filters.size() == 0) {
             finalCenters = new ArrayList<>(centers);
         }
         else{
             filteredCenters = new ArrayList<>();
-            for(int i = 0; i < filters.size(); i++){
-                filteredCenters.addAll(Objects.requireNonNull(categorizedCenters.get(filters.get(i))));
+            for(String filter: filters){
+                if (categorizedCenters.containsKey(filter)){
+                    filteredCenters.addAll(Objects.requireNonNull(categorizedCenters.get(filter)));
+                }
             }
             finalCenters = new ArrayList<>(filteredCenters);
+
         }
         configureList(finalCenters);
     }
@@ -172,11 +179,33 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     }
 
     private void configureList(ArrayList<CenterItem> centers){
-        adapter = new CenterListAdapter(centers);
+        centerListAdapter = new CenterListAdapter(centers);
         RecyclerView recyclerView = view.findViewById(R.id.centrosLista);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(centerListAdapter);
+    }
+
+    private void configureFilterList(){
+        ArrayList<Item> categorias = new ArrayList<>();
+        //[START OF QUERY]
+        db.collection("categorias")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            categorias.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("filename")).toString()));
+                            filterSelectionAdapter = new FilterSelectionAdapter(categorias, filters, this);
+                            RecyclerView recyclerView = view.findViewById(R.id.filterRecyclerView);
+                            GridLayoutManager layoutManager=new GridLayoutManager(this.getContext(),2);
+                            recyclerView.setLayoutManager(layoutManager);
+                            recyclerView.setAdapter(filterSelectionAdapter);
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+        //[END OF QUERY]
     }
 
     private void configureMap(){
