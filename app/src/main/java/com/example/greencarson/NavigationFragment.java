@@ -194,7 +194,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            categorias.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("filename")).toString()));
+                            categorias.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("imageUrl")).toString()));
                             filterSelectionAdapter = new FilterSelectionAdapter(categorias, filters, this);
                             RecyclerView recyclerView = view.findViewById(R.id.filterRecyclerView);
                             GridLayoutManager layoutManager=new GridLayoutManager(this.getContext(),2);

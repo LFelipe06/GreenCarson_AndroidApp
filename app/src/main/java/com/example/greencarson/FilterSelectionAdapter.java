@@ -46,9 +46,8 @@ public class FilterSelectionAdapter extends RecyclerView.Adapter<FilterSelection
         else{
             holder.imageView.setBackgroundResource(R.color.white);
         }
-        int imageResourceId = holder.imageView.getContext().getResources().getIdentifier(this.data.get(holder.getAdapterPosition()).getImageUrl(), "drawable", holder.imageView.getContext().getPackageName());
-        Log.d(TAG, String.valueOf(imageResourceId));
-        holder.imageView.setImageResource(imageResourceId);
+        Picasso.get().setLoggingEnabled(true);
+        Picasso.get().load(this.data.get(position).getImageUrl()).into(holder.imageView);
         holder.textView.setText(this.data.get(holder.getAdapterPosition()).getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

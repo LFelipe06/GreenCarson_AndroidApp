@@ -47,7 +47,7 @@
     <include
         layout="@layout/filter_layout"
         android:layout_width="350dp"
-        android:layout_height="249dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:behavior_peekHeight="40dp"
