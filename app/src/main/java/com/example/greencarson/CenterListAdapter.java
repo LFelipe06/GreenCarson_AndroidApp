@@ -32,6 +32,7 @@ public class CenterListAdapter extends RecyclerView.Adapter<CenterListAdapter.Vi
         Picasso.get().setLoggingEnabled(true);
         Picasso.get().load(this.data.get(position).getImagen()).into(holder.imageView);
         holder.textView.setText(this.data.get(position).getNombre());
+        holder.categoryTextView.setText(holder.textView.getContext().getResources().getString(R.string.categoria_centro,this.data.get(position).getCategoria()));
     }
 
     @Override
@@ -42,12 +43,14 @@ public class CenterListAdapter extends RecyclerView.Adapter<CenterListAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textView;
         private final ImageView imageView;
+        private final TextView categoryTextView;
 
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
             this.imageView = view.findViewById(R.id.centerImage);
             this.textView = view.findViewById(R.id.nombteCentroItem);
+            this.categoryTextView = view.findViewById(R.id.categoriaCentroItem);
         }
 
         @Override

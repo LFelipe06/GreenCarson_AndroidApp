@@ -64,6 +64,7 @@
     <string name="ingresa_tus_apellidos">Ingresa tus apellidos</string>
     <string name="cambiar_vista">Cambiar vista</string>
     <string name="confirmar_ubicaci_n">Confirmar ubicación</string>
+    <string name="categoria_centro">Centro de %1$s</string>
     <string-array name="dias">
         <item>Lunes</item>
         <item>Martes</item>
