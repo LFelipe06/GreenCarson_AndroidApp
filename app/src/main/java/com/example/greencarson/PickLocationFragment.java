@@ -77,8 +77,8 @@ public class PickLocationFragment extends Fragment {
 
             // Ahora puedes usar la latitud y longitud como desees
             // Por ejemplo, mostrarlas en un Toast
-            String mensaje = "Latitud: " + latitud + "\nLongitud: " + longitud;
-            Toast.makeText(getContext(), mensaje, Toast.LENGTH_SHORT).show();
+            // String mensaje = "Latitud: " + latitud + "\nLongitud: " + longitud;
+            // Toast.makeText(getContext(), mensaje, Toast.LENGTH_SHORT).show();
             sendDataToSecondFragment(lat, longi);
 
         }

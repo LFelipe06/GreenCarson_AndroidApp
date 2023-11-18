@@ -86,6 +86,23 @@ public class AddCenterFragment extends Fragment {
 
             editTextLatitud.setText(lat);
             editTextLongitud.setText(longi);
+
+            ReverseGeocodingTask reverseGeocodingTask = new ReverseGeocodingTask(requireActivity(), new ReverseGeocodingTask.OnTaskCompleted() {
+                @Override
+                public void onTaskCompleted(String result) {
+                    // El resultado es la dirección obtenida
+                    if (result != null) {
+                        editTextDireccion.setText(result);
+                        Log.d(TAG, "Dirección: " + result);
+                    } else {
+                        Log.e(TAG, "No se pudo obtener la dirección.");
+                    }
+                }
+            });
+            double var1 = variable1;
+            double var2 = variable2;
+
+            reverseGeocodingTask.execute(var1, var2);
         }
 
         btnSeleccionarUbicacion.setOnClickListener(v -> {
