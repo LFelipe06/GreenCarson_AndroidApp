@@ -39,11 +39,8 @@
     </style>
     <style name="BottomNavigation">
         <item name="android:background">@color/white</item>
-        <item name="itemBackground">@color/white</item>
         <item name="itemIconTint">@color/lightGreen</item>
         <item name="itemTextColor">@color/lightGreen</item>
-        <item name="itemRippleColor">@color/white</item>
-        <item name="enforceMaterialTheme">false</item>
     </style>
 
 </resources>

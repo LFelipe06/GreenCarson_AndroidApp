@@ -52,7 +52,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-storage")
     implementation("com.squareup.picasso:picasso:2.8")
-    //implementation("com.google.firebase:firebase-firestore-ktx")
+    //implementation("com.google.firebase:firebase-firestore-ktx")10
 
 
     implementation("org.osmdroid:osmdroid-android:6.1.11")

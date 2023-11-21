@@ -24,7 +24,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu"
         app:itemRippleColor="@android:color/transparent"
-        app:itemHorizontalTranslationEnabled="false"
-        style="@style/BottomNavigation"/>
+        app:itemTextColor="@color/lightGreen"
+        app:itemIconTint="@color/lightGreen"
+        style="@style/Widget.Design.BottomNavigationView"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
