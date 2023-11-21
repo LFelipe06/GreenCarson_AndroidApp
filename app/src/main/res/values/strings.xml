@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GreenCarson</string>
+    <string name="app_name">Administrador de centros</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="google_map_api_key">AIzaSyBpZbzGPNt3m0NsxVrRpHz3CLJo8VqVjvw</string>
