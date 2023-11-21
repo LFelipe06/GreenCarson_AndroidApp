@@ -18,6 +18,8 @@ public class CenterItem {
 
     private String imagen = "path/image";
 
+    private String id;
+
     public CenterItem() {
 
     }
@@ -34,6 +36,10 @@ public class CenterItem {
         this.materiales = materiales;
         this.categoria = categoria;
         this.imagen = imagen;
+    }
+
+    public void setId(String id){
+        this.id = id;
     }
 
     public String getNombre() {
