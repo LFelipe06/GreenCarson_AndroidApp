@@ -2,6 +2,8 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.GreenCarson" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorAccent">@color/mainGreen</item>
+        <item name="colorPrimary">@color/lightGreen</item>
+        <item name="colorOnSurface">@color/lightGreen</item>
         <item name="colorPrimaryDark">@color/lightGreen</item>
         <item name="colorPrimaryVariant">@color/lightGreen</item>
         <item name="android:statusBarColor"
