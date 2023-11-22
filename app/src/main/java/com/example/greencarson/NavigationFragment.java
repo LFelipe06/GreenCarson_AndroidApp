@@ -231,7 +231,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                             categorias.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("imageUrl")).toString()));
                             filterSelectionAdapter = new FilterSelectionAdapter(categorias, filters, this);
                             RecyclerView recyclerView = view.findViewById(R.id.filterRecyclerView);
-                            GridLayoutManager layoutManager=new GridLayoutManager(this.getContext(),2);
+                            GridLayoutManager layoutManager=new GridLayoutManager(this.getContext(),3);
                             recyclerView.setLayoutManager(layoutManager);
                             recyclerView.setAdapter(filterSelectionAdapter);
                         }
