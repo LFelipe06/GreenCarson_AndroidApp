@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -58,7 +57,7 @@ public class EditCenterFragment extends Fragment {
     private Button btnDiasCentro;
     private Button btnHoraApertura;
     private Button btnHoraCierre;
-    private Button btnRegistrarCentro;
+    private Button btnActualizarCentro;
     private Button btnCancelarRegistro;
     private Button btnSeleccionarUbicacion;
     private ImageButton btnBorrarCentro;
@@ -73,7 +72,7 @@ public class EditCenterFragment extends Fragment {
         btnHoraApertura = view.findViewById(R.id.btnHoraApertura);
         btnHoraCierre = view.findViewById(R.id.btnHoraCierre);
         btnDiasCentro = view.findViewById(R.id.btnDiasCentro);
-        btnRegistrarCentro = view.findViewById(R.id.btn_guardar);
+        btnActualizarCentro = view.findViewById(R.id.btn_actualizar);
         btnCancelarRegistro = view.findViewById(R.id.btn_cancelar);
         btnSeleccionarUbicacion = view.findViewById(R.id.btnSeleccionarUbicacion);
         btnBorrarCentro = view.findViewById(R.id.btnBorrarCentro);
@@ -121,9 +120,9 @@ public class EditCenterFragment extends Fragment {
 
         btnDiasCentro.setOnClickListener(v -> CreateAlertDialog());
 
-        btnRegistrarCentro.setOnClickListener(v -> registrarCentro());
+        btnActualizarCentro.setOnClickListener(v -> actualizarCentro());
 
-        btnCancelarRegistro.setOnClickListener(v -> clearFields());
+        btnCancelarRegistro.setOnClickListener(v -> regresarANav());
 
         btnBorrarCentro.setOnClickListener(v -> borrarCentro());
 
@@ -191,7 +190,7 @@ public class EditCenterFragment extends Fragment {
         timePickerDialog.show();
     }
 
-    public void registrarCentro() {
+    public void actualizarCentro() {
         String nombre = editTextNombre.getText().toString();
         String telefono = editTextTelefono.getText().toString();
         String direccion = editTextDireccion.getText().toString();
@@ -227,16 +226,6 @@ public class EditCenterFragment extends Fragment {
                     }
                 });
     }
-    private void clearFields(){
-        editTextNombre.setText("");
-        editTextTelefono.setText("");
-        editTextDireccion.setText("");
-        editTextLatitud.setText("");
-        editTextLongitud.setText("");
-        btnDiasCentro.setText("");
-        btnHoraApertura.setText("");
-        btnHoraCierre.setText("");
-    }
 
     public void showCenterDetails(CenterItem centro) {
         editTextNombre.setText(centro.getNombre());
@@ -260,14 +249,18 @@ public class EditCenterFragment extends Fragment {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(requireActivity(), "Product deleted", Toast.LENGTH_LONG).show();
-                            NavigationFragment someFragment = new NavigationFragment();
-                            assert getFragmentManager() != null;
-                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                            transaction.replace(R.id.container, someFragment ); // give your fragment container id in first parameter
-                            transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                            transaction.commit();
+                            regresarANav();
                         }
                     }
                 });
+    }
+
+    public void regresarANav(){
+        NavigationFragment someFragment = new NavigationFragment();
+        assert getFragmentManager() != null;
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, someFragment ); // give your fragment container id in first parameter
+        transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+        transaction.commit();
     }
 }

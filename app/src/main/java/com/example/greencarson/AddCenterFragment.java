@@ -1,6 +1,7 @@
 package com.example.greencarson;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -20,8 +21,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -29,9 +33,11 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 
 public class AddCenterFragment extends Fragment {
@@ -39,10 +45,12 @@ public class AddCenterFragment extends Fragment {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
     String picturePath = "";
+    View view;
     public int hora;
     public int minuto;
     public boolean hourChecker = false; // false para hora de apertura, true para hora de cierre
     private List<String> diasSelecionados;
+    private List<String> materialesSeleccionados;
     private static final String TAG = "AddCenterFragment";
     private static final String KEY_NOMBRE = "nombre";
     private static final String KEY_TELEFONO = "num_telefonico";
@@ -54,6 +62,8 @@ public class AddCenterFragment extends Fragment {
     private static final String KEY_HORA_APERTURA = "hora_apertura";
     private static final String KEY_HORA_CIERRE = "hora_cierre";
     private static final String KEY_IMAGEN = "imagen";
+    private static final String KEY_MATERIALES = "materiales";
+    private static final String KEY_CATEGORIA = "categoria";
     private EditText editTextNombre;
     private EditText editTextTelefono;
     private EditText editTextDireccion;
@@ -72,18 +82,24 @@ public class AddCenterFragment extends Fragment {
     private String horaCierreCentro = "";
     private String latitud;
     private String longitud;
+    private Set<String> activeMaterials;
+    private String categoria;
+
+    MaterialSelectionAdapter materialSelectionAdapter;
+    CategorySelectionAdapter categorySelectionAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_center, container, false);
+        view = inflater.inflate(R.layout.fragment_add_center, container, false);
 
+        activeMaterials = new HashSet<String>();
 
         btnHoraApertura = view.findViewById(R.id.btnHoraApertura);
         btnHoraCierre = view.findViewById(R.id.btnHoraCierre);
         btnDiasCentro = view.findViewById(R.id.btnDiasCentro);
         btnImagen = view.findViewById(R.id.btn_imagen);
-        Button btnRegistrarCentro = view.findViewById(R.id.btn_guardar);
+        Button btnRegistrarCentro = view.findViewById(R.id.btn_actualizar);
         Button btnCancelarRegistro = view.findViewById(R.id.btn_cancelar);
         Button btnSeleccionarUbicacion = view.findViewById(R.id.btnSeleccionarUbicacion);
 
@@ -152,12 +168,16 @@ public class AddCenterFragment extends Fragment {
                 }
         );
 
+        configureMaterialList();
+        configureCategoryList();
+
         btnCancelarRegistro.setOnClickListener(v -> clearFields());
 
         return view;
     }
 
     private boolean validateData() {
+        Toast.makeText(requireActivity(), categoria, Toast.LENGTH_SHORT).show();
         if (Objects.equals(nombre, "")) {
             Toast.makeText(getActivity(), "El nombre no puede estar vacío", Toast.LENGTH_SHORT).show();
             return false;
@@ -189,7 +209,6 @@ public class AddCenterFragment extends Fragment {
         return true;
     }
 
-
     void imageChooser() {
         Intent i = new Intent(
                 Intent.ACTION_PICK,
@@ -218,7 +237,59 @@ public class AddCenterFragment extends Fragment {
         }
     }
 
+    public void configureMaterialList(){
+        ArrayList<Item> materiales = new ArrayList<>();
 
+        db.collection("materiales")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            materiales.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("imageUrl")).toString()));
+                            // materialSelectiondapter = new MaterialSelectionAdapter(materiales, filters, this);
+
+                        }
+                        materialSelectionAdapter = new MaterialSelectionAdapter(materiales, activeMaterials);
+                        RecyclerView recyclerView = view.findViewById(R.id.materialRecyclerView);
+                        GridLayoutManager layoutManager=new GridLayoutManager(this.getContext(),3);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(materialSelectionAdapter);
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+
+    }
+
+    public void llenarArrayMateriales(){
+        StringBuilder materiales = new StringBuilder();
+        for(String material : activeMaterials){
+
+            materiales.append(" ").append(material);
+        }
+    }
+
+    private void configureCategoryList(){
+        ArrayList<Item> categorias = new ArrayList<>();
+        //[START OF QUERY]
+        db.collection("categorias")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            categorias.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("imageUrl")).toString()));
+                        }
+                        categorySelectionAdapter = new CategorySelectionAdapter(categorias, categoria);
+                        RecyclerView recyclerView = view.findViewById(R.id.categoryRecyclerView);
+                        GridLayoutManager layoutManager=new GridLayoutManager(this.getContext(),3);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(categorySelectionAdapter);
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+        //[END OF QUERY]
+    }
 
     // Dialogo para seleccionar los días del centro
     public void CreateAlertDialog(){
@@ -272,6 +343,7 @@ public class AddCenterFragment extends Fragment {
     }
 
     public void registrarCentro() {
+        llenarArrayMateriales();
         Toast.makeText(getActivity(), "Registrando...", Toast.LENGTH_SHORT).show();
 
         // Subir imagen
@@ -296,6 +368,8 @@ public class AddCenterFragment extends Fragment {
                 centro.put(KEY_DIAS, diasSelecionados); // Asumiendo que 'diasSeleccionados' está definido y contiene los días seleccionados
                 centro.put(KEY_HORA_APERTURA, horaAperturaCentro);
                 centro.put(KEY_HORA_CIERRE, horaCierreCentro);
+                centro.put(KEY_MATERIALES, materialesSeleccionados);
+                centro.put(KEY_CATEGORIA, categoria);
                 centro.put(KEY_ESTADO, true);
                 centro.put(KEY_IMAGEN, task.getResult());
                 db.collection("centros").add(centro) // Utiliza 'add()' en lugar de 'document("Otro centro").set()'
