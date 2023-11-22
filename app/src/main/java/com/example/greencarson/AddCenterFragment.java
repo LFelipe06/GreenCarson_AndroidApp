@@ -38,7 +38,7 @@ public class AddCenterFragment extends Fragment {
     // Variables para subir la imagen
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
-    String picturePath;
+    String picturePath = "";
     // Variables para la hora y minuto de apertura/cierre
     public int horaApertura, horaCierre, minutoApertura, minutoCierre, hora, minuto;
     public boolean hourChecker = false; // false para hora de apertura, true para hora de cierre
@@ -65,7 +65,13 @@ public class AddCenterFragment extends Fragment {
     private Button btnImagen;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final int RESULT_LOAD_IMAGE = 1;
-
+    private String nombre;
+    private String telefono;
+    private String direccion;
+    private String horaAperturaCentro;
+    private String horaCierreCentro;
+    private String latitud;
+    private String longitud;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -134,12 +140,57 @@ public class AddCenterFragment extends Fragment {
 
         btnDiasCentro.setOnClickListener(v -> CreateAlertDialog());
         btnImagen.setOnClickListener(v -> imageChooser());
-        btnRegistrarCentro.setOnClickListener(v -> registrarCentro());
+        btnRegistrarCentro.setOnClickListener(v -> {
+                    nombre = editTextNombre.getText().toString();
+                    telefono = editTextTelefono.getText().toString();
+                    direccion = editTextDireccion.getText().toString();
+                    horaAperturaCentro = horaApertura + ":" + minutoApertura;
+                    horaCierreCentro = horaCierre + ":" + minutoCierre;
+                    latitud = editTextLatitud.getText().toString();
+                    longitud = editTextLongitud.getText().toString();
+                    if (validateData()) {
+                        registrarCentro();
+                    }
+                }
+        );
 
         btnCancelarRegistro.setOnClickListener(v -> clearFields());
 
         return view;
     }
+
+    private boolean validateData() {
+        if (Objects.equals(nombre, "")) {
+            Toast.makeText(getActivity(), "El nombre no puede estar vacío", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (Objects.equals(direccion, "")) {
+            Toast.makeText(getActivity(), "La dirección no puede estar vacía", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (Objects.equals(horaAperturaCentro, "")) {
+            Toast.makeText(getActivity(), "La hora de apertura no puede estar vacía", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (Objects.equals(horaCierreCentro, "")) {
+            Toast.makeText(getActivity(), "La hora de cierre no puede estar vacía", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (Objects.equals(latitud, "")) {
+            Toast.makeText(getActivity(), "La latitud no puede estar vacía", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (Objects.equals(longitud, "")) {
+            Toast.makeText(getActivity(), "La longitud no puede estar vacía", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (Objects.equals(picturePath, "")) {
+            Toast.makeText(getActivity(), "Selecciona una imagen", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
 
     void imageChooser() {
         Intent i = new Intent(
@@ -226,17 +277,9 @@ public class AddCenterFragment extends Fragment {
 
     public void registrarCentro() {
         Toast.makeText(getActivity(), "Registrando...", Toast.LENGTH_SHORT).show();
-        String nombre = editTextNombre.getText().toString();
-        String telefono = editTextTelefono.getText().toString();
-        String direccion = editTextDireccion.getText().toString();
-        String horaAperturaCentro = horaApertura + ":" + minutoApertura;
-        String horaCierreCentro = horaCierre + ":" + minutoCierre;
-        float latitud = Float.parseFloat(editTextLatitud.getText().toString());
-        float longitud = Float.parseFloat(editTextLongitud.getText().toString());
 
         // Subir imagen
         Uri file = Uri.fromFile(new File(picturePath));
-        final Uri[] downloadUri = new Uri[1];
         StorageReference ref = storageRef.child("fotosCentros/"+nombre+file.getLastPathSegment());
         UploadTask uploadTask = ref.putFile(file);
 
@@ -252,8 +295,8 @@ public class AddCenterFragment extends Fragment {
                 centro.put(KEY_NOMBRE, nombre);
                 centro.put(KEY_TELEFONO, telefono);
                 centro.put(KEY_DIRECCION, direccion);
-                centro.put(KEY_LATITUD, latitud);
-                centro.put(KEY_LONGITUD, longitud);
+                centro.put(KEY_LATITUD, Float.parseFloat(latitud));
+                centro.put(KEY_LONGITUD, Float.parseFloat(longitud));
                 centro.put(KEY_DIAS, diasSelecionados); // Asumiendo que 'diasSeleccionados' está definido y contiene los días seleccionados
                 centro.put(KEY_HORA_APERTURA, horaAperturaCentro);
                 centro.put(KEY_HORA_CIERRE, horaCierreCentro);
