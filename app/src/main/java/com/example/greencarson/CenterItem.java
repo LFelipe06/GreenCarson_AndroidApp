@@ -5,9 +5,10 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 
 public class CenterItem {
+    private String id;
     private String nombre;
-    private int latitud;
-    private int longitud;
+    private float latitud;
+    private float longitud;
     private ArrayList<String> dias;
     private String categoria;
     private ArrayList<String> materiales;
@@ -17,8 +18,6 @@ public class CenterItem {
     private String num_telefonico;
 
     private String imagen = "path/image";
-
-    private String id;
 
     public CenterItem() {
 
@@ -37,20 +36,18 @@ public class CenterItem {
         this.categoria = categoria;
         this.imagen = imagen;
     }
-
-    public void setId(String id){
-        this.id = id;
-    }
+    public void setId(String id){ this.id = id; }
+    public String getId() { return id; }
 
     public String getNombre() {
         return nombre;
     }
 
-    public int getLatitud() {
+    public float getLatitud() {
         return latitud;
     }
 
-    public int getLongitud() {
+    public float getLongitud() {
         return longitud;
     }
 
