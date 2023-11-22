@@ -48,7 +48,7 @@ public class AddCenterFragment extends Fragment {
     private static final String KEY_TELEFONO = "num_telefonico";
     private static final String KEY_DIRECCION = "direccion";
     private static final String KEY_LATITUD = "latitud";
-    private static final String KEY_LONGITUD = "longitug";
+    private static final String KEY_LONGITUD = "longitud";
     private static final String KEY_ESTADO = "estado";
     private static final String KEY_DIAS = "dias";
     private static final String KEY_HORA_APERTURA = "hora_apertura";

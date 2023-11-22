@@ -96,8 +96,6 @@ public class EditCenterFragment extends Fragment {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             centerResult = document.toObject(CenterItem.class);
-                            // centerResult.setId(document.getId());
-                            // Puedes manejar el centro directamente aquí, por ejemplo, mostrarlo en un fragmento
                             assert centerResult != null;
                             showCenterDetails(centerResult);
                         } else {
