@@ -3,13 +3,7 @@ package com.example.greencarson;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +11,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TimePicker;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,11 +51,9 @@ public class EditCenterFragment extends Fragment {
     private Button btnDiasCentro;
     private Button btnHoraApertura;
     private Button btnHoraCierre;
-    private Button btnActualizarCentro;
-    private Button btnCancelarRegistro;
-    private Button btnSeleccionarUbicacion;
-    private ImageButton btnBorrarCentro;
     CenterItem centerResult;
+    private ImageView imageViewImagen;
+    private TextView textViewNombre;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -72,19 +64,25 @@ public class EditCenterFragment extends Fragment {
         btnHoraApertura = view.findViewById(R.id.btnHoraApertura);
         btnHoraCierre = view.findViewById(R.id.btnHoraCierre);
         btnDiasCentro = view.findViewById(R.id.btnDiasCentro);
-        btnActualizarCentro = view.findViewById(R.id.btn_actualizar);
-        btnCancelarRegistro = view.findViewById(R.id.btn_cancelar);
-        btnSeleccionarUbicacion = view.findViewById(R.id.btnSeleccionarUbicacion);
-        btnBorrarCentro = view.findViewById(R.id.btnBorrarCentro);
+        Button btnActualizarCentro = view.findViewById(R.id.btn_actualizar);
+        Button btnCancelarRegistro = view.findViewById(R.id.btn_cancelar);
+        Button btnSeleccionarUbicacion = view.findViewById(R.id.btnSeleccionarUbicacion);
+        ImageButton btnBack = view.findViewById(R.id.btnBack);
+        ImageButton btnBorrarCentro = view.findViewById(R.id.btnBorrarCentro);
 
         editTextNombre = view.findViewById(R.id.editTextNombreCentro);
         editTextTelefono = view.findViewById(R.id.editTextTelefonoCentro);
         editTextDireccion = view.findViewById(R.id.editTextDireccionCentro);
         editTextLatitud = view.findViewById(R.id.editTextLatitudCentro);
         editTextLongitud = view.findViewById(R.id.editTextLongitudCentro);
+        imageViewImagen = view.findViewById(R.id.imagenCentro);
+        textViewNombre = view.findViewById(R.id.nombreTextView);
+
 
         Bundle bundle = getArguments();
-        if (bundle != null) { idCentro = bundle.getString("id"); }
+        if (bundle != null) {
+            idCentro = bundle.getString("id");
+        }
         // Inflate the layout for this fragment
         //[START OF QUERY]
         db.collection("centros")
@@ -126,36 +124,34 @@ public class EditCenterFragment extends Fragment {
 
         btnBorrarCentro.setOnClickListener(v -> borrarCentro());
 
+        btnBack.setOnClickListener(v -> {
+            assert getFragmentManager() != null;
+            getFragmentManager().popBackStack();
+        });
+
         return view;
     }
 
     // Dialogo para seleccionar los días del centro
-    public void CreateAlertDialog(){
+    public void CreateAlertDialog() {
         // Array que almacena los días del centro
         diasSelecionados = new ArrayList<>();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Seleccione los días");
-        builder.setMultiChoiceItems(R.array.dias, null, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                String[] arr = getResources().getStringArray(R.array.dias);
+        builder.setMultiChoiceItems(R.array.dias, null, (dialog, which, isChecked) -> {
+            String[] arr = getResources().getStringArray(R.array.dias);
 
-                if (isChecked) {
-                    diasSelecionados.add(arr[which]);
-                }
-                else diasSelecionados.remove(arr[which]);
-            }
+            if (isChecked) {
+                diasSelecionados.add(arr[which]);
+            } else diasSelecionados.remove(arr[which]);
         });
-        builder.setPositiveButton("Show", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                StringBuilder dias = new StringBuilder();
-                for(String item:diasSelecionados){
-                    dias.append(" ").append(item);
-                }
-                btnDiasCentro.setText(dias.toString());
+        builder.setPositiveButton("Show", (dialog, which) -> {
+            StringBuilder dias = new StringBuilder();
+            for (String item : diasSelecionados) {
+                dias.append(" ").append(item);
             }
+            btnDiasCentro.setText(dias.toString());
         });
 
         builder.create();
@@ -163,25 +159,22 @@ public class EditCenterFragment extends Fragment {
     }
 
     public void popTimePicker() {
-        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = (view, selectedHour, selectedMinute) -> {
 
-                @SuppressLint("DefaultLocale") String horaminuto = String.format("%02d:%02d", selectedHour, selectedMinute);
-                if (hourChecker) {
-                    // Se actualiza la hora de cierre
-                    horaCierre = selectedHour;
-                    minutoCierre = selectedMinute;
-                    btnHoraCierre.setText(horaminuto);
-                } else {
-                    // Se actualiza la hora de apertura
-                    horaApertura = selectedHour;
-                    minutoApertura = selectedMinute;
-                    btnHoraApertura.setText(horaminuto);
-                }
-                hora = selectedHour;
-                minuto = selectedMinute;
+            @SuppressLint("DefaultLocale") String horaminuto = String.format("%02d:%02d", selectedHour, selectedMinute);
+            if (hourChecker) {
+                // Se actualiza la hora de cierre
+                horaCierre = selectedHour;
+                minutoCierre = selectedMinute;
+                btnHoraCierre.setText(horaminuto);
+            } else {
+                // Se actualiza la hora de apertura
+                horaApertura = selectedHour;
+                minutoApertura = selectedMinute;
+                btnHoraApertura.setText(horaminuto);
             }
+            hora = selectedHour;
+            minuto = selectedMinute;
         };
 
 
@@ -211,23 +204,20 @@ public class EditCenterFragment extends Fragment {
         centro.put(KEY_ESTADO, true);
 
         db.collection("centros").add(centro) // Utiliza 'add()' en lugar de 'document("Otro centro").set()'
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        String centroId = documentReference.getId(); // Obtiene el ID del nuevo documento
-                        Toast.makeText(getActivity(), "Registro de centro exitoso, ID: " + centroId, Toast.LENGTH_SHORT).show();
-                    }
+                .addOnSuccessListener(documentReference -> {
+                    String centroId = documentReference.getId(); // Obtiene el ID del nuevo documento
+                    Toast.makeText(getActivity(), "Registro de centro exitoso, ID: " + centroId, Toast.LENGTH_SHORT).show();
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Error al registrar centro", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, e.toString());
-                    }
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "Error al registrar centro", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, e.toString());
                 });
     }
 
     public void showCenterDetails(CenterItem centro) {
+        Picasso.get().setLoggingEnabled(true);
+        Picasso.get().load(centro.getImagen()).into(imageViewImagen);
+        textViewNombre.setText(centro.getNombre());
         editTextNombre.setText(centro.getNombre());
         editTextTelefono.setText(centro.getNum_telefonico());
         editTextDireccion.setText(centro.getDireccion());
@@ -244,13 +234,10 @@ public class EditCenterFragment extends Fragment {
 
     public void borrarCentro(){
         db.collection("centros").document(idCentro).delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(requireActivity(), "Product deleted", Toast.LENGTH_LONG).show();
-                            regresarANav();
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(requireActivity(), "Product deleted", Toast.LENGTH_LONG).show();
+                        regresarANav();
                     }
                 });
     }

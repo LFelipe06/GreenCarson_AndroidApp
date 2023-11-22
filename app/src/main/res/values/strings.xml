@@ -66,6 +66,9 @@
     <string name="confirmar_ubicaci_n">Confirmar ubicación</string>
     <string name="categoria_centro">Centro de %1$s</string>
     <string name="Actualizar">Actualizar</string>
+    <string name="regresar">Regresar</string>
+    <string name="editar_centro">Editar centro</string>
+    <string name="eliminar_centro">Eliminar centro</string>
     <string-array name="dias">
         <item>Lunes</item>
         <item>Martes</item>

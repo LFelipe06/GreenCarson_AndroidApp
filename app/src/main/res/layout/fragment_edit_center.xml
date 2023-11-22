@@ -13,22 +13,112 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         tools:context=".EditCenterFragment">
-        <!--<FrameLayout
-            android:id="@+id/pickLocFragContainer"
+
+        <ImageView
+            android:id="@+id/imagenCentro"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>-->
+            android:layout_height="220dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/backgrounds/scenic"
+            android:contentDescription="@string/regresar" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/white">
+
+            <RelativeLayout
+                android:id="@+id/body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <ImageButton
+                    android:id="@+id/btnBack"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:background="?android:selectableItemBackground"
+                    android:contentDescription="@string/cambiar_vista"
+                    android:padding="4dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/baseline_arrow_back_ios_24"
+                    app:tint="@color/lightGreen"
+                    tools:ignore="ImageContrastCheck" />
+
+                <TextView
+                    android:id="@+id/editarText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/editar_centro"
+                    android:textColor="@color/lightGreen"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:ignore="RelativeOverlap" />
+
+                <ImageButton
+                    android:id="@+id/btnBorrarCentro"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="0dp"
+                    android:background="?android:selectableItemBackground"
+                    android:contentDescription="@string/eliminar_centro"
+                    android:padding="4dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/baseline_delete_24"
+                    app:tint="@color/lightGreen"
+                    tools:ignore="ImageContrastCheck" />
+
+
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/nombreTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginTop="-50dp"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.015"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imagenCentro"
+            app:layout_constraintVertical_bias="0.0" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/BodyContainer"
-            app:shapeAppearanceOverlay="@style/MyCardView"
-            app:cardPreventCornerOverlap="false"
             android:layout_width="350dp"
             android:layout_height="1473dp"
             android:layout_marginTop="20dp"
-            app:strokeWidth="0dp"
+            app:cardPreventCornerOverlap="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/imagenCentro"
+            app:shapeAppearanceOverlay="@style/MyCardView"
+            app:strokeWidth="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -65,25 +155,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/btnHoraCierre"
                     app:layout_constraintVertical_bias="0.0" />
 
-                <!--' hola aquí acaba la otra onda '-->
-
-                <TextView
-                    android:id="@+id/nombreCentro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="30dp"
-                    android:text="Editar centro"
-                    android:textColor="#FFFFFF"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-
                 <TextView
                     android:id="@+id/textViewNombre"
                     android:layout_width="wrap_content"
@@ -97,7 +168,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/nombreCentro"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0" />
 
 
@@ -373,7 +444,6 @@
                     app:layout_constraintVertical_bias="0.0" />
 
 
-
                 <Button
                     android:id="@+id/btnDiasCentro"
                     android:layout_width="250dp"
@@ -386,9 +456,8 @@
 
                     android:gravity="center"
                     android:hint="@string/selecciona_los_dias"
-                    android:inputType="text"
-                    android:textColorHint="@color/white"
                     android:paddingStart="10dp"
+                    android:textColorHint="@color/white"
 
 
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -406,13 +475,12 @@
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
                     android:autofillHints=""
-                    android:textColorHint="@color/white"
-
                     android:background="@drawable/text_field_container"
+
                     android:gravity="center"
                     android:hint="@string/seleccione_un_horario"
-                    android:inputType="datetime|time"
                     android:paddingStart="10dp"
+                    android:textColorHint="@color/white"
 
 
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -430,14 +498,13 @@
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
                     android:autofillHints=""
-                    android:textColorHint="@color/white"
-
                     android:background="@drawable/text_field_container"
+
                     android:gravity="center"
                     android:hint="@string/seleccione_un_horario"
-                    android:inputType="datetime|time"
-
                     android:paddingStart="10dp"
+
+                    android:textColorHint="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.496"
@@ -464,7 +531,8 @@
                     android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewImagen7" >
+                    app:layout_constraintTop_toBottomOf="@+id/textViewImagen7">
+
                 </androidx.recyclerview.widget.RecyclerView>
 
                 <Button
@@ -489,17 +557,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_actualizar" />
 
-                <ImageButton
-                    android:id="@+id/btnBorrarCentro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/delete_center"
-                    app:layout_constraintBottom_toTopOf="@+id/nombreCentro"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.947"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
