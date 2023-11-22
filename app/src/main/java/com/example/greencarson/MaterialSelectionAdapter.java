@@ -38,11 +38,11 @@ public class MaterialSelectionAdapter extends RecyclerView.Adapter<MaterialSelec
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (isActive(position)){
             holder.imageView.setBackgroundResource(R.color.lightGreen);
-            holder.imageView.setVisibility(View.INVISIBLE);
+            holder.imageView.setAlpha(100);
         }
         else{
             holder.imageView.setBackgroundResource(R.color.white);
-            holder.imageView.setVisibility(View.VISIBLE);
+            holder.imageView.setAlpha(255);
         }
         Picasso.get().setLoggingEnabled(true);
         Picasso.get().load(this.data.get(position).getImageUrl()).into(holder.imageView);

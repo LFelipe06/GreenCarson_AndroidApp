@@ -20,19 +20,19 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/BodyContainer"
-        app:shapeAppearanceOverlay="@style/MyCardView"
-        app:cardPreventCornerOverlap="false"
         android:layout_width="350dp"
-        android:layout_height="1473dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        app:strokeWidth="0dp"
+        app:cardPreventCornerOverlap="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/MyCardView"
+        app:strokeWidth="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="1594dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/fondo">
 
             <TextView
@@ -459,7 +459,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/categoryRecyclerView"
                 android:layout_width="250dp"
-                android:layout_height="174dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -472,7 +472,7 @@
                 style="@style/Button.green"
                 android:layout_width="190dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/guardar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -484,7 +484,9 @@
                 android:layout_width="190dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/cancelar"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_actualizar" />

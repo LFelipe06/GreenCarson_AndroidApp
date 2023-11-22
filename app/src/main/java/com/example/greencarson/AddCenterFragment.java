@@ -1,7 +1,6 @@
 package com.example.greencarson;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -162,6 +161,7 @@ public class AddCenterFragment extends Fragment {
                     direccion = editTextDireccion.getText().toString();
                     latitud = editTextLatitud.getText().toString();
                     longitud = editTextLongitud.getText().toString();
+                    llenarArrayMateriales();
                     if (validateData()) {
                         registrarCentro();
                     }
@@ -177,7 +177,6 @@ public class AddCenterFragment extends Fragment {
     }
 
     private boolean validateData() {
-        Toast.makeText(requireActivity(), categoria, Toast.LENGTH_SHORT).show();
         if (Objects.equals(nombre, "")) {
             Toast.makeText(getActivity(), "El nombre no puede estar vacío", Toast.LENGTH_SHORT).show();
             return false;
@@ -204,6 +203,10 @@ public class AddCenterFragment extends Fragment {
         }
         if (Objects.equals(picturePath, "")) {
             Toast.makeText(getActivity(), "Selecciona una imagen", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (materialesSeleccionados.size() == 0) {
+            Toast.makeText(getActivity(), "Selecciona al menos un material", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -263,10 +266,8 @@ public class AddCenterFragment extends Fragment {
 
     public void llenarArrayMateriales(){
         StringBuilder materiales = new StringBuilder();
-        for(String material : activeMaterials){
-
-            materiales.append(" ").append(material);
-        }
+        materialesSeleccionados = new ArrayList<>();
+        materialesSeleccionados.addAll(activeMaterials);
     }
 
     private void configureCategoryList(){
@@ -279,7 +280,7 @@ public class AddCenterFragment extends Fragment {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             categorias.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("imageUrl")).toString()));
                         }
-                        categorySelectionAdapter = new CategorySelectionAdapter(categorias, categoria);
+                        categorySelectionAdapter = new CategorySelectionAdapter(categorias);
                         RecyclerView recyclerView = view.findViewById(R.id.categoryRecyclerView);
                         GridLayoutManager layoutManager=new GridLayoutManager(this.getContext(),3);
                         recyclerView.setLayoutManager(layoutManager);
@@ -343,7 +344,6 @@ public class AddCenterFragment extends Fragment {
     }
 
     public void registrarCentro() {
-        llenarArrayMateriales();
         Toast.makeText(getActivity(), "Registrando...", Toast.LENGTH_SHORT).show();
 
         // Subir imagen
@@ -369,7 +369,7 @@ public class AddCenterFragment extends Fragment {
                 centro.put(KEY_HORA_APERTURA, horaAperturaCentro);
                 centro.put(KEY_HORA_CIERRE, horaCierreCentro);
                 centro.put(KEY_MATERIALES, materialesSeleccionados);
-                centro.put(KEY_CATEGORIA, categoria);
+                centro.put(KEY_CATEGORIA, categorySelectionAdapter.getSelectedCategory());
                 centro.put(KEY_ESTADO, true);
                 centro.put(KEY_IMAGEN, task.getResult());
                 db.collection("centros").add(centro) // Utiliza 'add()' en lugar de 'document("Otro centro").set()'

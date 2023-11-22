@@ -16,11 +16,10 @@ import java.util.Objects;
 
 public class CategorySelectionAdapter extends RecyclerView.Adapter<CategorySelectionAdapter.ViewHolder> {
     private final ArrayList<Item> data;
-    private String selectedCategory;
-    //private FilterChangeInterface responder;
-    public CategorySelectionAdapter(ArrayList<Item> data, String selectedCategory){
+    private int selectedCategory;
+    public CategorySelectionAdapter(ArrayList<Item> data){
         this.data = data;
-        this.selectedCategory = selectedCategory;
+        this.selectedCategory = 0;
     }
 
 
@@ -33,7 +32,7 @@ public class CategorySelectionAdapter extends RecyclerView.Adapter<CategorySelec
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (isSelectedCategory(position)){
+        if (position == selectedCategory){
             holder.imageView.setBackgroundResource(R.color.lightGreen);
         }
         else{
@@ -42,20 +41,20 @@ public class CategorySelectionAdapter extends RecyclerView.Adapter<CategorySelec
         Picasso.get().setLoggingEnabled(true);
         Picasso.get().load(this.data.get(position).getImageUrl()).into(holder.imageView);
         holder.textView.setText(this.data.get(holder.getAdapterPosition()).getName());
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-                selectedCategory = data.get(holder.getAdapterPosition()).getName();
-
-                notifyItemChanged(holder.getAdapterPosition());
+                int lastSelected = selectedCategory;
+                selectedCategory = holder.getAdapterPosition();
+                notifyItemChanged(selectedCategory);
+                notifyItemChanged(lastSelected);
             }
         });
     }
 
-    private boolean isSelectedCategory(int position){
-        return Objects.equals(this.data.get(position).getName(), selectedCategory);
+    public String getSelectedCategory(){
+        return this.data.get(selectedCategory).getName();
     }
 
     @Override
