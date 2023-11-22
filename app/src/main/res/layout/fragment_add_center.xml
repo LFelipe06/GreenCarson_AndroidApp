@@ -385,7 +385,6 @@
 
                 android:gravity="center"
                 android:hint="@string/selecciona_los_dias"
-                android:inputType="text"
                 android:paddingStart="10dp"
                 android:textColorHint="@color/white"
 
@@ -409,7 +408,6 @@
 
                 android:gravity="center"
                 android:hint="@string/seleccione_un_horario"
-                android:inputType="datetime|time"
                 android:paddingStart="10dp"
                 android:textColorHint="@color/white"
 
@@ -433,7 +431,6 @@
 
                 android:gravity="center"
                 android:hint="@string/seleccione_un_horario"
-                android:inputType="datetime|time"
                 android:paddingStart="10dp"
 
                 android:textColorHint="@color/white"
