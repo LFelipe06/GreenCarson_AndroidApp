@@ -17,9 +17,6 @@ public class content extends AppCompatActivity{
     AddCenterFragment addCenterFragment = new AddCenterFragment();
     ProfileFragment profileFragment = new ProfileFragment();
 
-    public float lat_user;
-    public float long_user;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +33,7 @@ public class content extends AppCompatActivity{
             if (itemId == R.id.navigation){
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, navigationFragment).commit();
             } else if (itemId == R.id.addCenter){
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, addCenterFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, addCenterFragment, "AddCenterFragment").commit();
             } else if (itemId == R.id.profile){
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
             }

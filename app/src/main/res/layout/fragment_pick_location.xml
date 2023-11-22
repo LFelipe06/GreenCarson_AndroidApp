@@ -13,14 +13,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/user_location"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:importantForAccessibility="no" />
 
     <Button
+        style="@style/Button.green"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnCapturarUbicacion"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="600dp"
-        android:hint="@string/confirmar_ubicaci_n"/>
+        android:text="@string/confirmar_ubicaci_n"/>
 
 </RelativeLayout>
