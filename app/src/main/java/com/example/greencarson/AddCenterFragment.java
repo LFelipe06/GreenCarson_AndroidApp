@@ -39,8 +39,8 @@ public class AddCenterFragment extends Fragment {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
     String picturePath = "";
-    // Variables para la hora y minuto de apertura/cierre
-    public int horaApertura, horaCierre, minutoApertura, minutoCierre, hora, minuto;
+    public int hora;
+    public int minuto;
     public boolean hourChecker = false; // false para hora de apertura, true para hora de cierre
     private List<String> diasSelecionados;
     private static final String TAG = "AddCenterFragment";
@@ -68,8 +68,8 @@ public class AddCenterFragment extends Fragment {
     private String nombre;
     private String telefono;
     private String direccion;
-    private String horaAperturaCentro;
-    private String horaCierreCentro;
+    private String horaAperturaCentro = "";
+    private String horaCierreCentro = "";
     private String latitud;
     private String longitud;
 
@@ -144,8 +144,6 @@ public class AddCenterFragment extends Fragment {
                     nombre = editTextNombre.getText().toString();
                     telefono = editTextTelefono.getText().toString();
                     direccion = editTextDireccion.getText().toString();
-                    horaAperturaCentro = horaApertura + ":" + minutoApertura;
-                    horaCierreCentro = horaCierre + ":" + minutoCierre;
                     latitud = editTextLatitud.getText().toString();
                     longitud = editTextLongitud.getText().toString();
                     if (validateData()) {
@@ -255,13 +253,11 @@ public class AddCenterFragment extends Fragment {
             @SuppressLint("DefaultLocale") String horaminuto = String.format("%02d:%02d", selectedHour, selectedMinute);
             if(hourChecker){
                 // Se actualiza la hora de cierre
-                horaCierre = selectedHour;
-                minutoCierre = selectedMinute;
+                horaCierreCentro = horaminuto;
                 btnHoraCierre.setText(horaminuto);
             }else{
                 // Se actualiza la hora de apertura
-                horaApertura = selectedHour;
-                minutoApertura = selectedMinute;
+                horaAperturaCentro = horaminuto;
                 btnHoraApertura.setText(horaminuto);
             }
             hora = selectedHour;
