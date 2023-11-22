@@ -57,7 +57,9 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 8;
     private Marker currentLocationMarker;
     ArrayList<OverlayItem> items;
-    OverlayItem overlayItem2;
+    ArrayList<OverlayItem> overlayItemsCentros;
+    OverlayItem overlayItemUbicacion;
+    OverlayItem overlayItemCentro;
     GeoPoint user;
     ImageButton btnCenterMap;
     ImageButton seleccionarVista;
@@ -85,10 +87,10 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         filters = new HashSet<String>();
         categorizedCenters = new HashMap<>();
         configureFilterList();
-
+        // Llena la lista de mapas con los filtros que pueda haber
         fetch();
-        // Configuración del mapa
-        configureMap();
+        // Inicialización del mapa
+        initMap();
 
         // Referencia al boton para cambiar vista
         seleccionarVista = view.findViewById(R.id.seleccionarVista);
@@ -134,6 +136,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
 
         }
         configureList(finalCenters);
+        configureMap(finalCenters);
     }
 
     private void searchByWord(String text){
@@ -166,6 +169,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             CenterItem center = document.toObject(CenterItem.class);
+                            center.setId(document.getId());
                             centers.add(center);
                             ArrayList<CenterItem> itemList = categorizedCenters.computeIfAbsent(center.getCategoria(), k -> new ArrayList<>());
                             itemList.add(center);
@@ -184,6 +188,36 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(centerListAdapter);
+    }
+    private void configureMap(ArrayList<CenterItem> centers){
+        // Crear un ArrayList "items" para almacenar los marcadores
+        overlayItemsCentros = new ArrayList<>();
+
+        // Habilita la capa de ubicación
+        mapView.getOverlayManager().getTilesOverlay().setEnabled(true);
+
+        for (CenterItem centro : centers) {
+            GeoPoint geoPointCentro = new GeoPoint(centro.getLatitud(), centro.getLongitud());
+
+            Marker currentCenter = new Marker(mapView);
+            currentCenter.setPosition(geoPointCentro);
+            currentCenter.setTitle(centro.getNombre());
+            currentCenter.setSnippet(centro.getDireccion());
+            currentCenter.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+            // Toast.makeText(requireActivity(), centro.getDireccion(), Toast.LENGTH_SHORT).show();
+
+            overlayItemCentro = new OverlayItem(centro.getNombre(), centro.getDireccion(), geoPointCentro);
+            // overlayItemCentros.setMarker(getResources().getDrawable(R.drawable.marker_icon)); // Personaliza el icono del marcador
+            overlayItemsCentros.add(overlayItemCentro);
+
+            //mapView.getOverlays().add(currentCenter);
+        }
+
+        // Crear una capa de superposición de marcadores, y se agrega al mapa
+        ItemizedIconOverlay<OverlayItem> centersOverlay = new ItemizedIconOverlay<>(overlayItemsCentros, null, requireContext());
+        mapView.getOverlayManager().add(centersOverlay);
+        // Actualizar el mapa
+        mapView.invalidate();
     }
 
     private void configureFilterList(){
@@ -208,7 +242,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         //[END OF QUERY]
     }
 
-    private void configureMap(){
+    private void initMap(){
         // Inicializa la configuración de osmdroid
         Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
         // Obtiene una referencia al MapView y el boton
@@ -344,9 +378,10 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                 // Agrega información adicional al Marker (opcional)
                 currentLocationMarker.setSnippet("Latitud: " + latitud + ", Longitud: " + longitud);
 
-                overlayItem2 = new OverlayItem("Ubicación actual", "Hola", user);
-                overlayItem2.setMarker(getResources().getDrawable(R.drawable.marker_icon)); // Personaliza el icono del marcador
-                items.add(overlayItem2);
+                //
+                overlayItemUbicacion = new OverlayItem("Ubicación actual", "Hola", user);
+                overlayItemUbicacion.setMarker(getResources().getDrawable(R.drawable.marker_icon)); // Personaliza el icono del marcador
+                items.add(overlayItemUbicacion);
 
                 mapView.getOverlays().add(currentLocationMarker);
 
