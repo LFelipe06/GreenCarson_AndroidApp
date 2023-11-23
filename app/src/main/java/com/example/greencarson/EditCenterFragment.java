@@ -1,9 +1,15 @@
 package com.example.greencarson;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,21 +23,39 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 public class EditCenterFragment extends Fragment {
-    // Variables para la hora y minuto de apertura/cierre
-    public int horaApertura, horaCierre, minutoApertura, minutoCierre, hora, minuto;
+    View view;
+    private static final int RESULT_LOAD_IMAGE = 1;
+    // Variables para subir la imagen
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReference();
+    String picturePath = "";
+    public int hora;
+    public int minuto;
     public boolean hourChecker = false; // false para hora de apertura, true para hora de cierre
-    private List<String> diasSelecionados;
+    private ArrayList<String> diasSelecionados;
+    private List<String> materialesSeleccionados;
     private String idCentro;
     private static final String TAG = "AddCenterFragment";
     private static final String KEY_NOMBRE = "nombre";
@@ -43,6 +67,9 @@ public class EditCenterFragment extends Fragment {
     private static final String KEY_DIAS = "dias";
     private static final String KEY_HORA_APERTURA = "hora_apertura";
     private static final String KEY_HORA_CIERRE = "hora_cierre";
+    private static final String KEY_IMAGEN = "imagen";
+    private static final String KEY_MATERIALES = "materiales";
+    private static final String KEY_CATEGORIA = "categoria";
     public EditText editTextNombre;
     private EditText editTextTelefono;
     private EditText editTextDireccion;
@@ -51,19 +78,31 @@ public class EditCenterFragment extends Fragment {
     private Button btnDiasCentro;
     private Button btnHoraApertura;
     private Button btnHoraCierre;
+    private Button btnImagen;
     CenterItem centerResult;
     private ImageView imageViewImagen;
     private TextView textViewNombre;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String nombre;
+    private String telefono;
+    private String direccion;
+    private String horaAperturaCentro = "";
+    private String horaCierreCentro = "";
+    private String latitud;
+    private String longitud;
+    private Set<String> activeMaterials;
+    MaterialSelectionAdapter materialSelectionAdapter;
+    CategorySelectionAdapter categorySelectionAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_edit_center, container, false);
-
+        view = inflater.inflate(R.layout.fragment_edit_center, container, false);
+        activeMaterials = new HashSet<>();
         btnHoraApertura = view.findViewById(R.id.btnHoraApertura);
         btnHoraCierre = view.findViewById(R.id.btnHoraCierre);
         btnDiasCentro = view.findViewById(R.id.btnDiasCentro);
+        btnImagen = view.findViewById(R.id.btn_imagen);
         Button btnActualizarCentro = view.findViewById(R.id.btn_actualizar);
         Button btnCancelarRegistro = view.findViewById(R.id.btn_cancelar);
         Button btnSeleccionarUbicacion = view.findViewById(R.id.btnSeleccionarUbicacion);
@@ -82,8 +121,82 @@ public class EditCenterFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             idCentro = bundle.getString("id");
+            float variable1 = bundle.getFloat("latitud");
+            String lat = String.valueOf(variable1);
+            float variable2 = bundle.getFloat("longitud");
+            String longi = String.valueOf(variable2);
+
+            ReverseGeocodingTask reverseGeocodingTask = new ReverseGeocodingTask(requireActivity(), result -> {
+                // El resultado es la dirección obtenida
+                if (result != null) {
+                    editTextDireccion.setText(result);
+                    editTextLatitud.setText(lat);
+                    editTextLongitud.setText(longi);
+                    Log.d(TAG, "Dirección: " + result);
+                } else {
+                    Log.e(TAG, "No se pudo obtener la dirección.");
+                }
+            });
+
+            reverseGeocodingTask.execute((double) variable1, (double) variable2);
         }
-        // Inflate the layout for this fragment
+        // Guarda la hora y minuto de apertura desde un dialogo/pop-up de tipo hora
+        btnHoraApertura.setOnClickListener(v -> {
+            hourChecker = false;
+            popTimePicker();
+        });
+
+        // Guarda la hora y minuto de cierre desde un dialogo/pop-up de tipo hora
+        btnHoraCierre.setOnClickListener(v -> {
+            hourChecker = true;
+            popTimePicker();
+        });
+
+        btnDiasCentro.setOnClickListener(v -> CreateAlertDialog());
+
+        btnSeleccionarUbicacion.setOnClickListener(v -> {
+            // Crear e iniciar la transacción del fragmento del mapa
+            PickLocationFragment pickLocationFragment = new PickLocationFragment();
+            Bundle args = new Bundle();
+            args.putString("tag", "EditCenterFragment");
+            pickLocationFragment.setArguments(args);
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, pickLocationFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        btnActualizarCentro.setOnClickListener(v -> {
+            nombre = editTextNombre.getText().toString();
+            telefono = editTextTelefono.getText().toString();
+            direccion = editTextDireccion.getText().toString();
+            latitud = editTextLatitud.getText().toString();
+            longitud = editTextLongitud.getText().toString();
+            llenarArrayMateriales();
+            if (validateData()) {
+                actualizarCentro();
+            }
+        });
+
+        btnImagen.setOnClickListener(v -> imageChooser());
+
+        btnCancelarRegistro.setOnClickListener(v -> regresarANav());
+
+        btnBorrarCentro.setOnClickListener(v -> borrarCentro());
+
+        btnBack.setOnClickListener(v -> {
+            assert getFragmentManager() != null;
+            getFragmentManager().popBackStack();
+        });
+
+        configureMaterialList();
+        configureCategoryList();
+        getCenterData();
+
+        return view;
+    }
+
+    private void getCenterData(){
         //[START OF QUERY]
         db.collection("centros")
                 .document(idCentro)  // Usar directamente el ID del centro
@@ -104,32 +217,67 @@ public class EditCenterFragment extends Fragment {
                     //db.terminate();
                 });
         //[END OF QUERY]
-        // Guarda la hora y minuto de apertura desde un dialogo/pop-up de tipo hora
-        btnHoraApertura.setOnClickListener(v -> {
-            hourChecker = false;
-            popTimePicker();
-        });
+    }
 
-        // Guarda la hora y minuto de cierre desde un dialogo/pop-up de tipo hora
-        btnHoraCierre.setOnClickListener(v -> {
-            hourChecker = true;
-            popTimePicker();
-        });
+    private boolean validateData() {
+        if (Objects.equals(nombre, "")) {
+            Toast.makeText(getActivity(), "El nombre no puede estar vacío", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (Objects.equals(direccion, "")) {
+            Toast.makeText(getActivity(), "La dirección no puede estar vacía", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (Objects.equals(horaAperturaCentro, "")) {
+            Toast.makeText(getActivity(), "La hora de apertura no puede estar vacía", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (Objects.equals(horaCierreCentro, "")) {
+            Toast.makeText(getActivity(), "La hora de cierre no puede estar vacía", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (Objects.equals(latitud, "")) {
+            Toast.makeText(getActivity(), "La latitud no puede estar vacía", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (Objects.equals(longitud, "")) {
+            Toast.makeText(getActivity(), "La longitud no puede estar vacía", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (materialesSeleccionados.size() == 0) {
+            Toast.makeText(getActivity(), "Selecciona al menos un material", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 
-        btnDiasCentro.setOnClickListener(v -> CreateAlertDialog());
 
-        btnActualizarCentro.setOnClickListener(v -> actualizarCentro());
+    void imageChooser() {
+        Intent i = new Intent(
+                Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i, RESULT_LOAD_IMAGE);
+    }
 
-        btnCancelarRegistro.setOnClickListener(v -> regresarANav());
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        btnBorrarCentro.setOnClickListener(v -> borrarCentro());
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-        btnBack.setOnClickListener(v -> {
-            assert getFragmentManager() != null;
-            getFragmentManager().popBackStack();
-        });
+            assert selectedImage != null;
+            Cursor cursor = requireContext().getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            assert cursor != null;
+            cursor.moveToFirst();
 
-        return view;
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            picturePath = cursor.getString(columnIndex);
+            btnImagen.setText(picturePath);
+            cursor.close();
+        }
     }
 
     // Dialogo para seleccionar los días del centro
@@ -158,19 +306,69 @@ public class EditCenterFragment extends Fragment {
         builder.show();
     }
 
+    public void configureMaterialList() {
+        ArrayList<Item> materiales = new ArrayList<>();
+
+        db.collection("materiales")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            materiales.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("imageUrl")).toString()));
+                            // materialSelectiondapter = new MaterialSelectionAdapter(materiales, filters, this);
+
+                        }
+                        materialSelectionAdapter = new MaterialSelectionAdapter(materiales, activeMaterials);
+                        RecyclerView recyclerView = view.findViewById(R.id.materialRecyclerView);
+                        GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(materialSelectionAdapter);
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+
+    }
+
+    public void llenarArrayMateriales() {
+        materialesSeleccionados = new ArrayList<>();
+        materialesSeleccionados.addAll(activeMaterials);
+    }
+
+    private void configureCategoryList() {
+        ArrayList<Item> categorias = new ArrayList<>();
+        //[START OF QUERY]
+        db.collection("categorias")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            categorias.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("imageUrl")).toString()));
+                        }
+                        categorySelectionAdapter = new CategorySelectionAdapter(categorias);
+                        RecyclerView recyclerView = view.findViewById(R.id.categoryRecyclerView);
+                        GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(categorySelectionAdapter);
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+        //[END OF QUERY]
+    }
+
+
     public void popTimePicker() {
         TimePickerDialog.OnTimeSetListener onTimeSetListener = (view, selectedHour, selectedMinute) -> {
 
             @SuppressLint("DefaultLocale") String horaminuto = String.format("%02d:%02d", selectedHour, selectedMinute);
             if (hourChecker) {
                 // Se actualiza la hora de cierre
-                horaCierre = selectedHour;
-                minutoCierre = selectedMinute;
+                horaCierreCentro = horaminuto;
                 btnHoraCierre.setText(horaminuto);
             } else {
                 // Se actualiza la hora de apertura
-                horaApertura = selectedHour;
-                minutoApertura = selectedMinute;
+                horaAperturaCentro = horaminuto;
                 btnHoraApertura.setText(horaminuto);
             }
             hora = selectedHour;
@@ -184,32 +382,52 @@ public class EditCenterFragment extends Fragment {
     }
 
     public void actualizarCentro() {
-        String nombre = editTextNombre.getText().toString();
-        String telefono = editTextTelefono.getText().toString();
-        String direccion = editTextDireccion.getText().toString();
-        String horaAperturaCentro = horaApertura + ":" + minutoApertura;
-        String horaCierreCentro = horaCierre + ":" + minutoCierre;
-        float latitud = Float.parseFloat(editTextLatitud.getText().toString());
-        float longitud = Float.parseFloat(editTextLongitud.getText().toString());
+        Toast.makeText(getActivity(), "Actualizando...", Toast.LENGTH_SHORT).show();
 
+        if (!Objects.equals(picturePath,"")) {
+
+            // Subir imagen
+            Uri file = Uri.fromFile(new File(picturePath));
+            StorageReference ref = storageRef.child("fotosCentros/" + nombre + file.getLastPathSegment());
+            UploadTask uploadTask = ref.putFile(file);
+
+            uploadTask.continueWithTask(task -> {
+                if (!task.isSuccessful()) {
+                    throw Objects.requireNonNull(task.getException());
+                }
+                // Continue with the task to get the download URL
+                return ref.getDownloadUrl();
+            }).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                   subirDatosActualizados(task.getResult());
+                } else {
+                    Toast.makeText(getActivity(), "Error al obtener url de imagen", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else{
+            subirDatosActualizados(Uri.parse(centerResult.getImagen()));
+        }
+    }
+
+    public void subirDatosActualizados(Uri url){
         Map<String, Object> centro = new HashMap<>();
         centro.put(KEY_NOMBRE, nombre);
         centro.put(KEY_TELEFONO, telefono);
         centro.put(KEY_DIRECCION, direccion);
-        centro.put(KEY_LATITUD, latitud);
-        centro.put(KEY_LONGITUD, longitud);
+        centro.put(KEY_LATITUD, Float.parseFloat(latitud));
+        centro.put(KEY_LONGITUD, Float.parseFloat(longitud));
         centro.put(KEY_DIAS, diasSelecionados); // Asumiendo que 'diasSeleccionados' está definido y contiene los días seleccionados
         centro.put(KEY_HORA_APERTURA, horaAperturaCentro);
         centro.put(KEY_HORA_CIERRE, horaCierreCentro);
+        centro.put(KEY_MATERIALES, materialesSeleccionados);
+        centro.put(KEY_CATEGORIA, categorySelectionAdapter.getSelectedCategory());
         centro.put(KEY_ESTADO, true);
-
-        db.collection("centros").add(centro) // Utiliza 'add()' en lugar de 'document("Otro centro").set()'
-                .addOnSuccessListener(documentReference -> {
-                    String centroId = documentReference.getId(); // Obtiene el ID del nuevo documento
-                    Toast.makeText(getActivity(), "Registro de centro exitoso, ID: " + centroId, Toast.LENGTH_SHORT).show();
-                })
+        centro.put(KEY_IMAGEN, url);
+        db.collection("centros").document(idCentro).update(centro)
+                .addOnSuccessListener(documentReference -> Toast.makeText(getActivity(), "Actualización de centro exitosa", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getActivity(), "Error al registrar centro", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Error al actualizar centro", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, e.toString());
                 });
     }
@@ -223,10 +441,15 @@ public class EditCenterFragment extends Fragment {
         editTextDireccion.setText(centro.getDireccion());
         editTextLatitud.setText(String.valueOf(centro.getLatitud()));
         editTextLongitud.setText(String.valueOf(centro.getLongitud()));
-        btnHoraApertura.setText(centro.getHora_apertura());
-        btnHoraCierre.setText(centro.getHora_cierre());
+        horaAperturaCentro = centro.getHora_apertura();
+        btnHoraApertura.setText(horaAperturaCentro);
+        horaCierreCentro = centro.getHora_cierre();
+        btnHoraCierre.setText(horaCierreCentro);
+        materialSelectionAdapter.setActiveMaterials(new HashSet<>(centro.getMateriales()));
+        categorySelectionAdapter.setSelectedCategory(centro.getCategoria());
         StringBuilder dias = new StringBuilder();
-        for (String item : centro.getDias()) {
+        diasSelecionados = centro.getDias();
+        for (String item : diasSelecionados) {
             dias.append(" ").append(item);
         }
         btnDiasCentro.setText(dias.toString());

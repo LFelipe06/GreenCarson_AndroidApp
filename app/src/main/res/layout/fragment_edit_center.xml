@@ -111,7 +111,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/BodyContainer"
             android:layout_width="350dp"
-            android:layout_height="1473dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             app:cardPreventCornerOverlap="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -137,7 +137,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerView3" />
+                    app:layout_constraintTop_toBottomOf="@+id/materialRecyclerView" />
 
                 <TextView
                     android:id="@+id/textViewImagen6"
@@ -367,7 +367,7 @@
                     tools:ignore="RtlSymmetry" />
 
                 <Button
-                    android:id="@+id/button6"
+                    android:id="@+id/btn_imagen"
                     style="@style/Button.blue"
                     android:layout_width="250dp"
                     android:layout_height="48dp"
@@ -408,7 +408,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button6"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_imagen"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
@@ -514,7 +514,7 @@
                     tools:ignore="RtlSymmetry" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView3"
+                    android:id="@+id/materialRecyclerView"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -527,7 +527,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/categoryRecyclerView"
                     android:layout_width="250dp"
-                    android:layout_height="174dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -552,7 +552,9 @@
                     android:layout_width="190dp"
                     android:layout_height="48dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
                     android:text="@string/cancelar"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_actualizar" />

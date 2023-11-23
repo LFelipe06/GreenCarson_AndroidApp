@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CategorySelectionAdapter extends RecyclerView.Adapter<CategorySelectionAdapter.ViewHolder> {
     private final ArrayList<Item> data;
@@ -46,6 +47,15 @@ public class CategorySelectionAdapter extends RecyclerView.Adapter<CategorySelec
             notifyItemChanged(selectedCategory);
             notifyItemChanged(lastSelected);
         });
+    }
+
+    public void setSelectedCategory(String categoryName){
+        for(int i = 0; i < data.size(); i++){
+            if(Objects.equals(data.get(i).getName(), categoryName)){
+                selectedCategory = i;
+                notifyItemChanged(i);
+            }
+        }
     }
 
     public String getSelectedCategory(){

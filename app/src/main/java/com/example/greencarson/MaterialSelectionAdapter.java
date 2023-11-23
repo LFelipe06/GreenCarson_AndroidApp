@@ -1,6 +1,5 @@
 package com.example.greencarson;
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,7 @@ import java.util.Set;
 
 public class MaterialSelectionAdapter extends RecyclerView.Adapter<MaterialSelectionAdapter.ViewHolder> {
     private final ArrayList<Item> data;
-    private final Set<String> activeMaterials;
+    private Set<String> activeMaterials;
     //private FilterChangeInterface responder;
     public MaterialSelectionAdapter(ArrayList<Item> data, Set<String> activeMaterials){
         this.data = data;
@@ -58,7 +57,13 @@ public class MaterialSelectionAdapter extends RecyclerView.Adapter<MaterialSelec
         });
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    public void setActiveMaterials(Set<String> activeMaterials){
+        this.activeMaterials.clear();
+        this.activeMaterials.addAll(activeMaterials);
+        notifyDataSetChanged();
+
+    }
+
     public void clearSelection(){
         activeMaterials.clear();
         notifyDataSetChanged();
