@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -33,7 +32,6 @@ public class CenterListAdapter extends RecyclerView.Adapter<CenterListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        FragmentManager fragmentManager = ((FragmentActivity) holder.itemView.getContext()).getSupportFragmentManager();
         Picasso.get().setLoggingEnabled(true);
         Picasso.get().load(this.data.get(position).getImagen()).into(holder.imageView);
         holder.textView.setText(this.data.get(position).getNombre());
@@ -84,7 +82,7 @@ public class CenterListAdapter extends RecyclerView.Adapter<CenterListAdapter.Vi
             // Use FragmentManager to replace or add the second fragment
             //assert getFragmentManager() != null;
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.container, secondFragment);
+            transaction.replace(R.id.container, secondFragment, "EditCenterFragment");
             transaction.addToBackStack(null); // Optional, if you want to navigate back
             transaction.commit();
         }

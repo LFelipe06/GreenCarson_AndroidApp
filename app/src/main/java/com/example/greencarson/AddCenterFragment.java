@@ -82,17 +82,19 @@ public class AddCenterFragment extends Fragment {
     private String latitud;
     private String longitud;
     private Set<String> activeMaterials;
-    private String categoria;
 
     MaterialSelectionAdapter materialSelectionAdapter;
     CategorySelectionAdapter categorySelectionAdapter;
+
+    public AddCenterFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_add_center, container, false);
 
-        activeMaterials = new HashSet<String>();
+        activeMaterials = new HashSet<>();
 
         btnHoraApertura = view.findViewById(R.id.btnHoraApertura);
         btnHoraCierre = view.findViewById(R.id.btnHoraCierre);
@@ -115,13 +117,12 @@ public class AddCenterFragment extends Fragment {
             float variable2 = bundle.getFloat("longitud");
             String longi = String.valueOf(variable2);
 
-            editTextLatitud.setText(lat);
-            editTextLongitud.setText(longi);
-
             ReverseGeocodingTask reverseGeocodingTask = new ReverseGeocodingTask(requireActivity(), result -> {
                 // El resultado es la dirección obtenida
                 if (result != null) {
                     editTextDireccion.setText(result);
+                    editTextLatitud.setText(lat);
+                    editTextLongitud.setText(longi);
                     Log.d(TAG, "Dirección: " + result);
                 } else {
                     Log.e(TAG, "No se pudo obtener la dirección.");
@@ -134,11 +135,13 @@ public class AddCenterFragment extends Fragment {
         btnSeleccionarUbicacion.setOnClickListener(v -> {
             // Crear e iniciar la transacción del fragmento del mapa
             PickLocationFragment pickLocationFragment= new PickLocationFragment();
+            Bundle args = new Bundle();
+            args.putString("tag", "AddCenterFragment");
+            pickLocationFragment.setArguments(args);
             requireActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, pickLocationFragment)
                     .addToBackStack(null)
                     .commit();
-
         });
 
         // Guarda la hora y minuto de apertura desde un dialogo/pop-up de tipo hora
@@ -265,7 +268,6 @@ public class AddCenterFragment extends Fragment {
     }
 
     public void llenarArrayMateriales(){
-        StringBuilder materiales = new StringBuilder();
         materialesSeleccionados = new ArrayList<>();
         materialesSeleccionados.addAll(activeMaterials);
     }

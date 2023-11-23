@@ -1,15 +1,14 @@
 package com.example.greencarson;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
@@ -18,15 +17,19 @@ import org.osmdroid.views.MapView;
 
 public class PickLocationFragment extends Fragment {
     private MapView mapView;
-    private Button btnCapturarUbicacion;
-
+    private String tag;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Get arguments
+        Bundle args = getArguments();
+        assert args != null;
+        tag = args.getString("tag");
+
         View view = inflater.inflate(R.layout.fragment_pick_location, container, false);
 
         mapView = view.findViewById(R.id.mapView);
 
-        btnCapturarUbicacion = view.findViewById(R.id.btnCapturarUbicacion);
+        Button btnCapturarUbicacion = view.findViewById(R.id.btnCapturarUbicacion);
 
         // Configura el mapa y el indicador según tus necesidades
         // Configura la ubicación inicial y el nivel de zoom
@@ -54,12 +57,7 @@ public class PickLocationFragment extends Fragment {
 
         mapView.setTileSource(TileSourceFactory.MAPNIK);
 
-        btnCapturarUbicacion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                capturarPosicionCentroMapa();
-            }
-        });
+        btnCapturarUbicacion.setOnClickListener(v -> capturarPosicionCentroMapa());
 
 
         return view;
@@ -92,16 +90,15 @@ public class PickLocationFragment extends Fragment {
     }
 
     private void sendDataToSecondFragment(float variable1, float variable2) {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         Bundle dataBundle = createFloatBundle(variable1, variable2);
-
-        AddCenterFragment secondFragment = new AddCenterFragment();
+        AddCenterFragment secondFragment = (AddCenterFragment) fragmentManager.findFragmentByTag(tag);
+        assert secondFragment != null;
         secondFragment.setArguments(dataBundle);
-
         // Use FragmentManager to replace or add the second fragment
         assert getFragmentManager() != null;
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, secondFragment);
-        transaction.addToBackStack(null); // Optional, if you want to navigate back
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.container, secondFragment);
         transaction.commit();
     }
 
