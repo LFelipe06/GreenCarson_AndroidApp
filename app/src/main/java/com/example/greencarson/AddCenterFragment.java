@@ -395,8 +395,12 @@ public class AddCenterFragment extends Fragment {
         editTextDireccion.setText("");
         editTextLatitud.setText("");
         editTextLongitud.setText("");
+        picturePath = "";
+        btnImagen.setText(R.string.seleccionar_imagen);
         btnDiasCentro.setText("");
         btnHoraApertura.setText("");
         btnHoraCierre.setText("");
+        materialSelectionAdapter.clearSelection();
+        categorySelectionAdapter.clearSelection();
     }
 }

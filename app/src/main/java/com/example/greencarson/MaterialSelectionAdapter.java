@@ -1,12 +1,11 @@
 package com.example.greencarson;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,19 +47,21 @@ public class MaterialSelectionAdapter extends RecyclerView.Adapter<MaterialSelec
         Picasso.get().load(this.data.get(position).getImageUrl()).into(holder.imageView);
         holder.textView.setText(this.data.get(holder.getAdapterPosition()).getName());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                if (isActive(holder.getAdapterPosition())) {
-                    activeMaterials.remove(data.get(holder.getAdapterPosition()).getName());
-                }
-                else{
-                    activeMaterials.add(data.get(holder.getAdapterPosition()).getName());
-                }
-                notifyItemChanged(holder.getAdapterPosition());
+        holder.itemView.setOnClickListener(view -> {
+            if (isActive(holder.getAdapterPosition())) {
+                activeMaterials.remove(data.get(holder.getAdapterPosition()).getName());
             }
+            else{
+                activeMaterials.add(data.get(holder.getAdapterPosition()).getName());
+            }
+            notifyItemChanged(holder.getAdapterPosition());
         });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void clearSelection(){
+        activeMaterials.clear();
+        notifyDataSetChanged();
     }
 
     private boolean isActive(int position){
@@ -77,7 +78,7 @@ public class MaterialSelectionAdapter extends RecyclerView.Adapter<MaterialSelec
         return this.data.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final ImageView imageView;
 

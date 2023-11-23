@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class CategorySelectionAdapter extends RecyclerView.Adapter<CategorySelectionAdapter.ViewHolder> {
     private final ArrayList<Item> data;
@@ -41,15 +40,11 @@ public class CategorySelectionAdapter extends RecyclerView.Adapter<CategorySelec
         Picasso.get().setLoggingEnabled(true);
         Picasso.get().load(this.data.get(position).getImageUrl()).into(holder.imageView);
         holder.textView.setText(this.data.get(holder.getAdapterPosition()).getName());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                int lastSelected = selectedCategory;
-                selectedCategory = holder.getAdapterPosition();
-                notifyItemChanged(selectedCategory);
-                notifyItemChanged(lastSelected);
-            }
+        holder.itemView.setOnClickListener(view -> {
+            int lastSelected = selectedCategory;
+            selectedCategory = holder.getAdapterPosition();
+            notifyItemChanged(selectedCategory);
+            notifyItemChanged(lastSelected);
         });
     }
 
@@ -57,12 +52,19 @@ public class CategorySelectionAdapter extends RecyclerView.Adapter<CategorySelec
         return this.data.get(selectedCategory).getName();
     }
 
+    public void clearSelection(){
+        int lastSelected = selectedCategory;
+        selectedCategory = 0;
+        notifyItemChanged(selectedCategory);
+        notifyItemChanged(lastSelected);
+    }
+
     @Override
     public int getItemCount() {
         return this.data.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final ImageView imageView;
 
