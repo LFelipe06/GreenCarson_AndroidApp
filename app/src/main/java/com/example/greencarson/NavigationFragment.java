@@ -6,8 +6,13 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -25,6 +30,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,12 +45,18 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
 
 public class NavigationFragment extends Fragment implements View.OnClickListener, FilterChangeInterface {
     Map<String, ArrayList<CenterItem>> categorizedCenters;
@@ -67,6 +79,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     ArrayList<CenterItem> centers;
     ArrayList<CenterItem> filteredCenters;
     ArrayList<CenterItem> finalCenters;
+    ArrayList<Item> categorias;
 
     Set<String> filters;
     androidx.appcompat.widget.SearchView searchView;
@@ -189,7 +202,8 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(centerListAdapter);
     }
-    private void configureMap(ArrayList<CenterItem> centers){
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void configureMap(ArrayList<CenterItem> centers) {
         // Crear un ArrayList "items" para almacenar los marcadores
         overlayItemsCentros = new ArrayList<>();
 
@@ -201,16 +215,22 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
 
             Marker currentCenter = new Marker(mapView);
             currentCenter.setPosition(geoPointCentro);
-            currentCenter.setTitle(centro.getNombre());
-            currentCenter.setSnippet(centro.getDireccion());
             currentCenter.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+            currentCenter.setTitle(centro.getNombre());
+            StringBuilder infoBuilder = new StringBuilder();
+            infoBuilder.append("Dirección: ").append(centro.getDireccion()).append(System.getProperty("line.separator")).
+                    append("Horario: ").append(centro.getHora_apertura()).append(" a ").
+                    append(centro.getHora_cierre());
+            String info = infoBuilder.toString();
+            currentCenter.setSnippet(info);
             // Toast.makeText(requireActivity(), centro.getDireccion(), Toast.LENGTH_SHORT).show();
 
             overlayItemCentro = new OverlayItem(centro.getNombre(), centro.getDireccion(), geoPointCentro);
-            // overlayItemCentros.setMarker(getResources().getDrawable(R.drawable.marker_icon)); // Personaliza el icono del marcador
+            overlayItemCentro.setMarker(getResources().getDrawable(R.drawable.punto)); // Personaliza el icono del marcador
+
             overlayItemsCentros.add(overlayItemCentro);
 
-            //mapView.getOverlays().add(currentCenter);
+            mapView.getOverlays().add(currentCenter);
         }
 
         // Crear una capa de superposición de marcadores, y se agrega al mapa
@@ -221,7 +241,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     }
 
     private void configureFilterList(){
-        ArrayList<Item> categorias = new ArrayList<>();
+        categorias = new ArrayList<>();
         //[START OF QUERY]
         db.collection("categorias")
                 .get()
@@ -258,18 +278,8 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         mapView.getController().setCenter(startPoint);
         mapView.getController().setZoom(13.5);
 
-        // Crear un ArrayList "items" para almacenar los marcadores
-        items = new ArrayList<>();
-
-        // Habilita la capa de ubicación
-        mapView.getOverlayManager().getTilesOverlay().setEnabled(true);
-
         // Ejemplo de marcador
         GeoPoint poi1 = new GeoPoint(19.0414, -98.2064); // Coordenadas de un establecimiento
-        OverlayItem overlayItem1 = new OverlayItem("Nombre del establecimiento", "Descripción", poi1);
-        overlayItem1.setMarker(getResources().getDrawable(R.drawable.marker_icon)); // Personaliza el icono del marcador
-
-        items.add(overlayItem1);
 
         // Define las coordenadas geográficas de los límites máximos y mínimos (latitud y longitud)
         double maxLat = 19.2; // Latitud máxima
@@ -281,9 +291,6 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         BoundingBox boundingBox = new BoundingBox(maxLat, maxLon, minLat, minLon);
         mapView.setScrollableAreaLimitDouble(boundingBox);
 
-        // Crear una capa de superposición de marcadores, y se agrega al mapa
-        ItemizedIconOverlay<OverlayItem> mOverlay = new ItemizedIconOverlay<>(items, null, requireContext());
-        mapView.getOverlays().add(mOverlay);
         // Actualizar el mapa
         mapView.invalidate();
 
@@ -378,10 +385,10 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                 // Agrega información adicional al Marker (opcional)
                 currentLocationMarker.setSnippet("Latitud: " + latitud + ", Longitud: " + longitud);
 
-                //
                 overlayItemUbicacion = new OverlayItem("Ubicación actual", "Hola", user);
                 overlayItemUbicacion.setMarker(getResources().getDrawable(R.drawable.marker_icon)); // Personaliza el icono del marcador
-                items.add(overlayItemUbicacion);
+                //items.add(overlayItemUbicacion);
+                overlayItemsCentros.add(overlayItemUbicacion);
 
                 mapView.getOverlays().add(currentLocationMarker);
 
