@@ -4,15 +4,11 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -30,12 +26,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
@@ -45,11 +41,6 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,18 +48,17 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-
 public class NavigationFragment extends Fragment implements View.OnClickListener, FilterChangeInterface {
     Map<String, ArrayList<CenterItem>> categorizedCenters;
     BottomSheetBehavior bottomSheetBehavior;
     LocationManager locationManager;
-    @SuppressLint("UseCompatLoadingForDrawables") LocationListener locationListener;
+    @SuppressLint("UseCompatLoadingForDrawables")
+    LocationListener locationListener;
     View view;
     Boolean mapSelected = true; // true: mapa, false: lista
     MapView mapView;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 8;
     private Marker currentLocationMarker;
-    ArrayList<OverlayItem> items;
     ArrayList<OverlayItem> overlayItemsCentros;
     OverlayItem overlayItemUbicacion;
     OverlayItem overlayItemCentro;
@@ -87,6 +77,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     CenterListAdapter centerListAdapter;
     FilterSelectionAdapter filterSelectionAdapter;
 
+    ItemizedIconOverlay<OverlayItem> centersOverlay;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -96,8 +87,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         // Variable para guardar los centros
         centers = new ArrayList<>();
         finalCenters = new ArrayList<>(centers);
-        //filters = Arrays.asList("Compra-venta", "Acopio");
-        filters = new HashSet<String>();
+        filters = new HashSet<>();
         categorizedCenters = new HashMap<>();
         configureFilterList();
         // Llena la lista de mapas con los filtros que pueda haber
@@ -117,13 +107,13 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         // Search bar
-
         searchView = view.findViewById(R.id.search_bar);
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 searchByWord(newText);
@@ -134,39 +124,36 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
-    public void filterCenters(){
+    public void filterCenters() {
         if (filters.size() == 0) {
             finalCenters = new ArrayList<>(centers);
-        }
-        else{
+        } else {
             filteredCenters = new ArrayList<>();
-            for(String filter: filters){
-                if (categorizedCenters.containsKey(filter)){
+            for (String filter : filters) {
+                if (categorizedCenters.containsKey(filter)) {
                     filteredCenters.addAll(Objects.requireNonNull(categorizedCenters.get(filter)));
                 }
             }
             finalCenters = new ArrayList<>(filteredCenters);
-
         }
         configureList(finalCenters);
         configureMap(finalCenters);
     }
 
-    private void searchByWord(String text){
+    private void searchByWord(String text) {
         ArrayList<CenterItem> original;
         finalCenters.clear();
         if (filters.size() == 0) {
-             original = centers;
-        }
-        else {
+            original = centers;
+        } else {
             original = filteredCenters;
         }
-        if(text.isEmpty()){
+        if (text.isEmpty()) {
             finalCenters.addAll(original);
-        } else{
+        } else {
             text = text.toLowerCase();
-            for(CenterItem item: original){
-                if(item.getNombre().toLowerCase().contains(text)){
+            for (CenterItem item : original) {
+                if (item.getNombre().toLowerCase().contains(text)) {
                     finalCenters.add(item);
                 }
             }
@@ -174,7 +161,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         configureList(finalCenters);
     }
 
-    private void fetch(){
+    private void fetch() {
         //[START OF QUERY]
         db.collection("centros")
                 .get()
@@ -195,19 +182,17 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         //[END OF QUERY]
     }
 
-    private void configureList(ArrayList<CenterItem> centers){
+    private void configureList(ArrayList<CenterItem> centers) {
         centerListAdapter = new CenterListAdapter(centers);
         RecyclerView recyclerView = view.findViewById(R.id.centrosLista);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(centerListAdapter);
     }
+
     @SuppressLint("UseCompatLoadingForDrawables")
     private void configureMap(ArrayList<CenterItem> centers) {
-        // Crear un ArrayList "items" para almacenar los marcadores
         overlayItemsCentros = new ArrayList<>();
-
-        // Habilita la capa de ubicación
         mapView.getOverlayManager().getTilesOverlay().setEnabled(true);
 
         for (CenterItem centro : centers) {
@@ -223,24 +208,41 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                     append(centro.getHora_cierre());
             String info = infoBuilder.toString();
             currentCenter.setSnippet(info);
-            // Toast.makeText(requireActivity(), centro.getDireccion(), Toast.LENGTH_SHORT).show();
 
             overlayItemCentro = new OverlayItem(centro.getNombre(), centro.getDireccion(), geoPointCentro);
-            overlayItemCentro.setMarker(getResources().getDrawable(R.drawable.punto)); // Personaliza el icono del marcador
-
+            overlayItemCentro.setMarker(getResources().getDrawable(R.drawable.punto));
             overlayItemsCentros.add(overlayItemCentro);
 
             mapView.getOverlays().add(currentCenter);
         }
 
-        // Crear una capa de superposición de marcadores, y se agrega al mapa
-        ItemizedIconOverlay<OverlayItem> centersOverlay = new ItemizedIconOverlay<>(overlayItemsCentros, null, requireContext());
+        centersOverlay = new ItemizedIconOverlay<>(overlayItemsCentros,
+                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+                    @Override
+                    public boolean onItemSingleTapUp(int index, OverlayItem item) {
+                        showMarkerInfo(item.getTitle(), item.getSnippet());
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onItemLongPress(int index, OverlayItem item) {
+                        return false;
+                    }
+                }, requireContext());
+
         mapView.getOverlayManager().add(centersOverlay);
-        // Actualizar el mapa
         mapView.invalidate();
     }
 
-    private void configureFilterList(){
+    private void showMarkerInfo(String title, String snippet) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(title)
+                .setMessage(snippet)
+                .setPositiveButton("Aceptar", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    private void configureFilterList() {
         categorias = new ArrayList<>();
         //[START OF QUERY]
         db.collection("categorias")
@@ -251,7 +253,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                             categorias.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("imageUrl")).toString()));
                             filterSelectionAdapter = new FilterSelectionAdapter(categorias, filters, this);
                             RecyclerView recyclerView = view.findViewById(R.id.filterRecyclerView);
-                            GridLayoutManager layoutManager=new GridLayoutManager(this.getContext(),3);
+                            GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
                             recyclerView.setLayoutManager(layoutManager);
                             recyclerView.setAdapter(filterSelectionAdapter);
                         }
@@ -262,56 +264,39 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         //[END OF QUERY]
     }
 
-    private void initMap(){
-        // Inicializa la configuración de osmdroid
+    private void initMap() {
         Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
-        // Obtiene una referencia al MapView y el boton
         mapView = view.findViewById(R.id.mapView);
         btnCenterMap = view.findViewById(R.id.btnCenterMap);
-        // Configura la vista del mapa
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setBuiltInZoomControls(false);
         mapView.setMultiTouchControls(true);
 
-        // Configura la ubicación inicial y el nivel de zoom
-        GeoPoint startPoint = new GeoPoint(19.0414, -98.2063); // Coordenadas de Ciudad de Puebla
+        GeoPoint startPoint = new GeoPoint(19.0414, -98.2063);
         mapView.getController().setCenter(startPoint);
         mapView.getController().setZoom(13.5);
 
-        // Ejemplo de marcador
-        GeoPoint poi1 = new GeoPoint(19.0414, -98.2064); // Coordenadas de un establecimiento
-
-        // Define las coordenadas geográficas de los límites máximos y mínimos (latitud y longitud)
-        double maxLat = 19.2; // Latitud máxima
-        double minLat = 18.85; // Latitud mínima
-        double minLon = -98.4; // Longitud mínima
-        double maxLon = -98.0; // Longitud máxima
-
-        // Crea un objeto BoundingBox y se establecen los límites definidos
+        double maxLat = 19.2;
+        double minLat = 18.85;
+        double minLon = -98.4;
+        double maxLon = -98.0;
         BoundingBox boundingBox = new BoundingBox(maxLat, maxLon, minLat, minLon);
         mapView.setScrollableAreaLimitDouble(boundingBox);
 
-        // Actualizar el mapa
         mapView.invalidate();
 
-        // Comprueba si tienes permiso de ubicación, Si no tienes permiso, solicítalo
         ImageView searchIcon = null;
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
-            // Si ya tienes permiso, obtén y muestra la ubicación actual
             mostrarUbicacionActual();
             searchIcon = view.findViewById(androidx.appcompat.R.id.search_button);
-
-            mapView.getController().setCenter(poi1);
+            mapView.getController().setCenter(user);
             mapView.getController().setZoom(13.5);
         }
 
         btnCenterMap.setOnClickListener(this);
 
-        // To change color of close button, use:
-        // ImageView searchCloseIcon = (ImageView)searchView
-        //        .findViewById(androidx.appcompat.R.id.search_close_btn);
         searchIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.lightGreen),
                 android.graphics.PorterDuff.Mode.SRC_IN);
     }
@@ -319,7 +304,6 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     public void onPause() {
         super.onPause();
         locationManager.removeUpdates(locationListener);
-
     }
 
     @Override
@@ -338,12 +322,10 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
             seleccionarVista.setImageResource(R.drawable.baseline_view_list_24);
             view.findViewById(R.id.includeMapa).setVisibility(View.VISIBLE);
             view.findViewById(R.id.includeLista).setVisibility(View.GONE);
-
         } else {
             seleccionarVista.setImageResource(R.drawable.baseline_map_24);
             view.findViewById(R.id.includeMapa).setVisibility(View.GONE);
             view.findViewById(R.id.includeLista).setVisibility(View.VISIBLE);
-
         }
     }
 
@@ -351,7 +333,6 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permiso de ubicación otorgado, obtén y muestra la ubicación actual
                 mostrarUbicacionActual();
             }
         }
@@ -360,47 +341,33 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
 
     private void mostrarUbicacionActual() {
         locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
-
-        // Verifica si tienes permiso de ubicación antes de registrar el LocationListener
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            // Tienes permiso, configura un LocationListener para recibir actualizaciones de ubicación
-                locationListener = location -> {
-                // Se llama cuando se obtiene una nueva ubicación
+            locationListener = location -> {
                 double latitud = location.getLatitude();
                 double longitud = location.getLongitude();
                 user = new GeoPoint(latitud, longitud);
 
-                // Elimina el marcador anterior antes de agregar uno nuevo
                 if (currentLocationMarker != null) {
                     mapView.getOverlays().remove(currentLocationMarker);
                 }
-                // Agrega el nuevo marcador
                 currentLocationMarker = new Marker(mapView);
                 currentLocationMarker.setPosition(user);
                 currentLocationMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
 
-                // Establece un título para el Marker
                 currentLocationMarker.setTitle("Ubicación actual");
-
-                // Agrega información adicional al Marker (opcional)
                 currentLocationMarker.setSnippet("Latitud: " + latitud + ", Longitud: " + longitud);
 
                 overlayItemUbicacion = new OverlayItem("Ubicación actual", "Hola", user);
-                overlayItemUbicacion.setMarker(getResources().getDrawable(R.drawable.marker_icon)); // Personaliza el icono del marcador
-                //items.add(overlayItemUbicacion);
+                overlayItemUbicacion.setMarker(getResources().getDrawable(R.drawable.marker_icon));
                 overlayItemsCentros.add(overlayItemUbicacion);
 
                 mapView.getOverlays().add(currentLocationMarker);
-
                 mapView.invalidate();
             };
 
-            // Registra el LocationListener para actualizaciones de ubicación
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         } else {
-            // No tienes permiso, debes solicitar permiso al usuario
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
-
 }
