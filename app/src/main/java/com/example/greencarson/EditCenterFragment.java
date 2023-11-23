@@ -26,7 +26,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -189,17 +191,103 @@ public class EditCenterFragment extends Fragment {
             getFragmentManager().popBackStack();
         });
 
-        configureMaterialList();
-        configureCategoryList();
-        getCenterData();
+        // Crear un TaskCompletionSource para cada operación
+        TaskCompletionSource<Void> tarea1Completa = new TaskCompletionSource<>();
+        TaskCompletionSource<Void> tarea2Completa = new TaskCompletionSource<>();
+
+        // Llamar a la primera función y adjuntar un listener para indicar la finalización
+        configureCategoryList().addOnCompleteListener(result -> {
+            // Marcar la tarea como completa
+            tarea1Completa.setResult(null);
+        });
+
+        // Llamar a la segunda función y adjuntar un listener para indicar la finalización
+        configureMaterialList().addOnCompleteListener(result -> {
+            // Marcar la tarea como completa
+            tarea2Completa.setResult(null);
+        });
+
+        // Obtener las tareas correspondientes
+        Task<Void> tarea1 = tarea1Completa.getTask();
+        Task<Void> tarea2 = tarea2Completa.getTask();
+
+        // Ejecutar la tercera función cuando ambas tareas anteriores estén completas
+        Task<List<Task<?>>> tareaCombinada = Tasks.whenAllComplete(tarea1, tarea2);
+        tareaCombinada.addOnCompleteListener(result -> {
+            // Ahora puedes llamar a la tercera función porque las dos primeras han terminado
+            getCenterData();
+        });
 
         return view;
     }
 
-    private void getCenterData(){
-        //[START OF QUERY]
+
+    public Task<Void> configureCategoryList() {
+        // Crear un TaskCompletionSource para representar la operación asincrónica
+        TaskCompletionSource<Void> tcs = new TaskCompletionSource<>();
+
+        ArrayList<Item> categorias = new ArrayList<>();
+        db.collection("categorias")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            categorias.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("imageUrl")).toString()));
+                        }
+                        categorySelectionAdapter = new CategorySelectionAdapter(categorias);
+                        RecyclerView recyclerView = view.findViewById(R.id.categoryRecyclerView);
+                        GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(categorySelectionAdapter);
+
+                        // Marcar la tarea como completa
+                        tcs.setResult(null);
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                        // Marcar la tarea como completa con error
+                        tcs.setException(Objects.requireNonNull(task.getException()));
+                    }
+                });
+
+        return tcs.getTask();
+    }
+
+    public Task<Void> configureMaterialList() {
+        // Crear un TaskCompletionSource para representar la operación asincrónica
+        TaskCompletionSource<Void> tcs = new TaskCompletionSource<>();
+
+        ArrayList<Item> materiales = new ArrayList<>();
+        db.collection("materiales")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            materiales.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("imageUrl")).toString()));
+                        }
+                        materialSelectionAdapter = new MaterialSelectionAdapter(materiales, activeMaterials);
+                        RecyclerView recyclerView = view.findViewById(R.id.materialRecyclerView);
+                        GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(materialSelectionAdapter);
+
+                        // Marcar la tarea como completa
+                        tcs.setResult(null);
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                        // Marcar la tarea como completa con error
+                        tcs.setException(Objects.requireNonNull(task.getException()));
+                    }
+                });
+
+        return tcs.getTask();
+    }
+
+    public void getCenterData() {
+        // Crear un TaskCompletionSource para representar la operación asincrónica
+        TaskCompletionSource<Void> tcs = new TaskCompletionSource<>();
+
         db.collection("centros")
-                .document(idCentro)  // Usar directamente el ID del centro
+                .document(idCentro)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -208,15 +296,21 @@ public class EditCenterFragment extends Fragment {
                             centerResult = document.toObject(CenterItem.class);
                             assert centerResult != null;
                             showCenterDetails(centerResult);
+                            // Marcar la tarea como completa
+                            tcs.setResult(null);
                         } else {
                             Log.e(TAG, "No such document");
+                            // Marcar la tarea como completa con error
+                            tcs.setException(new Exception("No such document"));
                         }
                     } else {
                         Log.e(TAG, "Error getting document: ", task.getException());
+                        // Marcar la tarea como completa con error
+                        tcs.setException(Objects.requireNonNull(task.getException()));
                     }
-                    //db.terminate();
                 });
-        //[END OF QUERY]
+
+        tcs.getTask();
     }
 
     private boolean validateData() {
@@ -306,55 +400,9 @@ public class EditCenterFragment extends Fragment {
         builder.show();
     }
 
-    public void configureMaterialList() {
-        ArrayList<Item> materiales = new ArrayList<>();
-
-        db.collection("materiales")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            materiales.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("imageUrl")).toString()));
-                            // materialSelectiondapter = new MaterialSelectionAdapter(materiales, filters, this);
-
-                        }
-                        materialSelectionAdapter = new MaterialSelectionAdapter(materiales, activeMaterials);
-                        RecyclerView recyclerView = view.findViewById(R.id.materialRecyclerView);
-                        GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
-                        recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setAdapter(materialSelectionAdapter);
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
-                    }
-                });
-
-    }
-
     public void llenarArrayMateriales() {
         materialesSeleccionados = new ArrayList<>();
         materialesSeleccionados.addAll(activeMaterials);
-    }
-
-    private void configureCategoryList() {
-        ArrayList<Item> categorias = new ArrayList<>();
-        //[START OF QUERY]
-        db.collection("categorias")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            categorias.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("imageUrl")).toString()));
-                        }
-                        categorySelectionAdapter = new CategorySelectionAdapter(categorias);
-                        RecyclerView recyclerView = view.findViewById(R.id.categoryRecyclerView);
-                        GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
-                        recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setAdapter(categorySelectionAdapter);
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
-                    }
-                });
-        //[END OF QUERY]
     }
 
 
@@ -425,7 +473,10 @@ public class EditCenterFragment extends Fragment {
         centro.put(KEY_ESTADO, true);
         centro.put(KEY_IMAGEN, url);
         db.collection("centros").document(idCentro).update(centro)
-                .addOnSuccessListener(documentReference -> Toast.makeText(getActivity(), "Actualización de centro exitosa", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(getActivity(), "Actualización de centro exitosa", Toast.LENGTH_SHORT).show();
+                    getCenterData();
+                })
                 .addOnFailureListener(e -> {
                     Toast.makeText(getActivity(), "Error al actualizar centro", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, e.toString());
