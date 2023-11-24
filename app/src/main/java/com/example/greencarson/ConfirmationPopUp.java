@@ -9,12 +9,10 @@ import android.widget.TextView;
 
 public class ConfirmationPopUp extends Dialog implements View.OnClickListener {
 
-    private final Activity c;
     private final Runnable onYesClickListener;
 
     public ConfirmationPopUp(Activity a, String confirmationMessage, Runnable onYesClickListener) {
         super(a);
-        this.c = a;
         this.onYesClickListener = onYesClickListener;
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -39,8 +37,8 @@ public class ConfirmationPopUp extends Dialog implements View.OnClickListener {
             // Llamar a la lógica personalizada al hacer clic en "Yes"
             if (onYesClickListener != null) {
                 onYesClickListener.run();
+                dismiss();
             }
-            c.finish();
         } else if (v.getId() == R.id.btnNo) {
             // Descartar el diálogo al hacer clic en "No"
             dismiss();

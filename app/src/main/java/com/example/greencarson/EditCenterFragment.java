@@ -7,6 +7,8 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -506,22 +508,27 @@ public class EditCenterFragment extends Fragment {
         btnDiasCentro.setText(dias.toString());
     }
 
-    public void borrarCentro(){
-        db.collection("centros").document(idCentro).delete()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(requireActivity(), "Product deleted", Toast.LENGTH_LONG).show();
-                        regresarANav();
-                    }
-                });
+    public void borrarCentro() {
+        ConfirmationPopUp confirmationDialog = new ConfirmationPopUp(
+                requireActivity(),
+                "¿Estás seguro de que deseas eliminar este centro?", () -> {
+            db.collection("centros").document(idCentro).delete()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(requireActivity(), "Se eliminó el centro", Toast.LENGTH_LONG).show();
+                        }
+                    });
+            regresarANav();
+        });
+        confirmationDialog.show();
+        Objects.requireNonNull(confirmationDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    public void regresarANav(){
+    public void regresarANav() {
         NavigationFragment someFragment = new NavigationFragment();
         assert getFragmentManager() != null;
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, someFragment ); // give your fragment container id in first parameter
-        transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+        transaction.replace(R.id.container, someFragment);
         transaction.commit();
     }
 }
