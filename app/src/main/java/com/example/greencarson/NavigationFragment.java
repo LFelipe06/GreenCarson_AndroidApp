@@ -196,6 +196,9 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void configureMap(ArrayList<CenterItem> centers) {
+        mapView.getOverlays().clear();
+        mapView.invalidate();
+
         overlayItemsCentros = new ArrayList<>();
         mapView.getOverlayManager().getTilesOverlay().setEnabled(true);
 
