@@ -26,8 +26,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,7 +37,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import org.osmdroid.config.Configuration;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -86,8 +83,6 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     FilterSelectionAdapter filterSelectionAdapter;
 
     ItemizedIconOverlay<OverlayItem> centersOverlay;
-    ItemizedIconOverlay<OverlayItem> ubicacion;
-
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -289,7 +284,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
         mapView = view.findViewById(R.id.mapView);
         btnCenterMap = view.findViewById(R.id.btnCenterMap);
-        mapView.setTileSource(TileSourceFactory.MAPNIK);
+        //mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setBuiltInZoomControls(false);
         mapView.setMultiTouchControls(true);
 
@@ -318,6 +313,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
 
         btnCenterMap.setOnClickListener(this);
 
+        assert searchIcon != null;
         searchIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.lightGreen),
                 android.graphics.PorterDuff.Mode.SRC_IN);
     }

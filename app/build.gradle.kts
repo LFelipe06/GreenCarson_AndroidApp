@@ -55,7 +55,7 @@ dependencies {
     //implementation("com.google.firebase:firebase-firestore-ktx")10
 
 
-    implementation("org.osmdroid:osmdroid-android:6.1.11")
+    implementation("org.osmdroid:osmdroid-android:6.1.17")
 
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.firebase:firebase-firestore:24.9.1")
