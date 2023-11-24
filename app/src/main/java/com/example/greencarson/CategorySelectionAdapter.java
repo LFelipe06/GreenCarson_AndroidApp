@@ -50,12 +50,16 @@ public class CategorySelectionAdapter extends RecyclerView.Adapter<CategorySelec
     }
 
     public void setSelectedCategory(String categoryName){
+        int lastSelected = selectedCategory;
         for(int i = 0; i < data.size(); i++){
             if(Objects.equals(data.get(i).getName(), categoryName)){
                 selectedCategory = i;
                 notifyItemChanged(i);
+                notifyItemChanged(lastSelected);
+                break;
             }
         }
+
     }
 
     public String getSelectedCategory(){

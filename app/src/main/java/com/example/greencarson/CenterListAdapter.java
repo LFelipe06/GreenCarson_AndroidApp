@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CenterListAdapter extends RecyclerView.Adapter<CenterListAdapter.ViewHolder> {
     private final ArrayList<CenterItem> data;
@@ -32,8 +33,10 @@ public class CenterListAdapter extends RecyclerView.Adapter<CenterListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Picasso.get().setLoggingEnabled(true);
-        Picasso.get().load(this.data.get(position).getImagen()).into(holder.imageView);
+        if (!Objects.equals(this.data.get(position).getImagen(), "")){
+            Picasso.get().setLoggingEnabled(true);
+            Picasso.get().load(this.data.get(position).getImagen()).into(holder.imageView);
+        }
         holder.textView.setText(this.data.get(position).getNombre());
         holder.categoryTextView.setText(holder.textView.getContext().getResources().getString(R.string.categoria_centro,this.data.get(position).getCategoria()));
         holder.id = this.data.get(position).getId();

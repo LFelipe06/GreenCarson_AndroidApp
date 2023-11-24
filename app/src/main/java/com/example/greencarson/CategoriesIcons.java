@@ -11,7 +11,7 @@ public class CategoriesIcons {
         // inicializar datos
         categories.put("Punto verde", R.drawable.campana);
         categories.put("Acopio", R.drawable.acopio);
-        categories.put("Acciones municipales", R.drawable.acopio);
+        categories.put("Acciones municipales", R.drawable.municipales);
         categories.put("Compra-venta", R.drawable.compra_venta);
         categories.put("Estación de carga", R.drawable.estacion_carga);
         categories.put("Membresía", R.drawable.membresia);
@@ -29,6 +29,6 @@ public class CategoriesIcons {
 
     /** @noinspection DataFlowIssue*/
     public int getIcon(String name) {
-        return categories.getOrDefault(name, -1);
+        return categories.getOrDefault(name, R.drawable.acopio);
     }
 }

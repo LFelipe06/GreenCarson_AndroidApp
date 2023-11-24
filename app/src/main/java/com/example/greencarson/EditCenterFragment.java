@@ -486,8 +486,10 @@ public class EditCenterFragment extends Fragment {
     }
 
     public void showCenterDetails(CenterItem centro) {
-        Picasso.get().setLoggingEnabled(true);
-        Picasso.get().load(centro.getImagen()).into(imageViewImagen);
+        if (!Objects.equals(centro.getImagen(), "")) {
+            Picasso.get().setLoggingEnabled(true);
+            Picasso.get().load(centro.getImagen()).into(imageViewImagen);
+        }
         textViewNombre.setText(centro.getNombre());
         editTextNombre.setText(centro.getNombre());
         editTextTelefono.setText(centro.getNum_telefonico());
