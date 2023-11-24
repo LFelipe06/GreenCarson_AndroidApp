@@ -26,6 +26,9 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +47,6 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -240,7 +242,24 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(title)
                 .setMessage(snippet)
-                .setPositiveButton("Aceptar", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton("Cerrar", (dialog, which) -> dialog.dismiss())
+                .setPositiveButton("Editar", (dialog, which) -> {
+                    Bundle bundle = new Bundle();
+                    String id = "";
+                    for (CenterItem center : finalCenters){
+                        if (Objects.equals(center.getNombre(), title)) {
+                            id = center.getId();
+                            break;
+                        }
+                    }
+                    bundle.putString("id", id);
+                    EditCenterFragment secondFragment = new EditCenterFragment();
+                    secondFragment.setArguments(bundle);
+                    FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, secondFragment, "EditCenterFragment");
+                    transaction.addToBackStack(null); // Optional, if you want to navigate back
+                    transaction.commit();
+                })
                 .show();
     }
 
@@ -366,9 +385,6 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                 } catch (Exception e) {
                     // Captura otras excepciones no manejadas
                     Log.e("Error", "Excepción no manejada: " + e.getMessage());
-                } finally {
-                    // Código que se ejecutará siempre, independientemente de si se lanzó una excepción o no
-                    Log.d("Final", "Este bloque siempre se ejecuta");
                 }
 
 

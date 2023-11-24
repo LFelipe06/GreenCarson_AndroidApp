@@ -86,6 +86,5 @@ public class CenterListAdapter extends RecyclerView.Adapter<CenterListAdapter.Vi
             transaction.addToBackStack(null); // Optional, if you want to navigate back
             transaction.commit();
         }
-
     }
 }
