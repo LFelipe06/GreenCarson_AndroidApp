@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class NavigationFragment extends Fragment implements View.OnClickListener, FilterChangeInterface {
+    ArrayList<OverlayItem> overlayItemsCentros;
     Map<String, ArrayList<CenterItem>> categorizedCenters;
     BottomSheetBehavior bottomSheetBehavior;
     LocationManager locationManager;
@@ -58,8 +60,8 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     Boolean mapSelected = true; // true: mapa, false: lista
     MapView mapView;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 8;
-    private Marker currentLocationMarker;
-    ArrayList<OverlayItem> overlayItemsCentros;
+    Marker currentLocationMarker;
+
     OverlayItem overlayItemUbicacion;
     OverlayItem overlayItemCentro;
     GeoPoint user;
@@ -78,6 +80,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     FilterSelectionAdapter filterSelectionAdapter;
 
     ItemizedIconOverlay<OverlayItem> centersOverlay;
+    ItemizedIconOverlay<OverlayItem> ubicacion;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -159,6 +162,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
             }
         }
         configureList(finalCenters);
+        configureMap(finalCenters);
     }
 
     private void fetch() {
@@ -201,16 +205,24 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
             Marker currentCenter = new Marker(mapView);
             currentCenter.setPosition(geoPointCentro);
             currentCenter.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
-            currentCenter.setTitle(centro.getNombre());
-            StringBuilder infoBuilder = new StringBuilder();
-            infoBuilder.append("Dirección: ").append(centro.getDireccion()).append(System.getProperty("line.separator")).
-                    append("Horario: ").append(centro.getHora_apertura()).append(" a ").
-                    append(centro.getHora_cierre());
-            String info = infoBuilder.toString();
-            currentCenter.setSnippet(info);
 
             overlayItemCentro = new OverlayItem(centro.getNombre(), centro.getDireccion(), geoPointCentro);
-            overlayItemCentro.setMarker(getResources().getDrawable(R.drawable.punto));
+
+            String imageUrl = null;
+            for(Item categoria : categorias){
+                if(Objects.equals(centro.getCategoria(), categoria.getName())) imageUrl= categoria.getImageUrl();
+            }
+
+            // Cargar el Drawable desde la URL utilizando Glide
+            int maxSize = 100;
+            ImageLoader.loadDrawableFromUrl(requireContext(), imageUrl, maxSize, new ImageLoader.OnDrawableLoadedListener() {
+                @Override
+                public void onDrawableLoaded(Drawable drawable) {
+                    // Establecer el icono del marcador con el Drawable cargado
+                    currentCenter.setIcon(drawable);
+                    mapView.invalidate(); // Actualizar el mapa
+                }
+            });
             overlayItemsCentros.add(overlayItemCentro);
 
             mapView.getOverlays().add(currentCenter);
@@ -358,8 +370,17 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                 currentLocationMarker.setSnippet("Latitud: " + latitud + ", Longitud: " + longitud);
 
                 overlayItemUbicacion = new OverlayItem("Ubicación actual", "Hola", user);
-                overlayItemUbicacion.setMarker(getResources().getDrawable(R.drawable.marker_icon));
-                overlayItemsCentros.add(overlayItemUbicacion);
+                //overlayItemUbicacion.setMarker(getResources().getDrawable(R.drawable.marker_icon));
+                try {
+                    overlayItemsCentros.add(overlayItemUbicacion);
+                } catch (Exception e) {
+                    // Captura otras excepciones no manejadas
+                    Log.e("Error", "Excepción no manejada: " + e.getMessage());
+                } finally {
+                    // Código que se ejecutará siempre, independientemente de si se lanzó una excepción o no
+                    Log.d("Final", "Este bloque siempre se ejecuta");
+                }
+
 
                 mapView.getOverlays().add(currentLocationMarker);
                 mapView.invalidate();
