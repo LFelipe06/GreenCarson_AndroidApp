@@ -7,6 +7,8 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -32,7 +34,6 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
@@ -42,6 +43,7 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,6 +52,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class NavigationFragment extends Fragment implements View.OnClickListener, FilterChangeInterface {
+    CategoriesIcons categoriesIcons = CategoriesIcons.getInstance();
     ArrayList<OverlayItem> overlayItemsCentros;
     Map<String, ArrayList<CenterItem>> categorizedCenters;
     BottomSheetBehavior bottomSheetBehavior;
@@ -81,6 +84,8 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
 
     ItemizedIconOverlay<OverlayItem> centersOverlay;
     ItemizedIconOverlay<OverlayItem> ubicacion;
+
+
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -198,37 +203,18 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     private void configureMap(ArrayList<CenterItem> centers) {
         mapView.getOverlays().clear();
         mapView.invalidate();
-
         overlayItemsCentros = new ArrayList<>();
         mapView.getOverlayManager().getTilesOverlay().setEnabled(true);
 
         for (CenterItem centro : centers) {
             GeoPoint geoPointCentro = new GeoPoint(centro.getLatitud(), centro.getLongitud());
-
-            Marker currentCenter = new Marker(mapView);
-            currentCenter.setPosition(geoPointCentro);
-            currentCenter.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
-
             overlayItemCentro = new OverlayItem(centro.getNombre(), centro.getDireccion(), geoPointCentro);
-
-            String imageUrl = null;
-            for(Item categoria : categorias){
-                if(Objects.equals(centro.getCategoria(), categoria.getName())) imageUrl= categoria.getImageUrl();
-            }
-
-            // Cargar el Drawable desde la URL utilizando Glide
-            int maxSize = 100;
-            ImageLoader.loadDrawableFromUrl(requireContext(), imageUrl, maxSize, new ImageLoader.OnDrawableLoadedListener() {
-                @Override
-                public void onDrawableLoaded(Drawable drawable) {
-                    // Establecer el icono del marcador con el Drawable cargado
-                    currentCenter.setIcon(drawable);
-                    mapView.invalidate(); // Actualizar el mapa
-                }
-            });
+            Drawable dr = getResources().getDrawable(categoriesIcons.getIcon(centro.getCategoria()));
+            Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
+            int size = 50;
+            Drawable icon = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, size, size, true));
+            overlayItemCentro.setMarker(icon);
             overlayItemsCentros.add(overlayItemCentro);
-
-            mapView.getOverlays().add(currentCenter);
         }
 
         centersOverlay = new ItemizedIconOverlay<>(overlayItemsCentros,
@@ -245,7 +231,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                     }
                 }, requireContext());
 
-        mapView.getOverlayManager().add(centersOverlay);
+        mapView.getOverlays().add(centersOverlay);
         mapView.invalidate();
     }
 
