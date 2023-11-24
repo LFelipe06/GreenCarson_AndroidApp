@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.LocationListener;
@@ -209,10 +210,10 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         for (CenterItem centro : centers) {
             GeoPoint geoPointCentro = new GeoPoint(centro.getLatitud(), centro.getLongitud());
             overlayItemCentro = new OverlayItem(centro.getNombre(), centro.getDireccion(), geoPointCentro);
-            Drawable dr = getResources().getDrawable(categoriesIcons.getIcon(centro.getCategoria()));
-            Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-            int size = 50;
-            Drawable icon = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, size, size, true));
+            int size = 120;
+            Bitmap bMap = BitmapFactory.decodeResource(getResources(), categoriesIcons.getIcon(centro.getCategoria()));
+            Bitmap bMapScaled = Bitmap.createScaledBitmap(bMap, size, size, true);
+            Drawable icon = new BitmapDrawable(getResources(), bMapScaled);
             overlayItemCentro.setMarker(icon);
             overlayItemsCentros.add(overlayItemCentro);
         }
