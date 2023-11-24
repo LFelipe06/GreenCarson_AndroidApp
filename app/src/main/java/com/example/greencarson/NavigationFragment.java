@@ -7,10 +7,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -52,7 +48,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class NavigationFragment extends Fragment implements View.OnClickListener, FilterChangeInterface {
-    CategoriesIcons categoriesIcons = CategoriesIcons.getInstance();
+    CategoriesIcons categoriesIcons;
     ArrayList<OverlayItem> overlayItemsCentros;
     Map<String, ArrayList<CenterItem>> categorizedCenters;
     BottomSheetBehavior bottomSheetBehavior;
@@ -90,6 +86,8 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Infla el diseño del fragmento
         view = inflater.inflate(R.layout.fragment_navigation, container, false);
+        // Iconos para el mapa
+        categoriesIcons = new CategoriesIcons(getResources());
         // Variable para guardar los centros
         centers = new ArrayList<>();
         finalCenters = new ArrayList<>(centers);
@@ -98,6 +96,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         configureFilterList();
         // Llena la lista de mapas con los filtros que pueda haber
         fetch();
+        Log.d(TAG, "Carga");
         // Inicialización del mapa
         initMap();
 
@@ -200,18 +199,13 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     @SuppressLint("UseCompatLoadingForDrawables")
     private void configureMap(ArrayList<CenterItem> centers) {
         mapView.getOverlays().clear();
-        mapView.invalidate();
         overlayItemsCentros = new ArrayList<>();
         mapView.getOverlayManager().getTilesOverlay().setEnabled(true);
 
         for (CenterItem centro : centers) {
             GeoPoint geoPointCentro = new GeoPoint(centro.getLatitud(), centro.getLongitud());
             overlayItemCentro = new OverlayItem(centro.getNombre(), centro.getDireccion(), geoPointCentro);
-            int size = 120;
-            Bitmap bMap = BitmapFactory.decodeResource(getResources(), categoriesIcons.getIcon(centro.getCategoria()));
-            Bitmap bMapScaled = Bitmap.createScaledBitmap(bMap, size, size, true);
-            Drawable icon = new BitmapDrawable(getResources(), bMapScaled);
-            overlayItemCentro.setMarker(icon);
+            overlayItemCentro.setMarker(categoriesIcons.getIcon(centro.getCategoria()));
             overlayItemsCentros.add(overlayItemCentro);
         }
 
