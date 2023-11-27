@@ -5,29 +5,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:context=".ProfileFragment">
 
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/BodyContainer"
-            app:shapeAppearanceOverlay="@style/MyCardView"
-            app:cardPreventCornerOverlap="false"
-            android:layout_width="350dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            app:strokeWidth="0dp"
+            android:layout_marginEnd="20dp"
+            app:cardPreventCornerOverlap="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintVertical_bias="1.0"
+            app:shapeAppearanceOverlay="@style/MyCardView"
+            app:strokeWidth="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

@@ -17,12 +17,14 @@
         android:importantForAccessibility="no" />
 
     <Button
+        android:id="@+id/btnCapturarUbicacion"
         style="@style/Button.green"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btnCapturarUbicacion"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="600dp"
-        android:text="@string/confirmar_ubicaci_n"/>
+        android:layout_marginBottom="20dp"
+        android:text="@string/confirmar_ubicaci_n" />
 
 </RelativeLayout>
