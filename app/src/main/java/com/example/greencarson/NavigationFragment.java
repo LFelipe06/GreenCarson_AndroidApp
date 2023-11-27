@@ -189,15 +189,17 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     }
 
     private void configureList(ArrayList<CenterItem> centers) {
+        if (getContext() == null) return;
         centerListAdapter = new CenterListAdapter(centers);
         RecyclerView recyclerView = view.findViewById(R.id.centrosLista);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(centerListAdapter);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void configureMap(ArrayList<CenterItem> centers) {
+        if (getContext() == null) return;
         mapView.getOverlays().clear();
         overlayItemsCentros = new ArrayList<>();
         mapView.getOverlayManager().getTilesOverlay().setEnabled(true);
@@ -228,6 +230,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     }
 
     private void showMarkerInfo(String title, String snippet) {
+        if (getContext() == null) return;
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(title)
                 .setMessage(snippet)
@@ -253,17 +256,19 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     }
 
     private void configureFilterList() {
+        if (getContext() == null) return;
         categorias = new ArrayList<>();
         //[START OF QUERY]
         db.collection("categorias")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        if (getContext() == null) return;
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             categorias.add(new Item(document.getId(), Objects.requireNonNull(document.getData().get("imageUrl")).toString()));
                             filterSelectionAdapter = new FilterSelectionAdapter(categorias, filters, this);
                             RecyclerView recyclerView = view.findViewById(R.id.filterRecyclerView);
-                            GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
+                            GridLayoutManager layoutManager = new GridLayoutManager(this.requireContext(), 3);
                             recyclerView.setLayoutManager(layoutManager);
                             recyclerView.setAdapter(filterSelectionAdapter);
                         }
@@ -275,7 +280,8 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     }
 
     private void initMap() {
-        Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
+        if (getContext() == null) return;
+        Configuration.getInstance().load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()));
         mapView = view.findViewById(R.id.mapView);
         btnCenterMap = view.findViewById(R.id.btnCenterMap);
         //mapView.setTileSource(TileSourceFactory.MAPNIK);
