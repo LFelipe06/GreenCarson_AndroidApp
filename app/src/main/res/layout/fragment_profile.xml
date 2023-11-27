@@ -277,6 +277,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="30dp"
                     android:text="@string/crear_nuevo_administrador"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
