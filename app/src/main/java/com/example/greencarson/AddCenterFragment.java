@@ -208,7 +208,7 @@ public class AddCenterFragment extends Fragment {
             Toast.makeText(getActivity(), "Selecciona una imagen", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (materialesSeleccionados.size() == 0) {
+        if (materialesSeleccionados.size() == 0 && !Objects.equals(categorySelectionAdapter.getSelectedCategory(), "Estación de carga")) {
             Toast.makeText(getActivity(), "Selecciona al menos un material", Toast.LENGTH_SHORT).show();
             return false;
         }
