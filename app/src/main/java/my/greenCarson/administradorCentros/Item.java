@@ -1,4 +1,4 @@
-package com.example.greencarson;
+package my.greenCarson.administradorCentros;
 
 public class Item {
     private String name;

@@ -1,8 +1,8 @@
-package com.example.greencarson;
-
-import org.junit.Test;
+package my.greenCarson.administradorCentros;
 
 import static org.junit.Assert.*;
+
+import org.testng.annotations.Test;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

@@ -1,4 +1,4 @@
-package com.example.greencarson;
+package my.greenCarson.administradorCentros;
 
 public interface FilterChangeInterface {
     public void filterCenters();

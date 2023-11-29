@@ -1,4 +1,4 @@
-package com.example.greencarson;
+package my.greenCarson.administradorCentros;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
+import my.greenCarson.administradorCentros.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;

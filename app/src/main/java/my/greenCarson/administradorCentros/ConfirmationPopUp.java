@@ -1,4 +1,4 @@
-package com.example.greencarson;
+package my.greenCarson.administradorCentros;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+
+import my.greenCarson.administradorCentros.R;
+
 
 public class ConfirmationPopUp extends Dialog implements View.OnClickListener {
 

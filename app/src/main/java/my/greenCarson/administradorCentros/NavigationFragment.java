@@ -1,4 +1,4 @@
-package com.example.greencarson;
+package my.greenCarson.administradorCentros;
 
 import static android.content.ContentValues.TAG;
 
@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import my.greenCarson.administradorCentros.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.firestore.FirebaseFirestore;

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.greencarson"
+    namespace = "my.greenCarson.administradorCentros"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.greencarson"
+        applicationId = "my.greenCarson.administradorCentros"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
@@ -65,6 +65,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
     testImplementation("junit:junit:")
+    testImplementation("org.testng:testng:6.9.6")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 

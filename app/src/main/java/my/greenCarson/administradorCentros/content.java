@@ -1,4 +1,4 @@
-package com.example.greencarson;
+package my.greenCarson.administradorCentros;
 
 import android.os.Bundle;
 import android.view.Window;
@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import my.greenCarson.administradorCentros.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class content extends AppCompatActivity{

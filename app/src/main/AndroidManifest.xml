@@ -27,12 +27,12 @@
         <activity
             android:screenOrientation="nosensor"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:name=".content"
+            android:name="my.greenCarson.administradorCentros.content"
             android:exported="false" />
         <activity
             android:screenOrientation="nosensor"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:name=".MainActivity"
+            android:name="my.greenCarson.administradorCentros.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

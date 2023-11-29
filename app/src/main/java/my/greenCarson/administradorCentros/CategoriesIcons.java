@@ -1,10 +1,12 @@
-package com.example.greencarson;
+package my.greenCarson.administradorCentros;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+
+import my.greenCarson.administradorCentros.R;
 
 import java.util.HashMap;
 

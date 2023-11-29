@@ -14,7 +14,7 @@
         android:layout_height="0dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:context=".ProfileFragment">
+        tools:context="my.greenCarson.administradorCentros.ProfileFragment">
 
 
         <com.google.android.material.card.MaterialCardView
